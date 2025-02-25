@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Łukasz Guziczak - Full-stack Developer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        header h1 {
+            margin: 10px 0 5px;
+            font-size: 2.5em;
+        }
+        header p {
+            margin: 0;
+            font-size: 1.2em;
+            color: #777;
+        }
+        .contact-info {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .contact-info a {
+            color: #0073e6;
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        .skills, .achievements {
+            margin: 40px 0;
+        }
+        .skills h2, .achievements h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #0073e6;
+        }
+        .skills ul, .achievements ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .skills li, .achievements li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border-left: 5px solid #0073e6;
+        }
+        .contact-form {
+            margin: 40px 0;
+            text-align: center;
+        }
+        .contact-form button {
+            background-color: #0073e6;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .contact-form button:hover {
+            background-color: #005bb5;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #000;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content form input, .modal-content form textarea {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal-content form button {
+            background-color: #0073e6;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .modal-content form button:hover {
+            background-color: #005bb5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <img src="photo.jpg" alt="Łukasz Guziczak">
+        <h1>Łukasz Guziczak</h1>
+        <p>Full-stack Developer & Analyst</p>
+    </header>
+
+    <div class="contact-info">
+        <p>+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a></p>
+        <p>Wrocław, Poland</p>
+        <p>
+            <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
+            <a href="https://github.com/guziczak" target="_blank">GitHub</a>
+        </p>
+    </div>
+
+    <div class="skills">
+        <h2>Umiejętności</h2>
+        <ul>
+            <li>Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js</li>
+            <li>Cloud technologies (AWS, Azure), Docker, Kubernetes, CI/CD (Jenkins, GitHub Actions)</li>
+            <li>AI tools (ChatGPT, DeepSeek, Copilot)</li>
+            <li>Microservices architecture, REST APIs, GraphQL</li>
+            <li>Test automation, problem solving, code review</li>
+        </ul>
+    </div>
+
+    <div class="achievements">
+        <h2>Osiągnięcia</h2>
+        <ul>
+            <li>Wdrożenie funkcjonalności zapisywania presetów użytkownika do automatycznej analizy.</li>
+            <li>Rozwinięcie systemu zarządzania wyjątkami z powiadomieniami e-mail.</li>
+            <li>Optymalizacja złożonych zapytań SQL pod kątem wydajności.</li>
+            <li>Integracja drukarek fiskalnych i etykietowych w systemie ERP.</li>
+        </ul>
+    </div>
+
+    <div class="contact-form">
+        <button onclick="openModal()">Skontaktuj się ze mną</button>
+    </div>
+</div>
+
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Formularz kontaktowy</h2>
+        <form action="mailto:guziczak@pm.me" method="post" enctype="text/plain">
+            <input type="text" name="name" placeholder="Twoje imię i nazwisko" required>
+            <input type="email" name="email" placeholder="Twój e-mail" required>
+            <textarea name="message" placeholder="Twoja wiadomość" rows="5" required></textarea>
+            <button type="submit">Wyślij</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById('contactModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('contactModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('contactModal')) {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>
