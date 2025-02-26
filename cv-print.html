@@ -56,6 +56,26 @@
 </div>
 
 <script>
+    let timeoutId;
+    const delay = 500; // Pół sekundy (500 ms)
+
+    // Funkcja do cofnięcia strony
+    function goBack() {
+        window.history.back();
+    }
+
+    // Funkcja do resetowania timera
+    function resetTimer() {
+        clearTimeout(timeoutId); // Czyścimy poprzedni timer
+        timeoutId = setTimeout(goBack, delay); // Ustawiamy nowy timer
+    }
+
+    // Obsługa ruchu myszką
+    document.addEventListener('mousemove', resetTimer);
+
+    // Obsługa dotknięcia ekranu dotykowego
+    document.addEventListener('touchstart', resetTimer);
+
     // Automatyczne wywołanie okna drukowania po załadowaniu strony
     window.onload = function () {
         // Ustawienie odpowiednich plików SVG w zależności od języka
