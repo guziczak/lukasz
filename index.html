@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en"> <!-- Domyślny język to angielski -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,30 +136,79 @@
         .modal-content form button:hover {
             background-color: #005bb5;
         }
+        .language-switcher {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .language-switcher img {
+            width: 40px; /* Większe flagi */
+            height: 30px; /* Większe flagi */
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.5; /* Wyszarzenie niewybranej flagi */
+            transition: opacity 0.3s ease;
+        }
+        .language-switcher img.active {
+            opacity: 1; /* Pełna widoczność aktywnej flagi */
+        }
+        .cv-link {
+            color: #0073e6;
+            text-decoration: none;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .cv-link:hover {
+            color: #005bb5;
+            transform: scale(1.1); /* Lekkie powiększenie przy najechaniu */
+        }
+        .cv-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #0073e6;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+        .cv-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- Przełącznik językowy -->
+    <div class="language-switcher">
+        <img src="uk.svg" alt="English" class="active" onclick="changeLanguage('en')">
+        <img src="pl.svg" alt="Polski" onclick="changeLanguage('pl')">
+    </div>
+
     <header>
         <img src="photo.jpg" alt="Łukasz Guziczak">
-        <h1>Łukasz Guziczak</h1>
-        <p>Full-stack Developer & Analyst</p>
+        <h1 id="title">Łukasz Guziczak</h1>
+        <p id="subtitle">Full-stack Developer & Analyst</p>
     </header>
 
     <div class="contact-info">
-        <p>+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a></p>
-        <p>Wrocław, Poland</p>
+        <p id="phone">+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a></p>
+        <p id="location">Wrocław, Poland</p>
         <p>
             <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
             <a href="https://github.com/guziczak" target="_blank">GitHub</a> |
-            <a href="cv.html">Zobacz moje CV</a> <!-- Dodane przekierowanie do strony z CV -->
+            <a href="cv.html" id="cv-link" class="cv-link">View my CV</a> <!-- Akcent na "View my CV" -->
         </p>
     </div>
 
     <div class="skills">
-        <h2>Umiejętności</h2>
-        <ul>
+        <h2 id="skills-title">Skills</h2>
+        <ul id="skills-list">
             <li>Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js</li>
             <li>Cloud technologies (AWS, Azure), Docker, Kubernetes, CI/CD (Jenkins, GitHub Actions)</li>
             <li>AI tools (ChatGPT, DeepSeek, Copilot)</li>
@@ -169,34 +218,111 @@
     </div>
 
     <div class="achievements">
-        <h2>Osiągnięcia</h2>
-        <ul>
-            <li>Wdrożenie funkcjonalności zapisywania presetów użytkownika do automatycznej analizy.</li>
-            <li>Rozwinięcie systemu zarządzania wyjątkami z powiadomieniami e-mail.</li>
-            <li>Optymalizacja złożonych zapytań SQL pod kątem wydajności.</li>
-            <li>Integracja drukarek fiskalnych i etykietowych w systemie ERP.</li>
+        <h2 id="achievements-title">Achievements</h2>
+        <ul id="achievements-list">
+            <li>Implementation of user preset saving functionality for automatic analysis.</li>
+            <li>Development of an exception management system with email notifications.</li>
+            <li>Optimization of complex SQL queries for performance.</li>
+            <li>Integration of fiscal and label printers in the ERP system.</li>
         </ul>
     </div>
 
     <div class="contact-form">
-        <button onclick="openModal()">Skontaktuj się ze mną</button>
+        <button onclick="openModal()" id="contact-button">Contact me</button>
     </div>
 </div>
 
 <div id="contactModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Formularz kontaktowy</h2>
+        <h2 id="contact-form-title">Contact Form</h2>
         <form action="mailto:guziczak@pm.me" method="post" enctype="text/plain">
-            <input type="text" name="name" placeholder="Twoje imię i nazwisko" required>
-            <input type="email" name="email" placeholder="Twój e-mail" required>
-            <textarea name="message" placeholder="Twoja wiadomość" rows="5" required></textarea>
-            <button type="submit">Wyślij</button>
+            <input type="text" name="name" placeholder="Your name" required>
+            <input type="email" name="email" placeholder="Your email" required>
+            <textarea name="message" placeholder="Your message" rows="5" required></textarea>
+            <button type="submit">Send</button>
         </form>
     </div>
 </div>
 
 <script>
+    // Funkcja do zmiany języka
+    function changeLanguage(lang) {
+        const elements = {
+            'en': {
+                'title': 'Łukasz Guziczak',
+                'subtitle': 'Full-stack Developer & Analyst',
+                'phone': '+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
+                'location': 'Wrocław, Poland',
+                'cv-link': 'View my CV',
+                'skills-title': 'Skills',
+                'skills-list': [
+                    'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
+                    'Cloud technologies (AWS, Azure), Docker, Kubernetes, CI/CD (Jenkins, GitHub Actions)',
+                    'AI tools (ChatGPT, DeepSeek, Copilot)',
+                    'Microservices architecture, REST APIs, GraphQL',
+                    'Test automation, problem solving, code review'
+                ],
+                'achievements-title': 'Achievements',
+                'achievements-list': [
+                    'Implementation of user preset saving functionality for automatic analysis.',
+                    'Development of an exception management system with email notifications.',
+                    'Optimization of complex SQL queries for performance.',
+                    'Integration of fiscal and label printers in the ERP system.'
+                ],
+                'contact-button': 'Contact me',
+                'contact-form-title': 'Contact Form'
+            },
+            'pl': {
+                'title': 'Łukasz Guziczak',
+                'subtitle': 'Programista Full-stack & Analityk',
+                'phone': '+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
+                'location': 'Wrocław, Polska',
+                'cv-link': 'Zobacz moje CV',
+                'skills-title': 'Umiejętności',
+                'skills-list': [
+                    'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
+                    'Technologie chmurowe (AWS, Azure), Docker, Kubernetes, CI/CD (Jenkins, GitHub Actions)',
+                    'Narzędzia AI (ChatGPT, DeepSeek, Copilot)',
+                    'Architektura mikroserwisów, REST API, GraphQL',
+                    'Automatyzacja testów, rozwiązywanie problemów, przegląd kodu'
+                ],
+                'achievements-title': 'Osiągnięcia',
+                'achievements-list': [
+                    'Wdrożenie funkcjonalności zapisywania presetów użytkownika do automatycznej analizy.',
+                    'Rozwinięcie systemu zarządzania wyjątkami z powiadomieniami e-mail.',
+                    'Optymalizacja złożonych zapytań SQL pod kątem wydajności.',
+                    'Integracja drukarek fiskalnych i etykietowych w systemie ERP.'
+                ],
+                'contact-button': 'Skontaktuj się ze mną',
+                'contact-form-title': 'Formularz kontaktowy'
+            }
+        };
+
+        // Aktualizacja treści na stronie
+        document.getElementById('title').innerText = elements[lang]['title'];
+        document.getElementById('subtitle').innerText = elements[lang]['subtitle'];
+        document.getElementById('phone').innerHTML = elements[lang]['phone'];
+        document.getElementById('location').innerText = elements[lang]['location'];
+        document.getElementById('cv-link').innerText = elements[lang]['cv-link'];
+        document.getElementById('skills-title').innerText = elements[lang]['skills-title'];
+        document.getElementById('skills-list').innerHTML = elements[lang]['skills-list'].map(item => `<li>${item}</li>`).join('');
+        document.getElementById('achievements-title').innerText = elements[lang]['achievements-title'];
+        document.getElementById('achievements-list').innerHTML = elements[lang]['achievements-list'].map(item => `<li>${item}</li>`).join('');
+        document.getElementById('contact-button').innerText = elements[lang]['contact-button'];
+        document.getElementById('contact-form-title').innerText = elements[lang]['contact-form-title'];
+
+        // Zmiana aktywnych flag
+        document.querySelectorAll('.language-switcher img').forEach(img => {
+            img.classList.remove('active');
+        });
+        document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
+    }
+
+    // Domyślny język to angielski
+    changeLanguage('en');
+
+    // Funkcje do modala
     function openModal() {
         document.getElementById('contactModal').style.display = 'block';
     }
