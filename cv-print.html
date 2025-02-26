@@ -38,7 +38,9 @@
             }
             .svg-container img {
                 width: 100%; /* Pełna szerokość strony A4 */
+                max-width: 1200px; /* Ograniczenie szerokości do 1200px, tak jak w cv.html */
                 height: auto; /* Zachowanie proporcji SVG */
+                margin: 0 auto; /* Wyśrodkowanie SVG na stronie */
             }
         }
     </style>
@@ -89,7 +91,7 @@
 
     // Obsługa zamknięcia okna drukowania
     window.onafterprint = function () {
-        window.history.back(); // Cofnięcie o jedną stronę w historii
+        setTimeout(goBack, delay); // Dodanie opóźnienia przed cofnięciem strony
     };
 </script>
 
