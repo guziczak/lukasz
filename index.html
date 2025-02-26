@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> <!-- Domyślny język to angielski -->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -141,15 +141,15 @@
             margin-bottom: 20px;
         }
         .language-switcher img {
-            width: 40px; /* Większe flagi */
-            height: 30px; /* Większe flagi */
+            width: 40px;
+            height: 30px;
             cursor: pointer;
             margin-left: 10px;
-            opacity: 0.5; /* Wyszarzenie niewybranej flagi */
+            opacity: 0.5;
             transition: opacity 0.3s ease;
         }
         .language-switcher img.active {
-            opacity: 1; /* Pełna widoczność aktywnej flagi */
+            opacity: 1;
         }
         .cv-link {
             color: #0073e6;
@@ -161,7 +161,7 @@
         }
         .cv-link:hover {
             color: #005bb5;
-            transform: scale(1.1); /* Lekkie powiększenie przy najechaniu */
+            transform: scale(1.1);
         }
         .cv-link::after {
             content: '';
@@ -178,6 +178,68 @@
         .cv-link:hover::after {
             transform: scaleX(1);
             transform-origin: bottom left;
+        }
+
+        /* Animacje dla zmiany języka */
+        .fade-out-up {
+            animation: fadeOutUp 0.5s ease forwards;
+        }
+
+        .fade-in-down {
+            animation: fadeInDown 0.5s ease forwards;
+        }
+
+        @keyframes fadeOutUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animacje dla modala */
+        .modal.fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .modal.fade-out {
+            animation: fadeOut 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
         }
     </style>
 </head>
@@ -202,7 +264,7 @@
         <p>
             <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
             <a href="https://github.com/guziczak" target="_blank">GitHub</a> |
-            <a href="cv.html" id="cv-link" class="cv-link">View my CV</a> <!-- Akcent na "View my CV" -->
+            <a href="cv.html" id="cv-link" class="cv-link">View my CV</a>
         </p>
     </div>
 
@@ -246,89 +308,123 @@
 </div>
 
 <script>
+    let isFirstLoad = true;
+
     // Funkcja do zmiany języka
     function changeLanguage(lang) {
-        const elements = {
-            'en': {
-                'title': 'Łukasz Guziczak',
-                'subtitle': 'Full-stack Developer & Analyst',
-                'phone': '+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
-                'location': 'Wrocław, Poland',
-                'cv-link': 'View my CV',
-                'skills-title': 'Skills',
-                'skills-list': [
-                    'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
-                    'Cloud technologies (AWS, Azure), Docker, Kubernetes, CI/CD (Jenkins, GitHub Actions)',
-                    'AI tools (ChatGPT, DeepSeek, Copilot)',
-                    'Microservices architecture, REST APIs, GraphQL',
-                    'Test automation, problem solving, code review'
-                ],
-                'achievements-title': 'Achievements',
-                'achievements-list': [
-                    'Implementation of user preset saving functionality for automatic analysis.',
-                    'Development of an exception management system with email notifications.',
-                    'Optimization of complex SQL queries for performance.',
-                    'Integration of fiscal and label printers in the ERP system.'
-                ],
-                'contact-button': 'Contact me',
-                'contact-form-title': 'Contact Form'
-            },
-            'pl': {
-                'title': 'Łukasz Guziczak',
-                'subtitle': 'Programista Full-stack & Analityk',
-                'phone': '+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
-                'location': 'Wrocław, Polska',
-                'cv-link': 'Zobacz moje CV',
-                'skills-title': 'Umiejętności',
-                'skills-list': [
-                    'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
-                    'Technologie chmurowe (AWS, Azure), Docker, Kubernetes, CI/CD (Jenkins, GitHub Actions)',
-                    'Narzędzia AI (ChatGPT, DeepSeek, Copilot)',
-                    'Architektura mikroserwisów, REST API, GraphQL',
-                    'Automatyzacja testów, rozwiązywanie problemów, przegląd kodu'
-                ],
-                'achievements-title': 'Osiągnięcia',
-                'achievements-list': [
-                    'Wdrożenie funkcjonalności zapisywania presetów użytkownika do automatycznej analizy.',
-                    'Rozwinięcie systemu zarządzania wyjątkami z powiadomieniami e-mail.',
-                    'Optymalizacja złożonych zapytań SQL pod kątem wydajności.',
-                    'Integracja drukarek fiskalnych i etykietowych w systemie ERP.'
-                ],
-                'contact-button': 'Skontaktuj się ze mną',
-                'contact-form-title': 'Formularz kontaktowy'
+        const elementsToAnimate = document.querySelectorAll('.container > *:not(.language-switcher)');
+        
+        if (!isFirstLoad) {
+            elementsToAnimate.forEach(element => {
+                element.classList.add('fade-out-up');
+            });
+        }
+
+        setTimeout(() => {
+            const elements = {
+                'en': {
+                    'title': 'Łukasz Guziczak',
+                    'subtitle': 'Full-stack Developer & Analyst',
+                    'phone': '+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
+                    'location': 'Wrocław, Poland',
+                    'cv-link': 'View my CV',
+                    'skills-title': 'Skills',
+                    'skills-list': [
+                        'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
+                        'Cloud technologies (AWS, Azure), Docker, Kubernetes, CI/CD (Jenkins, GitHub Actions)',
+                        'AI tools (ChatGPT, DeepSeek, Copilot)',
+                        'Microservices architecture, REST APIs, GraphQL',
+                        'Test automation, problem solving, code review'
+                    ],
+                    'achievements-title': 'Achievements',
+                    'achievements-list': [
+                        'Implementation of user preset saving functionality for automatic analysis.',
+                        'Development of an exception management system with email notifications.',
+                        'Optimization of complex SQL queries for performance.',
+                        'Integration of fiscal and label printers in the ERP system.'
+                    ],
+                    'contact-button': 'Contact me',
+                    'contact-form-title': 'Contact Form'
+                },
+                'pl': {
+                    'title': 'Łukasz Guziczak',
+                    'subtitle': 'Programista Full-stack & Analityk',
+                    'phone': '+48 693 069 832 | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
+                    'location': 'Wrocław, Polska',
+                    'cv-link': 'Zobacz moje CV',
+                    'skills-title': 'Umiejętności',
+                    'skills-list': [
+                        'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
+                        'Technologie chmurowe (AWS, Azure), Docker, Kubernetes, CI/CD (Jenkins, GitHub Actions)',
+                        'Narzędzia AI (ChatGPT, DeepSeek, Copilot)',
+                        'Architektura mikroserwisów, REST API, GraphQL',
+                        'Automatyzacja testów, rozwiązywanie problemów, przegląd kodu'
+                    ],
+                    'achievements-title': 'Osiągnięcia',
+                    'achievements-list': [
+                        'Wdrożenie funkcjonalności zapisywania presetów użytkownika do automatycznej analizy.',
+                        'Rozwinięcie systemu zarządzania wyjątkami z powiadomieniami e-mail.',
+                        'Optymalizacja złożonych zapytań SQL pod kątem wydajności.',
+                        'Integracja drukarek fiskalnych i etykietowych w systemie ERP.'
+                    ],
+                    'contact-button': 'Skontaktuj się ze mną',
+                    'contact-form-title': 'Formularz kontaktowy'
+                }
+            };
+
+            // Aktualizacja treści na stronie
+            document.getElementById('title').innerText = elements[lang]['title'];
+            document.getElementById('subtitle').innerText = elements[lang]['subtitle'];
+            document.getElementById('phone').innerHTML = elements[lang]['phone'];
+            document.getElementById('location').innerText = elements[lang]['location'];
+            document.getElementById('cv-link').innerText = elements[lang]['cv-link'];
+            document.getElementById('skills-title').innerText = elements[lang]['skills-title'];
+            document.getElementById('skills-list').innerHTML = elements[lang]['skills-list'].map(item => `<li>${item}</li>`).join('');
+            document.getElementById('achievements-title').innerText = elements[lang]['achievements-title'];
+            document.getElementById('achievements-list').innerHTML = elements[lang]['achievements-list'].map(item => `<li>${item}</li>`).join('');
+            document.getElementById('contact-button').innerText = elements[lang]['contact-button'];
+            document.getElementById('contact-form-title').innerText = elements[lang]['contact-form-title'];
+
+            // Zmiana aktywnych flag
+            document.querySelectorAll('.language-switcher img').forEach(img => {
+                img.classList.remove('active');
+            });
+            document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
+
+            if (!isFirstLoad) {
+                elementsToAnimate.forEach(element => {
+                    element.classList.remove('fade-out-up');
+                    element.classList.add('fade-in-down');
+                });
+
+                setTimeout(() => {
+                    elementsToAnimate.forEach(element => {
+                        element.classList.remove('fade-in-down');
+                    });
+                }, 500);
             }
-        };
 
-        // Aktualizacja treści na stronie
-        document.getElementById('title').innerText = elements[lang]['title'];
-        document.getElementById('subtitle').innerText = elements[lang]['subtitle'];
-        document.getElementById('phone').innerHTML = elements[lang]['phone'];
-        document.getElementById('location').innerText = elements[lang]['location'];
-        document.getElementById('cv-link').innerText = elements[lang]['cv-link'];
-        document.getElementById('skills-title').innerText = elements[lang]['skills-title'];
-        document.getElementById('skills-list').innerHTML = elements[lang]['skills-list'].map(item => `<li>${item}</li>`).join('');
-        document.getElementById('achievements-title').innerText = elements[lang]['achievements-title'];
-        document.getElementById('achievements-list').innerHTML = elements[lang]['achievements-list'].map(item => `<li>${item}</li>`).join('');
-        document.getElementById('contact-button').innerText = elements[lang]['contact-button'];
-        document.getElementById('contact-form-title').innerText = elements[lang]['contact-form-title'];
-
-        // Zmiana aktywnych flag
-        document.querySelectorAll('.language-switcher img').forEach(img => {
-            img.classList.remove('active');
-        });
-        document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
+            isFirstLoad = false;
+        }, isFirstLoad ? 0 : 500);
     }
 
-    // Domyślny język to angielski
+    // Domyślny język to angielski, bez animacji przy pierwszym ładowaniu
     changeLanguage('en');
 
     // Funkcje do modala
     function openModal() {
-        document.getElementById('contactModal').style.display = 'block';
+        const modal = document.getElementById('contactModal');
+        modal.style.display = 'block';
+        modal.classList.add('fade-in');
     }
 
     function closeModal() {
-        document.getElementById('contactModal').style.display = 'none';
+        const modal = document.getElementById('contactModal');
+        modal.classList.add('fade-out');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            modal.classList.remove('fade-out');
+        }, 300);
     }
 
     window.onclick = function(event) {

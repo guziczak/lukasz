@@ -18,10 +18,11 @@
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding-bottom: 40px; /* Przerwa równa wysokości przycisków */
         }
         header {
             text-align: center;
-            padding: 20px 0;
+            padding: 10px 0; /* Mniejszy padding na górze */
         }
         header h1 {
             margin: 10px 0 5px;
@@ -44,20 +45,24 @@
             right: 20px;
             z-index: 1000;
         }
-        .back-button a {
+        .back-button a, .mobile-buttons a {
             background-color: rgba(0, 115, 230, 0.8);
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            font-size: 1em;
+            padding: 0 15px; /* Mniejszy padding po bokach */
+            font-size: 1.2em; /* Większa czcionka dla symboli */
             cursor: pointer;
             border-radius: 5px;
             text-decoration: none;
             display: inline-block;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
+            height: 40px; /* Wysokość przycisków */
+            line-height: 40px; /* Wyśrodkowanie symboli w przyciskach */
+            min-width: 40px; /* Minimalna szerokość przycisków */
+            text-align: center; /* Wyśrodkowanie tekstu/symboli */
         }
-        .back-button a:hover {
+        .back-button a:hover, .mobile-buttons a:hover {
             background-color: rgba(0, 91, 181, 0.8);
         }
         .mobile-buttons {
@@ -68,21 +73,7 @@
             z-index: 1000;
         }
         .mobile-buttons a {
-            background-color: rgba(0, 115, 230, 0.8);
-            color: #fff;
-            border: none;
-            padding: 10px;
-            font-size: 1.2em; /* Większa czcionka dla lepszej widoczności strzałek */
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
             margin-right: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-        }
-        .mobile-buttons a:hover {
-            background-color: rgba(0, 91, 181, 0.8);
         }
         @media (max-width: 768px) {
             .mobile-buttons {
@@ -107,14 +98,14 @@
 
 <!-- Subtelny przycisk powrotu do strony głównej w prawym dolnym rogu -->
 <div class="back-button">
-    <a href="index.html">Powrót</a>
+    <a href="index.html">&#8592; <!-- Symbol strzałki w lewo --></a>
 </div>
 
 <!-- Przyciski dla wersji mobilnej -->
 <div class="mobile-buttons">
     <a href="#" onclick="changePdf('prev'); return false;">&#9664; <!-- Strzałka w lewo --></a>
     <a href="#" onclick="changePdf('next'); return false;">&#9654; <!-- Strzałka w prawo --></a>
-    <a href="cv.pdf" download>Pobierz PDF</a>
+    <a href="cv.pdf" download>&#128190; <!-- Symbol dyskietki do pobierania --></a>
 </div>
 
 <script>
