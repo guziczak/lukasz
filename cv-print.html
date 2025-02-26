@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print CV</title>
+    <style>
+        /* Styl dla ekranu */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Ukrycie pasków przewijania */
+        }
+        .pdf-container {
+            width: 100vw; /* Pełna szerokość okna przeglądarki */
+            height: 100vh; /* Pełna wysokość okna przeglądarki */
+            border: none;
+        }
+
+        /* Styl dla drukowania */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .pdf-container {
+                width: 100%; /* Pełna szerokość strony A4 */
+                height: 100vh; /* Pełna wysokość strony A4 */
+                page-break-after: always; /* Wymuszenie podziału strony po każdym pliku PDF */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Pierwszy plik PDF -->
+<iframe class="pdf-container" src="cv_1_en.pdf"></iframe>
+
+<!-- Drugi plik PDF -->
+<iframe class="pdf-container" src="cv_2_en.pdf"></iframe>
+
+<script>
+    // Automatyczne wywołanie okna drukowania po załadowaniu strony
+    window.onload = function () {
+        window.print(); // Wywołanie okna drukowania
+    };
+
+    // Obsługa zamknięcia okna drukowania
+    window.onafterprint = function () {
+        window.history.back(); // Cofnięcie o jedną stronę w historii
+    };
+</script>
+
+</body>
+</html>

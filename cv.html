@@ -127,7 +127,7 @@
     <a href="#" onclick="changePdf('prev'); return false;">&#9664; <!-- Strzałka w lewo --></a>
     <a href="#" onclick="changePdf('next'); return false;">&#9654; <!-- Strzałka w prawo --></a>
     <a id="download-link" href="cv_en.pdf" download>&#128190; <!-- Symbol dyskietki do pobierania --></a>
-    <a href="#" onclick="printPdf(); return false;">&#128438; <!-- Nowy symbol drukarki --></a>
+    <a href="cv-print.html">&#128424; <!-- Nowy symbol drukarki --></a>
 </div>
 
 <script>
@@ -188,15 +188,6 @@
                 pdfViewer.setAttribute('src', 'cv_1_pl.pdf'); // Powrót do pierwszej strony
             }
         }
-    }
-
-    // Funkcja do drukowania pliku PDF
-    function printPdf() {
-        const pdfUrl = currentLanguage === 'en' ? 'cv_en.pdf' : 'cv_pl.pdf';
-        const pdfWindow = window.open(pdfUrl, '_blank'); // Otwiera plik PDF w nowej karcie
-        pdfWindow.onload = function () {
-            pdfWindow.print(); // Wywołuje okno drukowania po załadowaniu pliku PDF
-        };
     }
 </script>
 
