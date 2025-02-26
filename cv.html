@@ -49,7 +49,7 @@
             background-color: rgba(0, 115, 230, 0.8);
             color: #fff;
             border: none;
-            padding: 0 15px; /* Mniejszy padding po bokach */
+            padding: 0 10px; /* Mniejszy padding po bokach */
             font-size: 1.2em; /* Większa czcionka dla symboli */
             cursor: pointer;
             border-radius: 5px;
@@ -75,6 +75,21 @@
         .mobile-buttons a {
             margin-right: 10px;
         }
+        .language-switcher {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .language-switcher img {
+            width: 40px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        .language-switcher img.active {
+            opacity: 1;
+        }
         @media (max-width: 768px) {
             .mobile-buttons {
                 display: block;
@@ -85,12 +100,18 @@
 <body>
 
 <div class="container">
+    <!-- Przełącznik językowy -->
+    <div class="language-switcher">
+        <img src="uk.svg" alt="English" class="active" onclick="changeLanguage('en')">
+        <img src="pl.svg" alt="Polski" onclick="changeLanguage('pl')">
+    </div>
+
     <header>
         <h1>Łukasz Guziczak</h1>
-        <p>Curriculum Vitae</p>
+        <p id="cv-title">Curriculum Vitae</p>
     </header>
 
-    <iframe id="pdf-viewer" class="pdf-viewer" src="cv.pdf"></iframe>
+    <iframe id="pdf-viewer" class="pdf-viewer" src="cv_en.pdf"></iframe>
 
     <!-- Kotwica na samym dole strony -->
     <div id="bottom-anchor" class="anchor"></div>
@@ -105,10 +126,37 @@
 <div class="mobile-buttons">
     <a href="#" onclick="changePdf('prev'); return false;">&#9664; <!-- Strzałka w lewo --></a>
     <a href="#" onclick="changePdf('next'); return false;">&#9654; <!-- Strzałka w prawo --></a>
-    <a href="cv.pdf" download>&#128190; <!-- Symbol dyskietki do pobierania --></a>
+    <a id="download-link" href="cv_en.pdf" download>&#128190; <!-- Symbol dyskietki do pobierania --></a>
+    <a href="#" onclick="printPdf(); return false;">&#128438; <!-- Nowy symbol drukarki --></a>
 </div>
 
 <script>
+    let currentLanguage = 'en';
+
+    // Funkcja do zmiany języka
+    function changeLanguage(lang) {
+        currentLanguage = lang;
+        const pdfViewer = document.getElementById('pdf-viewer');
+        const downloadLink = document.getElementById('download-link');
+        const cvTitle = document.getElementById('cv-title');
+
+        if (lang === 'en') {
+            pdfViewer.setAttribute('src', 'cv_en.pdf');
+            downloadLink.setAttribute('href', 'cv_en.pdf');
+            cvTitle.innerText = 'Curriculum Vitae';
+        } else if (lang === 'pl') {
+            pdfViewer.setAttribute('src', 'cv_pl.pdf');
+            downloadLink.setAttribute('href', 'cv_pl.pdf');
+            cvTitle.innerText = 'Życiorys';
+        }
+
+        // Zmiana aktywnych flag
+        document.querySelectorAll('.language-switcher img').forEach(img => {
+            img.classList.remove('active');
+        });
+        document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
+    }
+
     // Funkcja do płynnego przewijania do kotwicy z opóźnieniem 1 sekundy
     function scrollToBottom() {
         setTimeout(() => {
@@ -128,14 +176,27 @@
         let currentPdf = pdfViewer.getAttribute('src');
 
         if (direction === 'next') {
-            if (currentPdf === 'cv.pdf' || currentPdf === 'cv_1.pdf') {
-                pdfViewer.setAttribute('src', 'cv_2.pdf'); // Przejście do drugiej strony
+            if (currentPdf === 'cv_en.pdf' || currentPdf === 'cv_1_en.pdf') {
+                pdfViewer.setAttribute('src', 'cv_2_en.pdf'); // Przejście do drugiej strony
+            } else if (currentPdf === 'cv_pl.pdf' || currentPdf === 'cv_1_pl.pdf') {
+                pdfViewer.setAttribute('src', 'cv_2_pl.pdf'); // Przejście do drugiej strony
             }
         } else if (direction === 'prev') {
-            if (currentPdf === 'cv.pdf' || currentPdf === 'cv_2.pdf') {
-                pdfViewer.setAttribute('src', 'cv_1.pdf'); // Powrót do pierwszej strony
+            if (currentPdf === 'cv_en.pdf' || currentPdf === 'cv_2_en.pdf') {
+                pdfViewer.setAttribute('src', 'cv_1_en.pdf'); // Powrót do pierwszej strony
+            } else if (currentPdf === 'cv_pl.pdf' || currentPdf === 'cv_2_pl.pdf') {
+                pdfViewer.setAttribute('src', 'cv_1_pl.pdf'); // Powrót do pierwszej strony
             }
         }
+    }
+
+    // Funkcja do drukowania pliku PDF
+    function printPdf() {
+        const pdfUrl = currentLanguage === 'en' ? 'cv_en.pdf' : 'cv_pl.pdf';
+        const pdfWindow = window.open(pdfUrl, '_blank'); // Otwiera plik PDF w nowej karcie
+        pdfWindow.onload = function () {
+            pdfWindow.print(); // Wywołuje okno drukowania po załadowaniu pliku PDF
+        };
     }
 </script>
 
