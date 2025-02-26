@@ -3,96 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Print CV</title>
+    <title>Łukasz Guziczak - CV - Print</title>
     <style>
-        /* Styl dla ekranu */
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Ukrycie pasków przewijania */
+            background-color: #f4f4f4;
+            color: #333;
         }
-        .svg-container {
-            width: 100vw; /* Pełna szerokość okna przeglądarki */
-            height: 100vh; /* Pełna wysokość okna przeglądarki */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0; /* Usunięto padding */
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .svg-viewer {
+            width: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            background-color: white; /* Tło białe dla drukowania */
+            gap: 5px; /* Przywrócono odstęp między SVG */
         }
-        .svg-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* Zachowanie proporcji SVG */
-        }
-
-        /* Styl dla drukowania */
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            .svg-container {
-                width: 100%; /* Pełna szerokość strony A4 */
-                height: 100vh; /* Pełna wysokość strony A4 */
-                page-break-after: always; /* Wymuszenie podziału strony po każdym SVG */
-            }
-            .svg-container img {
-                width: 100%; /* Pełna szerokość strony A4 */
-                max-width: 1200px; /* Ograniczenie szerokości do 1200px, tak jak w cv.html */
-                height: auto; /* Zachowanie proporcji SVG */
-                margin: 0 auto; /* Wyśrodkowanie SVG na stronie */
-            }
+        .svg-viewer img {
+            width: 100%; /* Szerokość SVG dostosowana do wewnętrznej szerokości strony */
+            max-width: 100%; /* Zapobiega przekraczaniu szerokości */
+            height: auto; /* Zachowanie proporcji */
+            display: block; /* Usunięcie domyślnego marginesu pod obrazem */
         }
     </style>
 </head>
 <body>
 
-<!-- Pierwszy plik SVG -->
-<div class="svg-container">
-    <img id="svg1" src="cv_1_en.svg" alt="CV Page 1">
-</div>
-
-<!-- Drugi plik SVG -->
-<div class="svg-container">
-    <img id="svg2" src="cv_2_en.svg" alt="CV Page 2">
+<div class="container">
+    <!-- Kontener na SVG -->
+    <div class="svg-viewer">
+        <img id="svg1" src="cv_1_en.svg" alt="CV Page 1">
+        <img id="svg2" src="cv_2_en.svg" alt="CV Page 2">
+    </div>
 </div>
 
 <script>
-    let timeoutId;
-    const delay = 500; // Pół sekundy (500 ms)
+    // Sprawdź, czy istnieje zmienna sesyjna selectedLanguage w localStorage
+    let currentLanguage = localStorage.getItem('selectedLanguage');
 
-    // Funkcja do cofnięcia strony
-    function goBack() {
-        window.history.back();
+    // Jeśli zmienna sesyjna nie istnieje, ustaw domyślny język na 'en'
+    if (!currentLanguage) {
+        currentLanguage = 'en'; // Domyślnie 'en', jeśli nie ma zapisanego języka
+        localStorage.setItem('selectedLanguage', currentLanguage); // Zapisz domyślny język
     }
 
-    // Funkcja do resetowania timera
-    function resetTimer() {
-        clearTimeout(timeoutId); // Czyścimy poprzedni timer
-        timeoutId = setTimeout(goBack, delay); // Ustawiamy nowy timer
+    // Funkcja do zmiany języka
+    function changeLanguage(lang) {
+        // Zapisz wybrany język do localStorage
+        localStorage.setItem('selectedLanguage', lang);
+        currentLanguage = lang;
+        updateContent(lang);
     }
 
-    // Obsługa ruchu myszką
-    document.addEventListener('mousemove', resetTimer);
+    // Funkcja do aktualizacji zawartości strony
+    function updateContent(lang) {
+        const svg1 = document.getElementById('svg1');
+        const svg2 = document.getElementById('svg2');
 
-    // Obsługa dotknięcia ekranu dotykowego
-    document.addEventListener('touchstart', resetTimer);
+        if (lang === 'en') {
+            svg1.src = 'cv_1_en.svg';
+            svg2.src = 'cv_2_en.svg';
+        } else if (lang === 'pl') {
+            svg1.src = 'cv_1_pl.svg';
+            svg2.src = 'cv_2_pl.svg';
+        }
+    }
+
+    // Zastosuj zapisany język przy ładowaniu strony
+    updateContent(currentLanguage);
 
     // Automatyczne wywołanie okna drukowania po załadowaniu strony
-    window.onload = function () {
-        // Ustawienie odpowiednich plików SVG w zależności od języka
-        const lang = new URLSearchParams(window.location.search).get('lang') || 'en';
-        document.getElementById('svg1').src = `cv_1_${lang}.svg`;
-        document.getElementById('svg2').src = `cv_2_${lang}.svg`;
-
-        // Wywołanie okna drukowania
+    window.onload = function() {
         window.print();
     };
 
-    // Obsługa zamknięcia okna drukowania
-    window.onafterprint = function () {
-        setTimeout(goBack, delay); // Dodanie opóźnienia przed cofnięciem strony
-    };
+    // Cofnięcie o jedną stronę w tył po kliknięciu lub dotknięciu dowolnego elementu na stronie
+    document.addEventListener('click', function() {
+        window.history.back();
+    });
+
+    document.addEventListener('touchstart', function() {
+        window.history.back();
+    });
 </script>
 
 </body>
