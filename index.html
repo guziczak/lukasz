@@ -312,6 +312,12 @@
 
     // Funkcja do zmiany języka
     function changeLanguage(lang) {
+        localStorage.setItem('selectedLanguage', lang); // Zapisz wybrany język do localStorage
+        applyLanguage(lang);
+    }
+
+    // Funkcja do zastosowania języka
+    function applyLanguage(lang) {
         const elementsToAnimate = document.querySelectorAll('.container > *:not(.language-switcher)');
         
         if (!isFirstLoad) {
@@ -408,8 +414,9 @@
         }, isFirstLoad ? 0 : 500);
     }
 
-    // Domyślny język to angielski, bez animacji przy pierwszym ładowaniu
-    changeLanguage('en');
+    // Sprawdź, czy w localStorage jest zapisany język
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    changeLanguage(savedLanguage); // Zastosuj zapisany język
 
     // Funkcje do modala
     function openModal() {

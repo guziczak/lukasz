@@ -20,16 +20,32 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding-bottom: 80px; /* Zwiększony padding na dole strony (2x większy) */
         }
+        .language-switcher {
+            text-align: right;
+            margin-bottom: 0; /* Usunięto margines na dole */
+        }
+        .language-switcher img {
+            width: 40px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        .language-switcher img.active {
+            opacity: 1;
+        }
         header {
             text-align: center;
-            padding: 10px 0; /* Mniejszy padding na górze */
+            padding: 0; /* Usunięto padding na górze i dole */
+            margin: 0; /* Usunięto marginesy */
         }
         header h1 {
-            margin: 10px 0 5px;
+            margin: 0; /* Usunięto marginesy wokół nagłówka */
             font-size: 2.5em;
         }
         header p {
-            margin: 0;
+            margin: 0; /* Usunięto marginesy wokół podtytułu */
             font-size: 1.2em;
             color: #777;
         }
@@ -56,16 +72,18 @@
             background-color: rgba(0, 115, 230, 0.8);
             color: #fff;
             border: none;
-            padding: 0 10px; /* Mniejszy padding po bokach */
+            padding: 0; /* Usunięto padding po bokach */
             font-size: 1.2em; /* Większa czcionka dla symboli */
             cursor: pointer;
             border-radius: 5px;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex; /* Użyj flexboxa do lepszego wyśrodkowania */
+            align-items: center; /* Wyśrodkowanie pionowe */
+            justify-content: center; /* Wyśrodkowanie poziome */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
             height: 40px; /* Wysokość przycisków */
-            line-height: 40px; /* Wyśrodkowanie symboli w przyciskach */
+            width: 40px; /* Szerokość przycisków (równa wysokości) */
             min-width: 40px; /* Minimalna szerokość przycisków */
             text-align: center; /* Wyśrodkowanie tekstu/symboli */
         }
@@ -81,21 +99,6 @@
         }
         .mobile-buttons a {
             margin-right: 10px;
-        }
-        .language-switcher {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-        .language-switcher img {
-            width: 40px;
-            height: 30px;
-            cursor: pointer;
-            margin-left: 10px;
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
-        }
-        .language-switcher img.active {
-            opacity: 1;
         }
         @media (max-width: 768px) {
             .mobile-buttons {
@@ -142,11 +145,25 @@
 </div>
 
 <script>
-    let currentLanguage = 'en';
+    // Sprawdź, czy istnieje zmienna sesyjna selectedLanguage w localStorage
+    let currentLanguage = localStorage.getItem('selectedLanguage');
+
+    // Jeśli zmienna sesyjna nie istnieje, ustaw domyślny język na 'en'
+    if (!currentLanguage) {
+        currentLanguage = 'en'; // Domyślnie 'en', jeśli nie ma zapisanego języka
+        localStorage.setItem('selectedLanguage', currentLanguage); // Zapisz domyślny język
+    }
 
     // Funkcja do zmiany języka
     function changeLanguage(lang) {
+        // Zapisz wybrany język do localStorage
+        localStorage.setItem('selectedLanguage', lang);
         currentLanguage = lang;
+        updateContent(lang);
+    }
+
+    // Funkcja do aktualizacji zawartości strony
+    function updateContent(lang) {
         const svg1 = document.getElementById('svg1');
         const svg2 = document.getElementById('svg2');
         const downloadLink = document.getElementById('download-link');
@@ -155,12 +172,12 @@
         if (lang === 'en') {
             svg1.src = 'cv_1_en.svg';
             svg2.src = 'cv_2_en.svg';
-            downloadLink.setAttribute('href', 'cv_en.pdf'); // Pobieranie pliku PDF
+            downloadLink.setAttribute('href', 'cv_en.pdf');
             cvTitle.innerText = 'Curriculum Vitae';
         } else if (lang === 'pl') {
             svg1.src = 'cv_1_pl.svg';
             svg2.src = 'cv_2_pl.svg';
-            downloadLink.setAttribute('href', 'cv_pl.pdf'); // Pobieranie pliku PDF
+            downloadLink.setAttribute('href', 'cv_pl.pdf');
             cvTitle.innerText = 'Życiorys';
         }
 
@@ -170,6 +187,9 @@
         });
         document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
     }
+
+    // Zastosuj zapisany język przy ładowaniu strony
+    updateContent(currentLanguage);
 
     // Funkcja do zmiany SVG (np. między stronami)
     function changeSvg(direction) {
