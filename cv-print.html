@@ -11,10 +11,18 @@
             padding: 0;
             overflow: hidden; /* Ukrycie pasków przewijania */
         }
-        .pdf-container {
+        .svg-container {
             width: 100vw; /* Pełna szerokość okna przeglądarki */
             height: 100vh; /* Pełna wysokość okna przeglądarki */
-            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white; /* Tło białe dla drukowania */
+        }
+        .svg-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Zachowanie proporcji SVG */
         }
 
         /* Styl dla drukowania */
@@ -23,26 +31,40 @@
                 margin: 0;
                 padding: 0;
             }
-            .pdf-container {
+            .svg-container {
                 width: 100%; /* Pełna szerokość strony A4 */
                 height: 100vh; /* Pełna wysokość strony A4 */
-                page-break-after: always; /* Wymuszenie podziału strony po każdym pliku PDF */
+                page-break-after: always; /* Wymuszenie podziału strony po każdym SVG */
+            }
+            .svg-container img {
+                width: 100%; /* Pełna szerokość strony A4 */
+                height: auto; /* Zachowanie proporcji SVG */
             }
         }
     </style>
 </head>
 <body>
 
-<!-- Pierwszy plik PDF -->
-<iframe class="pdf-container" src="cv_1_en.pdf"></iframe>
+<!-- Pierwszy plik SVG -->
+<div class="svg-container">
+    <img id="svg1" src="cv_1_en.svg" alt="CV Page 1">
+</div>
 
-<!-- Drugi plik PDF -->
-<iframe class="pdf-container" src="cv_2_en.pdf"></iframe>
+<!-- Drugi plik SVG -->
+<div class="svg-container">
+    <img id="svg2" src="cv_2_en.svg" alt="CV Page 2">
+</div>
 
 <script>
     // Automatyczne wywołanie okna drukowania po załadowaniu strony
     window.onload = function () {
-        window.print(); // Wywołanie okna drukowania
+        // Ustawienie odpowiednich plików SVG w zależności od języka
+        const lang = new URLSearchParams(window.location.search).get('lang') || 'en';
+        document.getElementById('svg1').src = `cv_1_${lang}.svg`;
+        document.getElementById('svg2').src = `cv_2_${lang}.svg`;
+
+        // Wywołanie okna drukowania
+        window.print();
     };
 
     // Obsługa zamknięcia okna drukowania

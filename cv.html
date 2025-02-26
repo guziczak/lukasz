@@ -18,7 +18,7 @@
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding-bottom: 40px; /* Przerwa równa wysokości przycisków */
+            padding-bottom: 80px; /* Zwiększony padding na dole strony (2x większy) */
         }
         header {
             text-align: center;
@@ -33,11 +33,18 @@
             font-size: 1.2em;
             color: #777;
         }
-        .pdf-viewer {
+        .svg-viewer {
             width: 100%;
-            height: 90vh;
-            border: none;
-            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px; /* Odstęp między SVG */
+        }
+        .svg-viewer img {
+            width: 100%; /* Szerokość SVG dostosowana do wewnętrznej szerokości strony */
+            max-width: 100%; /* Zapobiega przekraczaniu szerokości */
+            height: auto; /* Zachowanie proporcji */
+            display: block; /* Usunięcie domyślnego marginesu pod obrazem */
         }
         .back-button {
             position: fixed;
@@ -111,7 +118,11 @@
         <p id="cv-title">Curriculum Vitae</p>
     </header>
 
-    <iframe id="pdf-viewer" class="pdf-viewer" src="cv_en.pdf"></iframe>
+    <!-- Kontener na SVG -->
+    <div class="svg-viewer">
+        <img id="svg1" src="cv_1_en.svg" alt="CV Page 1">
+        <img id="svg2" src="cv_2_en.svg" alt="CV Page 2">
+    </div>
 
     <!-- Kotwica na samym dole strony -->
     <div id="bottom-anchor" class="anchor"></div>
@@ -124,8 +135,8 @@
 
 <!-- Przyciski dla wersji mobilnej -->
 <div class="mobile-buttons">
-    <a href="#" onclick="changePdf('prev'); return false;">&#9664; <!-- Strzałka w lewo --></a>
-    <a href="#" onclick="changePdf('next'); return false;">&#9654; <!-- Strzałka w prawo --></a>
+    <a href="#" onclick="changeSvg('prev'); return false;">&#9664; <!-- Strzałka w lewo --></a>
+    <a href="#" onclick="changeSvg('next'); return false;">&#9654; <!-- Strzałka w prawo --></a>
     <a id="download-link" href="cv_en.pdf" download>&#128190; <!-- Symbol dyskietki do pobierania --></a>
     <a href="cv-print.html">&#128424; <!-- Nowy symbol drukarki --></a>
 </div>
@@ -136,17 +147,20 @@
     // Funkcja do zmiany języka
     function changeLanguage(lang) {
         currentLanguage = lang;
-        const pdfViewer = document.getElementById('pdf-viewer');
+        const svg1 = document.getElementById('svg1');
+        const svg2 = document.getElementById('svg2');
         const downloadLink = document.getElementById('download-link');
         const cvTitle = document.getElementById('cv-title');
 
         if (lang === 'en') {
-            pdfViewer.setAttribute('src', 'cv_en.pdf');
-            downloadLink.setAttribute('href', 'cv_en.pdf');
+            svg1.src = 'cv_1_en.svg';
+            svg2.src = 'cv_2_en.svg';
+            downloadLink.setAttribute('href', 'cv_en.pdf'); // Pobieranie pliku PDF
             cvTitle.innerText = 'Curriculum Vitae';
         } else if (lang === 'pl') {
-            pdfViewer.setAttribute('src', 'cv_pl.pdf');
-            downloadLink.setAttribute('href', 'cv_pl.pdf');
+            svg1.src = 'cv_1_pl.svg';
+            svg2.src = 'cv_2_pl.svg';
+            downloadLink.setAttribute('href', 'cv_pl.pdf'); // Pobieranie pliku PDF
             cvTitle.innerText = 'Życiorys';
         }
 
@@ -157,35 +171,22 @@
         document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
     }
 
-    // Funkcja do płynnego przewijania do kotwicy z opóźnieniem 1 sekundy
-    function scrollToBottom() {
-        setTimeout(() => {
-            const anchor = document.getElementById('bottom-anchor');
-            if (anchor) {
-                anchor.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 1000); // Opóźnienie 1000 ms (1 sekunda)
-    }
-
-    // Wywołanie funkcji po załadowaniu strony
-    window.onload = scrollToBottom;
-
-    // Funkcja do zmiany pliku PDF
-    function changePdf(direction) {
-        const pdfViewer = document.getElementById('pdf-viewer');
-        let currentPdf = pdfViewer.getAttribute('src');
+    // Funkcja do zmiany SVG (np. między stronami)
+    function changeSvg(direction) {
+        const svg1 = document.getElementById('svg1');
+        const svg2 = document.getElementById('svg2');
+        let currentSvg1 = svg1.src;
+        let currentSvg2 = svg2.src;
 
         if (direction === 'next') {
-            if (currentPdf === 'cv_en.pdf' || currentPdf === 'cv_1_en.pdf') {
-                pdfViewer.setAttribute('src', 'cv_2_en.pdf'); // Przejście do drugiej strony
-            } else if (currentPdf === 'cv_pl.pdf' || currentPdf === 'cv_1_pl.pdf') {
-                pdfViewer.setAttribute('src', 'cv_2_pl.pdf'); // Przejście do drugiej strony
+            if (currentSvg1.includes('cv_1_en.svg') || currentSvg1.includes('cv_1_pl.svg')) {
+                svg1.src = currentSvg1.replace('cv_1_', 'cv_2_');
+                svg2.src = currentSvg2.replace('cv_2_', 'cv_1_');
             }
         } else if (direction === 'prev') {
-            if (currentPdf === 'cv_en.pdf' || currentPdf === 'cv_2_en.pdf') {
-                pdfViewer.setAttribute('src', 'cv_1_en.pdf'); // Powrót do pierwszej strony
-            } else if (currentPdf === 'cv_pl.pdf' || currentPdf === 'cv_2_pl.pdf') {
-                pdfViewer.setAttribute('src', 'cv_1_pl.pdf'); // Powrót do pierwszej strony
+            if (currentSvg1.includes('cv_2_en.svg') || currentSvg1.includes('cv_2_pl.svg')) {
+                svg1.src = currentSvg1.replace('cv_2_', 'cv_1_');
+                svg2.src = currentSvg2.replace('cv_1_', 'cv_2_');
             }
         }
     }
