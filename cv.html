@@ -100,7 +100,6 @@
         }
         .mobile-buttons a {
             margin-right: 10px;
-            animation-delay: 1s;
         }
         @media (max-width: 768px) {
             .mobile-buttons {
@@ -227,10 +226,12 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const buttons = document.querySelectorAll('.mobile-buttons a');
-        buttons.forEach(button => {
-            button.classList.add('pulse-once');
-        });
+        setTimeout(function() {
+            const buttons = document.querySelectorAll('.mobile-buttons a, .back-button a');
+            buttons.forEach(button => {
+                button.classList.add('pulse-once');
+            });
+        }, 0);
     });
 </script>
 
