@@ -32,6 +32,13 @@
             height: auto; /* Zachowanie proporcji */
             display: block; /* Usunięcie domyślnego marginesu pod obrazem */
         }
+
+        /* Dodane style do kontroli podziału strony podczas drukowania */
+        @media print {
+            .page-break {
+                page-break-before: always;
+            }
+        }
     </style>
 </head>
 <body>
@@ -40,6 +47,7 @@
     <!-- Kontener na BMP -->
     <div class="svg-viewer">
         <img id="svg1" src="cv_1_en.bmp" alt="CV Page 1">
+        <div class="page-break"></div> <!-- Dodany element do wymuszenia podziału strony -->
         <img id="svg2" src="cv_2_en.bmp" alt="CV Page 2">
     </div>
 </div>
