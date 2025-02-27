@@ -601,7 +601,7 @@
 
             setTimeout(function() {
                 cvLink.classList.remove('hover-effect');
-            }, 250); // Po pół sekundy usuwamy efekt
+            }, 100); // Po 100 ms usuwamy efekt
         }, 1000); // Efekt zaczyna się po sekundzie
     };
 
@@ -609,9 +609,7 @@
     document.getElementById('cv-link').addEventListener('click', function(event) {
         event.preventDefault(); // Zatrzymaj domyślne zachowanie linku
         setTimeout(function() {
-            window.location.href = 'cv.html'; // Przekierowanie po pół sekundy
-        }, 500); // Opóźnienie 500 ms (pół sekundy)
-            window.location.href = 'cv.html'; // Przekierowanie po dwóch sekundach
+            window.location.href = 'cv.html'; // Przekierowanie po półtora sekundy
         }, 1500); // Opóźnienie 1500 ms (1.5 sekundy)
     });
 </script>
