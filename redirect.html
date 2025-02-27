@@ -12,11 +12,17 @@
             const isIOS = /iphone|ipad|ipod/.test(userAgent);
 
             // Link docelowy
-            const targetUrl = 'guziczak.github.io/lukasz/cv-print';
+            const targetUrl = 'https://guziczak.github.io/lukasz/cv-print.html';
 
             if (isAndroid) {
                 // Schemat URL dla Android (intent://)
-                window.location.href = `intent://${targetUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+                const intentUrl = `intent://guziczak.github.io/lukasz/cv-print.html#Intent;scheme=https;package=com.android.chrome;end`;
+                window.location.href = intentUrl;
+
+                // Fallback: Jeśli intent nie zadziała, otwórz link w nowej karcie
+                setTimeout(function() {
+                    window.location.href = targetUrl;
+                }, 500);
             } else if (isIOS) {
                 // Uniwersalny link dla iOS
                 window.location.href = targetUrl;
