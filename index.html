@@ -389,7 +389,7 @@
         <p>
             <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
             <a href="https://github.com/guziczak" target="_blank">GitHub</a> |
-            <a href="cv.html" id="cv-link" class="cv-link">View my CV</a>
+            <a href="#" id="cv-link" class="cv-link">View my CV</a> <!-- Zmieniono href na "#" -->
         </p>
     </div>
 
@@ -604,6 +604,14 @@
             }, 250); // Po pół sekundy usuwamy efekt
         }, 1000); // Efekt zaczyna się po sekundzie
     };
+
+    // Obsługa kliknięcia na link "View my CV" z opóźnieniem
+    document.getElementById('cv-link').addEventListener('click', function(event) {
+        event.preventDefault(); // Zatrzymaj domyślne zachowanie linku
+        setTimeout(function() {
+            window.location.href = 'cv.html'; // Przekierowanie po pół sekundy
+        }, 500); // Opóźnienie 500 ms (pół sekundy)
+    });
 </script>
 
 </body>
