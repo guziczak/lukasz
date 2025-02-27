@@ -315,33 +315,42 @@
             top: 20px;
             left: 20px;
             z-index: 1000;
-            background-color: #0073e6;
+            background-color: rgba(0, 115, 230, 0.8);
             color: #fff;
             border: none;
-            padding: 10px 15px;
-            font-size: 1em;
+            padding: 0;
+            font-size: 1.2em;
             cursor: pointer;
             border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            text-align: center;
         }
 
         .theme-switcher:hover {
-            background-color: #005bb5;
+            background-color: rgba(0, 91, 181, 0.8);
         }
 
         body.dark-mode .theme-switcher {
-            background-color: #005bb5;
+            background-color: rgba(0, 91, 181, 0.8);
         }
 
         body.dark-mode .theme-switcher:hover {
-            background-color: #0073e6;
+            background-color: rgba(0, 115, 230, 0.8);
         }
     </style>
 </head>
 <body>
 
 <!-- Przycisk przełączania motywu -->
-<button class="theme-switcher" onclick="toggleDarkMode()">🌙</button>
+<button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">🌙</button>
 
 <div class="container">
     <!-- Przełącznik językowy -->
@@ -543,12 +552,23 @@
         const body = document.body;
         body.classList.toggle('dark-mode');
         localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+
+        // Zmiana ikonki w przycisku
+        const themeButton = document.getElementById('themeButton');
+        if (body.classList.contains('dark-mode')) {
+            themeButton.innerText = '☀️'; // Słoneczko dla trybu ciemnego
+        } else {
+            themeButton.innerText = '🌙'; // Księżyc dla trybu jasnego
+        }
     }
 
     // Sprawdź, czy użytkownik ma zapisany preferowany motyw
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
     if (savedDarkMode) {
         document.body.classList.add('dark-mode');
+        document.getElementById('themeButton').innerText = '☀️'; // Słoneczko dla trybu ciemnego
+    } else {
+        document.getElementById('themeButton').innerText = '🌙'; // Księżyc dla trybu jasnego
     }
 </script>
 
