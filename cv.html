@@ -163,7 +163,7 @@
     <a href="#" onclick="changeSvg('prev'); return false;"><img src="left.svg" alt="Previous" class="icon"></a>
     <a href="#" onclick="changeSvg('next'); return false;"><img src="right.svg" alt="Next" class="icon"></a>
     <a id="download-link" href="cv_en.pdf" download><img src="download.svg" alt="Download" class="icon"></a>
-    <a href="#" onclick="handlePrint(); return false;"><img src="print.svg" alt="Print" class="icon"></a>
+    <a href="cv-print.html"><img src="print.svg" alt="Print" class="icon"></a>
 </div>
 
 <script>
@@ -223,12 +223,6 @@
                 svg2.src = currentSvg2.replace('cv_1_', 'cv_2_');
             }
         }
-    }
-
-    // Funkcja obsługująca kliknięcie w przycisk do drukowania
-    function handlePrint() {
-        // Wysyłamy wiadomość do rodzica z informacją o akcji "print"
-        window.parent.postMessage({ action: 'print', url: 'https://guziczak.github.io/lukasz/cv-print.html' }, '*');
     }
 
     document.addEventListener('DOMContentLoaded', function() {
