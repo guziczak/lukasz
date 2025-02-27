@@ -247,6 +247,16 @@
             transform-origin: bottom left;
         }
 
+        .cv-link.hover-effect {
+            color: #005bb5;
+            transform: scale(1.1);
+        }
+
+        .cv-link.hover-effect::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
         /* Animacje dla zmiany języka */
         .fade-out-up {
             animation: fadeOutUp 0.5s ease forwards;
@@ -582,6 +592,18 @@
         document.getElementById('themeIcon').src = 'moon.svg';
         document.getElementById('themeIcon').alt = 'Dark Mode';
     }
+
+    // Efekt hover po sekundzie
+    window.onload = function() {
+        setTimeout(function() {
+            const cvLink = document.getElementById('cv-link');
+            cvLink.classList.add('hover-effect');
+
+            setTimeout(function() {
+                cvLink.classList.remove('hover-effect');
+            }, 500); // Po pół sekundy usuwamy efekt
+        }, 1000); // Efekt zaczyna się po sekundzie
+    };
 </script>
 
 </body>
