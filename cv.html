@@ -86,6 +86,7 @@
             width: 40px; /* Szerokość przycisków (równa wysokości) */
             min-width: 40px; /* Minimalna szerokość przycisków */
             text-align: center; /* Wyśrodkowanie tekstu/symboli */
+            line-height: 40px; /* Dodane, aby tekst był wyśrodkowany pionowo */
         }
         .back-button a:hover, .mobile-buttons a:hover {
             background-color: rgba(0, 91, 181, 0.8);
@@ -102,8 +103,18 @@
         }
         @media (max-width: 768px) {
             .mobile-buttons {
-                display: block;
+                display: flex; /* Użyj flexboxa do wyśrodkowania przycisków */
+                align-items: center; /* Wyśrodkowanie pionowe */
             }
+        }
+        .icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            filter: invert(1); /* Odwrócenie kolorów ikon na białe */
+        }
+        .mobile-buttons a {
+            color: white; /* Strzałki < > są białe */
         }
     </style>
 </head>
@@ -133,15 +144,15 @@
 
 <!-- Subtelny przycisk powrotu do strony głównej w prawym dolnym rogu -->
 <div class="back-button">
-    <a href="index.html">&#8592; <!-- Symbol strzałki w lewo --></a>
+    <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
 </div>
 
 <!-- Przyciski dla wersji mobilnej -->
 <div class="mobile-buttons">
     <a href="#" onclick="changeSvg('prev'); return false;">&#9664; <!-- Strzałka w lewo --></a>
     <a href="#" onclick="changeSvg('next'); return false;">&#9654; <!-- Strzałka w prawo --></a>
-    <a id="download-link" href="cv_en.pdf" download>&#128190; <!-- Symbol dyskietki do pobierania --></a>
-    <a href="cv-print.html">&#128424; <!-- Nowy symbol drukarki --></a>
+    <a id="download-link" href="cv_en.pdf" download><img src="download.svg" alt="Download" class="icon"></a>
+    <a href="cv-print.html"><img src="print.svg" alt="Print" class="icon"></a>
 </div>
 
 <script>

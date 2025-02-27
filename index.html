@@ -345,12 +345,20 @@
         body.dark-mode .theme-switcher:hover {
             background-color: rgba(0, 115, 230, 0.8);
         }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
 
 <!-- Przycisk przełączania motywu -->
-<button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">🌙</button>
+<button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">
+    <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
+</button>
 
 <div class="container">
     <!-- Przełącznik językowy -->
@@ -554,11 +562,13 @@
         localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
 
         // Zmiana ikonki w przycisku
-        const themeButton = document.getElementById('themeButton');
+        const themeIcon = document.getElementById('themeIcon');
         if (body.classList.contains('dark-mode')) {
-            themeButton.innerText = '☀️'; // Słoneczko dla trybu ciemnego
+            themeIcon.src = 'sun.svg'; // Słoneczko dla trybu ciemnego
+            themeIcon.alt = 'Light Mode';
         } else {
-            themeButton.innerText = '🌙'; // Księżyc dla trybu jasnego
+            themeIcon.src = 'moon.svg'; // Księżyc dla trybu jasnego
+            themeIcon.alt = 'Dark Mode';
         }
     }
 
@@ -566,9 +576,11 @@
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
     if (savedDarkMode) {
         document.body.classList.add('dark-mode');
-        document.getElementById('themeButton').innerText = '☀️'; // Słoneczko dla trybu ciemnego
+        document.getElementById('themeIcon').src = 'sun.svg';
+        document.getElementById('themeIcon').alt = 'Light Mode';
     } else {
-        document.getElementById('themeButton').innerText = '🌙'; // Księżyc dla trybu jasnego
+        document.getElementById('themeIcon').src = 'moon.svg';
+        document.getElementById('themeIcon').alt = 'Dark Mode';
     }
 </script>
 
