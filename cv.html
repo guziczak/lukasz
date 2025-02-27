@@ -132,10 +132,10 @@
         <p id="cv-title">Curriculum Vitae</p>
     </header>
 
-    <!-- Kontener na SVG -->
+    <!-- Kontener na BMP -->
     <div class="svg-viewer">
-        <img id="svg1" src="cv_1_en.svg" alt="CV Page 1">
-        <img id="svg2" src="cv_2_en.svg" alt="CV Page 2">
+        <img id="svg1" src="cv_1_en.bmp" alt="CV Page 1">
+        <img id="svg2" src="cv_2_en.bmp" alt="CV Page 2">
     </div>
 
     <!-- Kotwica na samym dole strony -->
@@ -149,8 +149,8 @@
 
 <!-- Przyciski dla wersji mobilnej -->
 <div class="mobile-buttons">
-    <a href="#" onclick="changeSvg('prev'); return false;">&#9664; <!-- Strzałka w lewo --></a>
-    <a href="#" onclick="changeSvg('next'); return false;">&#9654; <!-- Strzałka w prawo --></a>
+    <a href="#" onclick="changeSvg('prev'); return false;"><img src="left.svg" alt="Previous" class="icon"></a>
+    <a href="#" onclick="changeSvg('next'); return false;"><img src="right.svg" alt="Next" class="icon"></a>
     <a id="download-link" href="cv_en.pdf" download><img src="download.svg" alt="Download" class="icon"></a>
     <a href="cv-print.html"><img src="print.svg" alt="Print" class="icon"></a>
 </div>
@@ -181,13 +181,13 @@
         const cvTitle = document.getElementById('cv-title');
 
         if (lang === 'en') {
-            svg1.src = 'cv_1_en.svg';
-            svg2.src = 'cv_2_en.svg';
+            svg1.src = 'cv_1_en.bmp';
+            svg2.src = 'cv_2_en.bmp';
             downloadLink.setAttribute('href', 'cv_en.pdf');
             cvTitle.innerText = 'Curriculum Vitae';
         } else if (lang === 'pl') {
-            svg1.src = 'cv_1_pl.svg';
-            svg2.src = 'cv_2_pl.svg';
+            svg1.src = 'cv_1_pl.bmp';
+            svg2.src = 'cv_2_pl.bmp';
             downloadLink.setAttribute('href', 'cv_pl.pdf');
             cvTitle.innerText = 'Życiorys';
         }
@@ -210,12 +210,12 @@
         let currentSvg2 = svg2.src;
 
         if (direction === 'next') {
-            if (currentSvg1.includes('cv_1_en.svg') || currentSvg1.includes('cv_1_pl.svg')) {
+            if (currentSvg1.includes('cv_1_en.bmp') || currentSvg1.includes('cv_1_pl.bmp')) {
                 svg1.src = currentSvg1.replace('cv_1_', 'cv_2_');
                 svg2.src = currentSvg2.replace('cv_2_', 'cv_1_');
             }
         } else if (direction === 'prev') {
-            if (currentSvg1.includes('cv_2_en.svg') || currentSvg1.includes('cv_2_pl.svg')) {
+            if (currentSvg1.includes('cv_2_en.bmp') || currentSvg1.includes('cv_2_pl.bmp')) {
                 svg1.src = currentSvg1.replace('cv_2_', 'cv_1_');
                 svg2.src = currentSvg2.replace('cv_1_', 'cv_2_');
             }
