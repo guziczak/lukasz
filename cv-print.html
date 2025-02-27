@@ -94,11 +94,12 @@
 
     // Cofnięcie o jedną stronę w tył po kliknięciu lub dotknięciu dowolnego elementu na stronie
     document.addEventListener('click', function() {
-        window.history.back();
+        window.location.href = 'cv.html';
+        //window.history.back();
     });
 
     document.addEventListener('touchstart', function() {
-        window.history.back();
+        window.location.href = 'cv.html';
     });
 </script>
 
