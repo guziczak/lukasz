@@ -18,11 +18,11 @@
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding-bottom: 80px; /* Zwiększony padding na dole strony (2x większy) */
+            padding-bottom: 80px;
         }
         .language-switcher {
             text-align: right;
-            margin-bottom: 0; /* Usunięto margines na dole */
+            margin-bottom: 0;
         }
         .language-switcher img {
             width: 40px;
@@ -37,15 +37,15 @@
         }
         header {
             text-align: center;
-            padding: 0; /* Usunięto padding na górze i dole */
-            margin: 0; /* Usunięto marginesy */
+            padding: 0;
+            margin: 0;
         }
         header h1 {
-            margin: 0; /* Usunięto marginesy wokół nagłówka */
+            margin: 0;
             font-size: 2.5em;
         }
         header p {
-            margin: 0; /* Usunięto marginesy wokół podtytułu */
+            margin: 0;
             font-size: 1.2em;
             color: #777;
         }
@@ -54,13 +54,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px; /* Odstęp między SVG */
+            gap: 20px;
         }
         .svg-viewer img {
-            width: 100%; /* Szerokość SVG dostosowana do wewnętrznej szerokości strony */
-            max-width: 100%; /* Zapobiega przekraczaniu szerokości */
-            height: auto; /* Zachowanie proporcji */
-            display: block; /* Usunięcie domyślnego marginesu pod obrazem */
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
         .back-button {
             position: fixed;
@@ -72,21 +72,21 @@
             background-color: rgba(0, 115, 230, 0.8);
             color: #fff;
             border: none;
-            padding: 0; /* Usunięto padding po bokach */
-            font-size: 1.2em; /* Większa czcionka dla symboli */
+            padding: 0;
+            font-size: 1.2em;
             cursor: pointer;
             border-radius: 5px;
             text-decoration: none;
-            display: inline-flex; /* Użyj flexboxa do lepszego wyśrodkowania */
-            align-items: center; /* Wyśrodkowanie pionowe */
-            justify-content: center; /* Wyśrodkowanie poziome */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
-            height: 40px; /* Wysokość przycisków */
-            width: 40px; /* Szerokość przycisków (równa wysokości) */
-            min-width: 40px; /* Minimalna szerokość przycisków */
-            text-align: center; /* Wyśrodkowanie tekstu/symboli */
-            line-height: 40px; /* Dodane, aby tekst był wyśrodkowany pionowo */
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            text-align: center;
+            line-height: 40px;
         }
         .back-button a:hover, .mobile-buttons a:hover {
             background-color: rgba(0, 91, 181, 0.8);
@@ -100,28 +100,44 @@
         }
         .mobile-buttons a {
             margin-right: 10px;
+            animation-delay: 1s;
         }
         @media (max-width: 768px) {
             .mobile-buttons {
-                display: flex; /* Użyj flexboxa do wyśrodkowania przycisków */
-                align-items: center; /* Wyśrodkowanie pionowe */
+                display: flex;
+                align-items: center;
             }
         }
         .icon {
             width: 24px;
             height: 24px;
             vertical-align: middle;
-            filter: invert(1); /* Odwrócenie kolorów ikon na białe */
+            filter: invert(1);
         }
         .mobile-buttons a {
-            color: white; /* Strzałki < > są białe */
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse-once {
+            animation: pulse 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Przełącznik językowy -->
     <div class="language-switcher">
         <img src="uk.svg" alt="English" class="active" onclick="changeLanguage('en')">
         <img src="pl.svg" alt="Polski" onclick="changeLanguage('pl')">
@@ -132,22 +148,18 @@
         <p id="cv-title">Curriculum Vitae</p>
     </header>
 
-    <!-- Kontener na BMP -->
     <div class="svg-viewer">
-        <img id="svg1" src="cv_1_en.bmp" alt="CV Page 1">
-        <img id="svg2" src="cv_2_en.bmp" alt="CV Page 2">
+        <img id="svg1" src="cv_1_en.png" alt="CV Page 1">
+        <img id="svg2" src="cv_2_en.png" alt="CV Page 2">
     </div>
 
-    <!-- Kotwica na samym dole strony -->
     <div id="bottom-anchor" class="anchor"></div>
 </div>
 
-<!-- Subtelny przycisk powrotu do strony głównej w prawym dolnym rogu -->
 <div class="back-button">
     <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
 </div>
 
-<!-- Przyciski dla wersji mobilnej -->
 <div class="mobile-buttons">
     <a href="#" onclick="changeSvg('prev'); return false;"><img src="left.svg" alt="Previous" class="icon"></a>
     <a href="#" onclick="changeSvg('next'); return false;"><img src="right.svg" alt="Next" class="icon"></a>
@@ -156,24 +168,19 @@
 </div>
 
 <script>
-    // Sprawdź, czy istnieje zmienna sesyjna selectedLanguage w localStorage
     let currentLanguage = localStorage.getItem('selectedLanguage');
 
-    // Jeśli zmienna sesyjna nie istnieje, ustaw domyślny język na 'en'
     if (!currentLanguage) {
-        currentLanguage = 'en'; // Domyślnie 'en', jeśli nie ma zapisanego języka
-        localStorage.setItem('selectedLanguage', currentLanguage); // Zapisz domyślny język
+        currentLanguage = 'en';
+        localStorage.setItem('selectedLanguage', currentLanguage);
     }
 
-    // Funkcja do zmiany języka
     function changeLanguage(lang) {
-        // Zapisz wybrany język do localStorage
         localStorage.setItem('selectedLanguage', lang);
         currentLanguage = lang;
         updateContent(lang);
     }
 
-    // Funkcja do aktualizacji zawartości strony
     function updateContent(lang) {
         const svg1 = document.getElementById('svg1');
         const svg2 = document.getElementById('svg2');
@@ -181,28 +188,25 @@
         const cvTitle = document.getElementById('cv-title');
 
         if (lang === 'en') {
-            svg1.src = 'cv_1_en.bmp';
-            svg2.src = 'cv_2_en.bmp';
+            svg1.src = 'cv_1_en.png';
+            svg2.src = 'cv_2_en.png';
             downloadLink.setAttribute('href', 'cv_en.pdf');
             cvTitle.innerText = 'Curriculum Vitae';
         } else if (lang === 'pl') {
-            svg1.src = 'cv_1_pl.bmp';
-            svg2.src = 'cv_2_pl.bmp';
+            svg1.src = 'cv_1_pl.png';
+            svg2.src = 'cv_2_pl.png';
             downloadLink.setAttribute('href', 'cv_pl.pdf');
             cvTitle.innerText = 'Życiorys';
         }
 
-        // Zmiana aktywnych flag
         document.querySelectorAll('.language-switcher img').forEach(img => {
             img.classList.remove('active');
         });
         document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
     }
 
-    // Zastosuj zapisany język przy ładowaniu strony
     updateContent(currentLanguage);
 
-    // Funkcja do zmiany SVG (np. między stronami)
     function changeSvg(direction) {
         const svg1 = document.getElementById('svg1');
         const svg2 = document.getElementById('svg2');
@@ -210,17 +214,24 @@
         let currentSvg2 = svg2.src;
 
         if (direction === 'next') {
-            if (currentSvg1.includes('cv_1_en.bmp') || currentSvg1.includes('cv_1_pl.bmp')) {
+            if (currentSvg1.includes('cv_1_en.png') || currentSvg1.includes('cv_1_pl.png')) {
                 svg1.src = currentSvg1.replace('cv_1_', 'cv_2_');
                 svg2.src = currentSvg2.replace('cv_2_', 'cv_1_');
             }
         } else if (direction === 'prev') {
-            if (currentSvg1.includes('cv_2_en.bmp') || currentSvg1.includes('cv_2_pl.bmp')) {
+            if (currentSvg1.includes('cv_2_en.png') || currentSvg1.includes('cv_2_pl.png')) {
                 svg1.src = currentSvg1.replace('cv_2_', 'cv_1_');
                 svg2.src = currentSvg2.replace('cv_1_', 'cv_2_');
             }
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.mobile-buttons a');
+        buttons.forEach(button => {
+            button.classList.add('pulse-once');
+        });
+    });
 </script>
 
 </body>
