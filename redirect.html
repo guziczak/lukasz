@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Przekierowanie</title>
+    <script>
+        // Funkcja do otwarcia zewnętrznej przeglądarki
+        function openExternalBrowser() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isAndroid = userAgent.includes('android');
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+
+            // Link docelowy
+            const targetUrl = 'https://guziczak.github.io/lukasz/cv-print.html';
+
+            if (isAndroid) {
+                // Schemat URL dla Android (intent://)
+                window.location.href = `intent://${targetUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+            } else if (isIOS) {
+                // Uniwersalny link dla iOS
+                window.location.href = targetUrl;
+            } else {
+                // Dla innych urządzeń otwórz w nowej karcie
+                window.open(targetUrl, '_blank');
+            }
+        }
+
+        // Wywołaj funkcję po załadowaniu strony
+        openExternalBrowser();
+    </script>
+</head>
+<body>
+    <p>Przekierowywanie do cv-print.html...</p>
+</body>
+</html>
