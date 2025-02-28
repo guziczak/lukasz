@@ -12,6 +12,12 @@
             background-color: #f4f4f4;
             color: #333;
             overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
         }
 
         .container {
@@ -24,14 +30,36 @@
             position: relative;
             height: 100vh;
             overflow: hidden;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            background-color: rgba(0, 115, 230, 0.8);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 10; /* Nagłówek na wierzchu, ale poniżej przycisków */
+        }
+
+        body.dark-mode header {
+            background-color: rgba(0, 91, 181, 0.8);
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
         }
 
         h1 {
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 2;
-            background: white;
-            padding: 10px;
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: bold;
         }
 
         .certificates-container {
@@ -60,89 +88,267 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
+        /* Przycisk cofnięcia wstecz */
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000; /* Wysoki z-index, aby był na wierzchu */
+        }
+
+        .back-button a {
+            background-color: rgba(0, 115, 230, 0.8);
+            color: #fff;
+            border: none;
+            padding: 0;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .back-button a:hover {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        /* Przycisk przełączania motywu */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1010; /* Wyższy niż nagłówek */
+            background-color: rgba(0, 115, 230, 0.8);
+            color: #fff;
+            border: none;
+            padding: 0;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .theme-switcher:hover {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        body.dark-mode .theme-switcher {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        body.dark-mode .theme-switcher:hover {
+            background-color: rgba(0, 115, 230, 0.8);
+        }
+
+        /* Przełącznik języka */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1010; /* Wyższy niż nagłówek */
+            text-align: right;
+            margin-bottom: 0;
+        }
+
+        .language-switcher img {
+            width: 40px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .language-switcher img.active {
+            opacity: 1;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            filter: invert(1);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>My Certificates</h1>
-        <div class="certificates-container" id="certificates-container">
-            <!-- Certyfikaty dodane dynamicznie w JS -->
-        </div>
+
+<!-- Przycisk przełączania motywu -->
+<button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">
+    <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
+</button>
+
+<!-- Przełącznik języka -->
+<div class="language-switcher">
+    <img src="uk.svg" alt="English" class="active" onclick="changeLanguage('en')">
+    <img src="pl.svg" alt="Polski" onclick="changeLanguage('pl')">
+</div>
+
+<div class="container">
+    <header>
+        <h1 id="header-title">My Certificates</h1>
+    </header>
+
+    <div class="certificates-container" id="certificates-container">
+        <!-- Certyfikaty dodane dynamicznie w JS -->
     </div>
+</div>
 
-    <script>
-        const certificates = [
-            'c1.pdf', 'c2.pdf', 'c3.pdf',
-            'c4.pdf', 'c5.pdf', 'c6.pdf',
-            'c7.pdf', 'c8.pdf', 'c9.pdf',
-            'c10.pdf', 'c11.pdf', 'c12.pdf'
-        ];
-        const certsPath = 'resources/certs/';
-        const certificatesContainer = document.getElementById('certificates-container');
+<!-- Przycisk cofnięcia wstecz -->
+<div class="back-button">
+    <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
+</div>
 
-        function generateCertificateRows(certificates) {
-            let rows = [];
-            for (let i = 0; i < certificates.length; i += 3) {
-                const row = document.createElement('div');
-                row.className = 'certificate-row';
+<script>
+    const certificates = [
+        'c1.pdf', 'c2.pdf', 'c3.pdf',
+        'c4.pdf', 'c5.pdf', 'c6.pdf',
+        'c7.pdf', 'c8.pdf', 'c9.pdf',
+        'c10.pdf', 'c11.pdf', 'c12.pdf'
+    ];
+    const certsPath = 'resources/certs/';
+    const certificatesContainer = document.getElementById('certificates-container');
 
-                certificates.slice(i, i + 3).forEach(cert => {
-                    const embed = document.createElement('embed');
-                    embed.src = `${certsPath}${cert}`;
-                    embed.type = 'application/pdf';
-                    embed.className = 'certificate';
+    function generateCertificateRows(certificates) {
+        let rows = [];
+        for (let i = 0; i < certificates.length; i += 3) {
+            const row = document.createElement('div');
+            row.className = 'certificate-row';
 
-                    embed.onerror = () => {
-                        embed.style.display = 'none';
-                    };
+            certificates.slice(i, i + 3).forEach(cert => {
+                const embed = document.createElement('embed');
+                embed.src = `${certsPath}${cert}`;
+                embed.type = 'application/pdf';
+                embed.className = 'certificate';
 
-                    row.appendChild(embed);
-                });
-                rows.push(row);
-            }
-            return rows;
+                embed.onerror = () => {
+                    embed.style.display = 'none';
+                };
+
+                row.appendChild(embed);
+            });
+            rows.push(row);
         }
+        return rows;
+    }
 
-        const certificateRows = generateCertificateRows(certificates);
-        certificateRows.forEach(row => certificatesContainer.appendChild(row.cloneNode(true)));
+    const certificateRows = generateCertificateRows(certificates);
+    certificateRows.forEach(row => certificatesContainer.appendChild(row.cloneNode(true)));
 
-        function animateCertificates() {
-            let startPosition = window.innerHeight;
-            certificatesContainer.style.top = `${startPosition}px`;
-            
-            function slideIn() {
-                let currentPosition = parseInt(certificatesContainer.style.top, 10);
-                if (currentPosition > 0) {
-                    certificatesContainer.style.top = `${currentPosition - 2}px`;
-                    requestAnimationFrame(slideIn);
-                } else {
-                    startScrolling();
-                }
+    function animateCertificates() {
+        let startPosition = window.innerHeight;
+        certificatesContainer.style.top = `${startPosition}px`;
+        
+        function slideIn() {
+            let currentPosition = parseInt(certificatesContainer.style.top, 10);
+            if (currentPosition > 0) {
+                certificatesContainer.style.top = `${currentPosition - 2}px`;
+                requestAnimationFrame(slideIn);
+            } else {
+                startScrolling();
             }
-            requestAnimationFrame(slideIn);
         }
+        requestAnimationFrame(slideIn);
+    }
 
-        function startScrolling() {
-            let topPosition = 0;
-            const scrollSpeed = 1;
+    function startScrolling() {
+        let topPosition = 0;
+        const scrollSpeed = 1;
+        
+        function scrollLoop() {
+            topPosition -= scrollSpeed;
+            const firstRow = certificatesContainer.firstElementChild;
+            const rowHeight = firstRow.offsetHeight + 20;
             
-            function scrollLoop() {
-                topPosition -= scrollSpeed;
-                const firstRow = certificatesContainer.firstElementChild;
-                const rowHeight = firstRow.offsetHeight + 20;
-                
-                if (topPosition <= -rowHeight) {
-                    certificatesContainer.appendChild(firstRow);
-                    topPosition += rowHeight;
-                }
-                
-                certificatesContainer.style.transform = `translateY(${topPosition}px)`;
-                requestAnimationFrame(scrollLoop);
+            if (topPosition <= -rowHeight) {
+                certificatesContainer.appendChild(firstRow);
+                topPosition += rowHeight;
             }
+            
+            certificatesContainer.style.transform = `translateY(${topPosition}px)`;
             requestAnimationFrame(scrollLoop);
         }
+        requestAnimationFrame(scrollLoop);
+    }
 
-        animateCertificates();
-    </script>
+    animateCertificates();
+
+    // Funkcja do przełączania motywu ciemnego
+    function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+
+        // Zmiana ikonki w przycisku
+        const themeIcon = document.getElementById('themeIcon');
+        if (body.classList.contains('dark-mode')) {
+            themeIcon.src = 'sun.svg'; // Słoneczko dla trybu ciemnego
+            themeIcon.alt = 'Light Mode';
+        } else {
+            themeIcon.src = 'moon.svg'; // Księżyc dla trybu jasnego
+            themeIcon.alt = 'Dark Mode';
+        }
+    }
+
+    // Sprawdź, czy użytkownik ma zapisany preferowany motyw
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (savedDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeIcon').src = 'sun.svg';
+        document.getElementById('themeIcon').alt = 'Light Mode';
+    } else {
+        document.getElementById('themeIcon').src = 'moon.svg';
+        document.getElementById('themeIcon').alt = 'Dark Mode';
+    }
+
+    // Przełącznik języka
+    let currentLanguage = localStorage.getItem('selectedLanguage');
+
+    if (!currentLanguage) {
+        currentLanguage = 'en';
+        localStorage.setItem('selectedLanguage', currentLanguage);
+    }
+
+    function changeLanguage(lang) {
+        localStorage.setItem('selectedLanguage', lang);
+        currentLanguage = lang;
+        updateContent(lang);
+    }
+
+    function updateContent(lang) {
+        const headerTitle = document.getElementById('header-title');
+        if (lang === 'en') {
+            headerTitle.innerText = 'My Certificates';
+        } else if (lang === 'pl') {
+            headerTitle.innerText = 'Moje Certyfikaty';
+        }
+
+        document.querySelectorAll('.language-switcher img').forEach(img => {
+            img.classList.remove('active');
+        });
+        document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
+    }
+
+    updateContent(currentLanguage);
+</script>
 </body>
 </html>
