@@ -11,7 +11,9 @@
             padding: 0;
             background-color: #f4f4f4;
             color: #333;
+            overflow: hidden;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -19,67 +21,123 @@
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
         }
+
         h1 {
             margin-bottom: 20px;
-        }
-        .construction-message {
-            font-size: 1.5em;
-            color: #777;
-        }
-
-        /* Przycisk "Cofnij wstecz" */
-        .back-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 10px;
         }
 
-        .back-button a {
-            background-color: rgba(0, 115, 230, 0.8);
-            color: #fff;
-            border: none;
-            padding: 0;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-flex;
+        .certificates-container {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            top: 100%; /* Start below the viewport */
+        }
+
+        .certificate-row {
+            display: flex;
             justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-            height: 40px;
-            width: 40px;
-            min-width: 40px;
-            text-align: center;
-            line-height: 40px;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
         }
 
-        .back-button a:hover {
-            background-color: rgba(0, 91, 181, 0.8);
-        }
-
-        .icon {
-            width: 24px;
-            height: 24px;
-            vertical-align: middle;
-            filter: invert(1);
+        .certificate {
+            width: 30%;
+            max-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 50 / 70;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>My Certificates</h1>
-        <div class="construction-message">
-            🚧 This page is under construction. Please check back later! 🚧
+        <div class="certificates-container" id="certificates-container">
+            <!-- Certyfikaty dodane dynamicznie w JS -->
         </div>
     </div>
 
-    <!-- Przycisk "Cofnij wstecz" -->
-    <div class="back-button">
-        <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
-    </div>
+    <script>
+        const certificates = [
+            'c1.png', 'c2.png', 'c3.png',
+            'c4.png', 'c5.png', 'c6.png',
+            'c7.png', 'c8.png', 'c9.png',
+            'c10.png', 'c11.png', 'c12.png'
+        ];
+        const certsPath = 'resources/certs/';
+        const certificatesContainer = document.getElementById('certificates-container');
+
+        function generateCertificateRows(certificates) {
+            let rows = [];
+            for (let i = 0; i < certificates.length; i += 3) {
+                const row = document.createElement('div');
+                row.className = 'certificate-row';
+
+                certificates.slice(i, i + 3).forEach(cert => {
+                    const img = document.createElement('img');
+                    img.src = `${certsPath}${cert}`;
+                    img.alt = `Certificate ${cert}`;
+                    img.className = 'certificate';
+                    row.appendChild(img);
+                });
+                rows.push(row);
+            }
+            return rows;
+        }
+
+        const certificateRows = generateCertificateRows(certificates);
+        certificateRows.forEach(row => certificatesContainer.appendChild(row.cloneNode(true)));
+
+        function animateCertificates() {
+            let startPosition = window.innerHeight;
+            certificatesContainer.style.top = `${startPosition}px`;
+            
+            function slideIn() {
+                let currentPosition = parseInt(certificatesContainer.style.top, 10);
+                if (currentPosition > 0) {
+                    certificatesContainer.style.top = `${currentPosition - 2}px`;
+                    requestAnimationFrame(slideIn);
+                } else {
+                    startScrolling();
+                }
+            }
+            requestAnimationFrame(slideIn);
+        }
+
+        function startScrolling() {
+            let topPosition = 0;
+            const scrollSpeed = 1;
+            
+            function scrollLoop() {
+                topPosition -= scrollSpeed;
+                const firstRow = certificatesContainer.firstElementChild;
+                const rowHeight = firstRow.offsetHeight + 20;
+                
+                if (topPosition <= -rowHeight) {
+                    certificatesContainer.appendChild(firstRow);
+                    topPosition += rowHeight;
+                }
+                
+                certificatesContainer.style.transform = `translateY(${topPosition}px)`;
+                requestAnimationFrame(scrollLoop);
+            }
+            requestAnimationFrame(scrollLoop);
+        }
+
+        animateCertificates();
+    </script>
 </body>
 </html>
