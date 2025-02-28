@@ -15,7 +15,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0; /* Usunięto padding */
+            padding: 0;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -24,20 +24,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0px; /* Przywrócono odstęp między SVG */
+            gap: 0px;
         }
         .svg-viewer img {
-            width: 95%; /* Szerokość SVG dostosowana do wewnętrznej szerokości strony */
-            max-width: 100%; /* Zapobiega przekraczaniu szerokości */
-            height: auto; /* Zachowanie proporcji */
-            display: block; /* Usunięcie domyślnego marginesu pod obrazem */
+            width: 95%;
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
-        /* Dodane style do kontroli podziału strony podczas drukowania */
         @media print {
             body {
                 visibility: hidden;
-            margin: 0;
+                margin: 0;
                 padding: 0;
             }
             .svg-viewer {
@@ -55,33 +54,27 @@
 <body>
 
 <div class="container">
-    <!-- Kontener na BMP -->
     <div class="svg-viewer">
         <img id="svg1" src="cv_1_en.png" alt="CV Page 1">
-        <div class="page-break"></div> <!-- Dodany element do wymuszenia podziału strony -->
+        <div class="page-break"></div>
         <img id="svg2" src="cv_2_en.png" alt="CV Page 2">
     </div>
 </div>
 
 <script>
-    // Sprawdź, czy istnieje zmienna sesyjna selectedLanguage w localStorage
     let currentLanguage = localStorage.getItem('selectedLanguage');
 
-    // Jeśli zmienna sesyjna nie istnieje, ustaw domyślny język na 'en'
     if (!currentLanguage) {
-        currentLanguage = 'en'; // Domyślnie 'en', jeśli nie ma zapisanego języka
-        localStorage.setItem('selectedLanguage', currentLanguage); // Zapisz domyślny język
+        currentLanguage = 'en';
+        localStorage.setItem('selectedLanguage', currentLanguage);
     }
 
-    // Funkcja do zmiany języka
     function changeLanguage(lang) {
-        // Zapisz wybrany język do localStorage
         localStorage.setItem('selectedLanguage', lang);
         currentLanguage = lang;
         updateContent(lang);
     }
 
-    // Funkcja do aktualizacji zawartości strony
     function updateContent(lang) {
         const svg1 = document.getElementById('svg1');
         const svg2 = document.getElementById('svg2');
@@ -95,17 +88,15 @@
         }
     }
 
-    // Zastosuj zapisany język przy ładowaniu strony
     updateContent(currentLanguage);
 
-    // Automatyczne wywołanie okna drukowania po załadowaniu strony
     window.onload = function() {
         setTimeout(function() {
+            console.log("Wywołanie okna drukowania...");
             window.print();
-        }, 1000); // Opóźnienie 1 sekundy
+        }, 1000);
     };
 
-    // Cofnięcie o jedną stronę w tył po kliknięciu lub dotknięciu dowolnego elementu na stronie
     document.addEventListener('click', function() {
         window.location.href = 'cv.html';
     });
