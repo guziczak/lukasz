@@ -215,7 +215,7 @@
             opacity: 1;
         }
 
-        .cv-link {
+        .cv-link, #certificates-link {
             color: #0073e6;
             text-decoration: none;
             font-weight: bold;
@@ -224,12 +224,12 @@
             transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        .cv-link:hover {
+        .cv-link:hover, #certificates-link:hover {
             color: #005bb5;
             transform: scale(1.1);
         }
 
-        .cv-link::after {
+        .cv-link::after, #certificates-link::after {
             content: '';
             position: absolute;
             width: 100%;
@@ -242,17 +242,17 @@
             transition: transform 0.3s ease;
         }
 
-        .cv-link:hover::after {
+        .cv-link:hover::after, #certificates-link:hover::after {
             transform: scaleX(1);
             transform-origin: bottom left;
         }
 
-        .cv-link.hover-effect {
+        .cv-link.hover-effect, #certificates-link.hover-effect {
             color: #005bb5;
             transform: scale(1.1);
         }
 
-        .cv-link.hover-effect::after {
+        .cv-link.hover-effect::after, #certificates-link.hover-effect::after {
             transform: scaleX(1);
             transform-origin: bottom left;
         }
@@ -390,7 +390,8 @@
         <p>
             <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
             <a href="https://github.com/guziczak" target="_blank">GitHub</a> |
-            <a href="#" id="cv-link" class="cv-link">View my CV</a> <!-- Zmieniono href na "#" -->
+            <a href="#" id="cv-link" class="cv-link">View my CV</a> |
+            <a href="certificates.html" id="certificates-link" class="cv-link">View my Certificates</a> <!-- Dodany link do certyfikatów -->
         </p>
     </div>
 
@@ -460,6 +461,7 @@
                     'phone': '<a href="tel:+48693069832">+48 693 069 832</a> | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
                     'location': 'Wrocław, Poland',
                     'cv-link': 'View my CV',
+                    'certificates-link': 'View my Certificates', // Dodany tekst dla języka angielskiego
                     'skills-title': 'Skills',
                     'skills-list': [
                         'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
@@ -484,6 +486,7 @@
                     'phone': '<a href="tel:+48693069832">+48 693 069 832</a> | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
                     'location': 'Wrocław, Polska',
                     'cv-link': 'Zobacz moje CV',
+                    'certificates-link': 'Zobacz moje Certyfikaty', // Dodany tekst dla języka polskiego
                     'skills-title': 'Umiejętności',
                     'skills-list': [
                         'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
@@ -510,6 +513,7 @@
             document.getElementById('phone').innerHTML = elements[lang]['phone'];
             document.getElementById('location').innerText = elements[lang]['location'];
             document.getElementById('cv-link').innerText = elements[lang]['cv-link'];
+            document.getElementById('certificates-link').innerText = elements[lang]['certificates-link']; // Aktualizacja tekstu dla certyfikatów
             document.getElementById('skills-title').innerText = elements[lang]['skills-title'];
             document.getElementById('skills-list').innerHTML = elements[lang]['skills-list'].map(item => `<li>${item}</li>`).join('');
             document.getElementById('achievements-title').innerText = elements[lang]['achievements-title'];

@@ -11,7 +11,14 @@
             padding: 0;
             background-color: #f4f4f4;
             color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -20,12 +27,20 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding-bottom: 80px;
             position: relative;
-            z-index: 1; /* Upewnij się, że kontener nie zasłania przycisków */
+            z-index: 1;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
+
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
         .language-switcher {
             text-align: right;
             margin-bottom: 0;
         }
+
         .language-switcher img {
             width: 40px;
             height: 30px;
@@ -34,23 +49,28 @@
             opacity: 0.5;
             transition: opacity 0.3s ease;
         }
+
         .language-switcher img.active {
             opacity: 1;
         }
+
         header {
             text-align: center;
             padding: 0;
             margin: 0;
         }
+
         header h1 {
             margin: 0;
             font-size: 2.5em;
         }
+
         header p {
             margin: 0;
             font-size: 1.2em;
             color: #777;
         }
+
         .svg-viewer {
             width: 100%;
             display: flex;
@@ -58,18 +78,46 @@
             align-items: center;
             gap: 20px;
         }
+
         .svg-viewer img {
             width: 100%;
             max-width: 100%;
             height: auto;
             display: block;
         }
+
+        .pdf-viewer {
+            display: none;
+            width: 100%;
+            height: 80vh;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .svg-viewer {
+                display: flex;
+            }
+            .pdf-viewer {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .svg-viewer {
+                display: none;
+            }
+            .pdf-viewer {
+                display: block;
+            }
+        }
+
         .back-button {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            z-index: 1000; /* Przycisk na wierzchu */
+            z-index: 1000;
         }
+
         .back-button a, .mobile-buttons a {
             background-color: rgba(0, 115, 230, 0.8);
             color: #fff;
@@ -90,31 +138,37 @@
             text-align: center;
             line-height: 40px;
         }
+
         .back-button a:hover, .mobile-buttons a:hover {
             background-color: rgba(0, 91, 181, 0.8);
         }
+
         .mobile-buttons {
             display: none;
             position: fixed;
             bottom: 20px;
             left: 20px;
-            z-index: 1000; /* Przyciski na wierzchu */
+            z-index: 1000;
         }
+
         .mobile-buttons a {
             margin-right: 10px;
         }
+
         @media (max-width: 768px) {
             .mobile-buttons {
                 display: flex;
                 align-items: center;
             }
         }
+
         .icon {
             width: 24px;
             height: 24px;
             vertical-align: middle;
             filter: invert(1);
         }
+
         .mobile-buttons a {
             color: white;
         }
@@ -134,9 +188,51 @@
         .pulse-once {
             animation: pulse 0.5s ease-in-out;
         }
+
+        /* Przycisk przełączania motywu */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: rgba(0, 115, 230, 0.8);
+            color: #fff;
+            border: none;
+            padding: 0;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .theme-switcher:hover {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        body.dark-mode .theme-switcher {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        body.dark-mode .theme-switcher:hover {
+            background-color: rgba(0, 115, 230, 0.8);
+        }
     </style>
 </head>
 <body>
+
+<!-- Przycisk przełączania motywu -->
+<button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">
+    <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
+</button>
 
 <div class="container">
     <div class="language-switcher">
@@ -149,9 +245,15 @@
         <p id="cv-title">Curriculum Vitae</p>
     </header>
 
+    <!-- Sekcja dla wersji mobilnej (PNG) -->
     <div class="svg-viewer">
         <img id="svg1" src="cv_1_en.png" alt="CV Page 1">
         <img id="svg2" src="cv_2_en.png" alt="CV Page 2">
+    </div>
+
+    <!-- Sekcja dla wersji desktopowej (PDF) -->
+    <div class="pdf-viewer">
+        <iframe id="pdf-iframe" src="cv_en.pdf" width="100%" height="100%"></iframe>
     </div>
 
     <div id="bottom-anchor" class="anchor"></div>
@@ -185,18 +287,21 @@
     function updateContent(lang) {
         const svg1 = document.getElementById('svg1');
         const svg2 = document.getElementById('svg2');
+        const pdfIframe = document.getElementById('pdf-iframe');
         const downloadLink = document.getElementById('download-link');
         const cvTitle = document.getElementById('cv-title');
 
         if (lang === 'en') {
             svg1.src = 'cv_1_en.png';
             svg2.src = 'cv_2_en.png';
+            pdfIframe.src = 'cv_en.pdf';
             downloadLink.setAttribute('href', 'cv_en.pdf');
             downloadLink.setAttribute('download', 'cv_en.pdf');
             cvTitle.innerText = 'Curriculum Vitae';
         } else if (lang === 'pl') {
             svg1.src = 'cv_1_pl.png';
             svg2.src = 'cv_2_pl.png';
+            pdfIframe.src = 'cv_pl.pdf';
             downloadLink.setAttribute('href', 'cv_pl.pdf');
             downloadLink.setAttribute('download', 'cv_pl.pdf');
             cvTitle.innerText = 'Życiorys';
@@ -252,6 +357,34 @@
             });
         }, 1000);
     });
+
+    // Funkcja do przełączania motywu ciemnego
+    function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+
+        // Zmiana ikonki w przycisku
+        const themeIcon = document.getElementById('themeIcon');
+        if (body.classList.contains('dark-mode')) {
+            themeIcon.src = 'sun.svg'; // Słoneczko dla trybu ciemnego
+            themeIcon.alt = 'Light Mode';
+        } else {
+            themeIcon.src = 'moon.svg'; // Księżyc dla trybu jasnego
+            themeIcon.alt = 'Dark Mode';
+        }
+    }
+
+    // Sprawdź, czy użytkownik ma zapisany preferowany motyw
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (savedDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeIcon').src = 'sun.svg';
+        document.getElementById('themeIcon').alt = 'Light Mode';
+    } else {
+        document.getElementById('themeIcon').src = 'moon.svg';
+        document.getElementById('themeIcon').alt = 'Dark Mode';
+    }
 </script>
 
 </body>
