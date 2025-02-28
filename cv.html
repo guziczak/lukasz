@@ -169,7 +169,13 @@
 </div>
 
 <script>
-    // Zresetuj stan JavaScript po załadowaniu strony
+    // Rozwiązanie 1: Wymuś przeładowanie strony po powrocie
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('forceReload')) {
+        window.location.reload(true);
+    }
+
+    // Rozwiązanie 2: Zresetuj stan JavaScript po załadowaniu strony
     document.addEventListener('DOMContentLoaded', function() {
         localStorage.removeItem('selectedLanguage'); // Resetuj wybrany język
         updateContent('en'); // Przywróć domyślny język
@@ -178,22 +184,22 @@
         const buttons = document.querySelectorAll('.mobile-buttons a, .back-button a');
         buttons.forEach(button => {
             button.classList.add('pulse-once');
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-                // Dodaj odpowiednie akcje dla każdego przycisku
-                if (button.getAttribute('href') === '#') {
-                    const direction = button.querySelector('img').alt.toLowerCase();
-                    changeSvg(direction);
-                } else if (button.id === 'download-link') {
-                    window.location.href = button.getAttribute('href');
-                } else if (button.getAttribute('href') === 'redirect.html') {
-                    window.open(button.getAttribute('href'), '_blank');
-                } else {
-                    window.location.href = button.getAttribute('href');
-                }
-            });
         });
+
+        // Rozwiązanie 6: Resetuj stan historii przeglądarki
+        history.replaceState({}, document.title, window.location.pathname);
     });
+
+    // Rozwiązanie 3: Wymuś przeładowanie strony przez window.location
+    function forceReload() {
+        window.location.href = 'index.html';
+        window.location.reload(true);
+    }
+
+    // Rozwiązanie 4: Zapobieganie cache'owaniu strony
+    function preventCache() {
+        window.location.href = 'index.html?nocache=' + Date.now();
+    }
 
     // Reszta skryptu pozostaje bez zmian
     let currentLanguage = localStorage.getItem('selectedLanguage');
@@ -251,43 +257,6 @@
             }
         }
     }
-
-    // Rozwiązanie 5: Sprawdzenie stanu strony przed interakcją
-    function isPageReady() {
-        return document.readyState === 'complete';
-    }
-
-    function waitForPageReady(callback) {
-        if (isPageReady()) {
-            callback();
-        } else {
-            setTimeout(function() {
-                waitForPageReady(callback);
-            }, 100);
-        }
-    }
-
-    waitForPageReady(function() {
-        // Dodaj event listeners do przycisków
-        const buttons = document.querySelectorAll('.mobile-buttons a, .back-button a');
-        buttons.forEach(button => {
-            button.classList.add('pulse-once');
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-                // Dodaj odpowiednie akcje dla każdego przycisku
-                if (button.getAttribute('href') === '#') {
-                    const direction = button.querySelector('img').alt.toLowerCase();
-                    changeSvg(direction);
-                } else if (button.id === 'download-link') {
-                    window.location.href = button.getAttribute('href');
-                } else if (button.getAttribute('href') === 'redirect.html') {
-                    window.open(button.getAttribute('href'), '_blank');
-                } else {
-                    window.location.href = button.getAttribute('href');
-                }
-            });
-        });
-    });
 </script>
 
 </body>
