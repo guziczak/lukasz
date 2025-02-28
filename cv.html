@@ -158,7 +158,7 @@
 </div>
 
 <div class="back-button">
-    <a href="index.html?forceReload=true"><img src="return.svg" alt="Return" class="icon"></a>
+    <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
 </div>
 
 <div class="mobile-buttons">
@@ -169,39 +169,6 @@
 </div>
 
 <script>
-    // Rozwiązanie 1: Wymuś przeładowanie strony po powrocie
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('forceReload')) {
-        window.location.reload(true);
-    }
-
-    // Rozwiązanie 2: Zresetuj stan JavaScript po załadowaniu strony
-    document.addEventListener('DOMContentLoaded', function() {
-        localStorage.removeItem('selectedLanguage'); // Resetuj wybrany język
-        updateContent('en'); // Przywróć domyślny język
-
-        // Ponownie dodaj event listeners do przycisków
-        const buttons = document.querySelectorAll('.mobile-buttons a, .back-button a');
-        buttons.forEach(button => {
-            button.classList.add('pulse-once');
-        });
-
-        // Rozwiązanie 6: Resetuj stan historii przeglądarki
-        history.replaceState({}, document.title, window.location.pathname);
-    });
-
-    // Rozwiązanie 3: Wymuś przeładowanie strony przez window.location
-    function forceReload() {
-        window.location.href = 'index.html';
-        window.location.reload(true);
-    }
-
-    // Rozwiązanie 4: Zapobieganie cache'owaniu strony
-    function preventCache() {
-        window.location.href = 'index.html?nocache=' + Date.now();
-    }
-
-    // Reszta skryptu pozostaje bez zmian
     let currentLanguage = localStorage.getItem('selectedLanguage');
 
     if (!currentLanguage) {
