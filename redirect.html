@@ -12,7 +12,7 @@
             const isIOS = /iphone|ipad|ipod/.test(userAgent);
 
             // Link docelowy
-            const targetUrl = 'guziczak.github.io/lukasz/cv-print';
+            const targetUrl = 'https://guziczak.github.io/lukasz/cv-print.html';
 
             if (isAndroid) {
                 // Schemat URL dla Android (intent://)
@@ -28,8 +28,7 @@
                 window.location.href = targetUrl;
             } else {
                 // Dla innych urządzeń otwórz w nowej karcie
-                //window.open(targetUrl, '_blank');
-		window.location.href = targetUrl;
+                window.open(targetUrl, '_blank');
             }
         }
 

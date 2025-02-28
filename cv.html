@@ -206,6 +206,8 @@
         document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
     }
 
+    updateContent(currentLanguage);
+
     function changeSvg(direction) {
         const svg1 = document.getElementById('svg1');
         const svg2 = document.getElementById('svg2');
@@ -224,6 +226,15 @@
             }
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const buttons = document.querySelectorAll('.mobile-buttons a, .back-button a');
+            buttons.forEach(button => {
+                button.classList.add('pulse-once');
+            });
+        }, 1000);
+    });
 </script>
 
 </body>
