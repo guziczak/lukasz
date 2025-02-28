@@ -55,10 +55,10 @@
         .certificate {
             width: 30%;
             max-width: 300px;
+            height: 400px;
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            aspect-ratio: 50 / 70;
         }
     </style>
 </head>
@@ -72,10 +72,10 @@
 
     <script>
         const certificates = [
-            'c1.png', 'c2.png', 'c3.png',
-            'c4.png', 'c5.png', 'c6.png',
-            'c7.png', 'c8.png', 'c9.png',
-            'c10.png', 'c11.png', 'c12.png'
+            'c1.pdf', 'c2.pdf', 'c3.pdf',
+            'c4.pdf', 'c5.pdf', 'c6.pdf',
+            'c7.pdf', 'c8.pdf', 'c9.pdf',
+            'c10.pdf', 'c11.pdf', 'c12.pdf'
         ];
         const certsPath = 'resources/certs/';
         const certificatesContainer = document.getElementById('certificates-container');
@@ -87,11 +87,16 @@
                 row.className = 'certificate-row';
 
                 certificates.slice(i, i + 3).forEach(cert => {
-                    const img = document.createElement('img');
-                    img.src = `${certsPath}${cert}`;
-                    img.alt = `Certificate ${cert}`;
-                    img.className = 'certificate';
-                    row.appendChild(img);
+                    const embed = document.createElement('embed');
+                    embed.src = `${certsPath}${cert}`;
+                    embed.type = 'application/pdf';
+                    embed.className = 'certificate';
+
+                    embed.onerror = () => {
+                        embed.style.display = 'none';
+                    };
+
+                    row.appendChild(embed);
                 });
                 rows.push(row);
             }
