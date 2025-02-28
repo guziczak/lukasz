@@ -164,7 +164,7 @@
 <div class="mobile-buttons">
     <a href="#" onclick="changeSvg('prev'); return false;"><img src="left.svg" alt="Previous" class="icon"></a>
     <a href="#" onclick="changeSvg('next'); return false;"><img src="right.svg" alt="Next" class="icon"></a>
-    <a id="download-link" href="cv_en.pdf" download><img src="download.svg" alt="Download" class="icon"></a>
+    <a id="download-link" href="cv_en.pdf" download="cv_en.pdf"><img src="download.svg" alt="Download" class="icon"></a>
     <a href="redirect.html" target="_blank"><img src="print.svg" alt="Print" class="icon"></a>
 </div>
 
@@ -192,11 +192,13 @@
             svg1.src = 'cv_1_en.png';
             svg2.src = 'cv_2_en.png';
             downloadLink.setAttribute('href', 'cv_en.pdf');
+            downloadLink.setAttribute('download', 'cv_en.pdf');
             cvTitle.innerText = 'Curriculum Vitae';
         } else if (lang === 'pl') {
             svg1.src = 'cv_1_pl.png';
             svg2.src = 'cv_2_pl.png';
             downloadLink.setAttribute('href', 'cv_pl.pdf');
+            downloadLink.setAttribute('download', 'cv_pl.pdf');
             cvTitle.innerText = 'Życiorys';
         }
 
@@ -226,6 +228,21 @@
             }
         }
     }
+
+    // Obsługa pobierania pliku PDF
+    document.getElementById('download-link').addEventListener('click', function(event) {
+        event.preventDefault(); // Zapobiega domyślnej akcji linku
+        const link = this.href;
+        const fileName = this.getAttribute('download') || 'cv_en.pdf';
+        
+        // Tworzy tymczasowy element <a> do pobrania pliku
+        const tempLink = document.createElement('a');
+        tempLink.href = link;
+        tempLink.download = fileName;
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
