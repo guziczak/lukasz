@@ -59,12 +59,6 @@
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: auto;
-        }
-
-        .pdf-canvas {
-            width: 100%;
-            height: 100%;
         }
     </style>
 </head>
@@ -76,8 +70,6 @@
         </div>
     </div>
 
-    <!-- Dodaj bibliotekę PDF.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script>
         const certificates = [
             'c1.pdf', 'c2.pdf', 'c3.pdf',
@@ -88,26 +80,6 @@
         const certsPath = 'resources/certs/';
         const certificatesContainer = document.getElementById('certificates-container');
 
-        async function renderPDF(cert, container) {
-            const pdf = await pdfjsLib.getDocument(`${certsPath}${cert}`).promise;
-            const page = await pdf.getPage(1); // Renderuj tylko pierwszą stronę
-
-            const viewport = page.getViewport({ scale: 1.0 });
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            canvas.className = 'pdf-canvas';
-
-            const renderContext = {
-                canvasContext: context,
-                viewport: viewport
-            };
-
-            await page.render(renderContext).promise;
-            container.appendChild(canvas);
-        }
-
         function generateCertificateRows(certificates) {
             let rows = [];
             for (let i = 0; i < certificates.length; i += 3) {
@@ -115,10 +87,16 @@
                 row.className = 'certificate-row';
 
                 certificates.slice(i, i + 3).forEach(cert => {
-                    const certContainer = document.createElement('div');
-                    certContainer.className = 'certificate';
-                    renderPDF(cert, certContainer);
-                    row.appendChild(certContainer);
+                    const embed = document.createElement('embed');
+                    embed.src = `${certsPath}${cert}`;
+                    embed.type = 'application/pdf';
+                    embed.className = 'certificate';
+
+                    embed.onerror = () => {
+                        embed.style.display = 'none';
+                    };
+
+                    row.appendChild(embed);
                 });
                 rows.push(row);
             }
