@@ -178,14 +178,12 @@
 
     async function renderCertificates() {
         let i = 0;
-        let rowIndex = 0; // Indeks rzędu do określenia układu z tablicy rowLayouts
-
         while (i < certificates.length) {
             const row = document.createElement('div');
             row.className = 'certificate-row';
 
             // Ustalamy układ rzędu na podstawie tablicy flag
-            const isVertical = rowLayouts[rowIndex] || false;
+            const isVertical = rowLayouts[Math.floor(i / (isVertical ? 4 : 2))] || false;
             if (isVertical) {
                 row.classList.add('vertical');
             }
@@ -217,7 +215,6 @@
             }
 
             container.appendChild(row);
-            rowIndex++; // Przechodzimy do następnego rzędu
         }
 
         animateCertificates();
