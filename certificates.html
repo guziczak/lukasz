@@ -101,12 +101,12 @@
 
         .certificate.vertical {
             aspect-ratio: 50 / 70;
-            max-width: 24%; /* 4 obrazki w rzędzie */
+            max-width: 32%; /* 3 obrazki w rzędzie */
         }
 
         .certificate.horizontal {
             aspect-ratio: 70 / 50;
-            max-width: 24%; /* 4 obrazki w rzędzie */
+            max-width: 32%; /* 3 obrazki w rzędzie */
         }
 
         .theme-switcher {
@@ -245,11 +245,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
 <script>
     const certificates = [
- 'c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c7.pdf', 'c8.pdf', 'c9.pdf', 'c10.pdf', 'c11.pdf', 'c12.pdf', 'c13.pdf', 'c14.pdf', 'c15.pdf', 'c16.pdf', 'c17.pdf', 'c18.pdf', 'c19.pdf', 'c20.pdf', 'c21.pdf', 'c22.pdf', 'c23.pdf', 'c24.pdf', 'c25.pdf', 'c26.pdf', 'c27.pdf', 'c28.pdf', 'c29.pdf', 'c30.pdf', 'c31.pdf', 'c32.pdf'
-];
+        'c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c7.pdf', 'c8.pdf', 'c9.pdf', 'c10.pdf', 'c11.pdf', 'c12.pdf', 'c13.pdf', 'c14.pdf', 'c15.pdf', 'c16.pdf', 'c17.pdf', 'c18.pdf', 'c19.pdf', 'c20.pdf', 'c21.pdf', 'c22.pdf', 'c23.pdf', 'c24.pdf', 'c25.pdf', 'c26.pdf', 'c27.pdf', 'c28.pdf', 'c29.pdf', 'c30.pdf'
+    ];
     const certsPath = 'resources/certs/';
 
-    const rowFlags = [true, false, false, false, false, false, false, false];
+    const rowFlags = [true, false, false, false, false, false, false, false, false, false];
 
     const container = document.getElementById('certificates-container');
 
@@ -276,7 +276,7 @@
             const row = document.createElement('div');
             row.className = 'certificate-row';
 
-            const numCerts = 4; // Stała liczba obrazków na rządek
+            const numCerts = 3; // 3 obrazki na rządek
 
             for (let j = 0; j < numCerts && certIndex < certificates.length; j++) {
                 const cert = certificates[certIndex];
