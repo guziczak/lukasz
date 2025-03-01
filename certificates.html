@@ -85,6 +85,7 @@
         .certificate {
             flex: 1;
             height: auto;
+            aspect-ratio: 50 / 70;
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -97,16 +98,7 @@
             background-position: center;
             background-repeat: no-repeat;
             min-width: 0;
-        }
-
-        .certificate.vertical {
-            aspect-ratio: 50 / 70;
-            max-width: 32%; /* 3 obrazki w rzędzie */
-        }
-
-        .certificate.horizontal {
-            aspect-ratio: 70 / 50;
-            max-width: 32%; /* 3 obrazki w rzędzie */
+            max-width: 33%;
         }
 
         .theme-switcher {
@@ -114,35 +106,6 @@
             top: 20px;
             left: 20px;
             z-index: 1010;
-            background-color: rgba(0, 115, 230, 0.8);
-            color: #fff;
-            border: none;
-            padding: 0;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-            height: 40px;
-            width: 40px;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .theme-switcher:hover {
-            background-color: rgba(0, 91, 181, 0.8);
-        }
-
-        body.dark-mode .theme-switcher {
-            background-color: rgba(0, 91, 181, 0.8);
-        }
-
-        body.dark-mode .theme-switcher:hover {
-            background-color: rgba(0, 115, 230, 0.8);
         }
 
         .language-switcher {
@@ -165,65 +128,22 @@
             opacity: 1;
         }
 
-        .back-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .back-button a {
-            background-color: rgba(0, 115, 230, 0.8);
-            color: #fff;
-            border: none;
-            padding: 0;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-            height: 40px;
-            width: 40px;
-            min-width: 40px;
-            text-align: center;
-            line-height: 40px;
-        }
-
-        .back-button a:hover {
-            background-color: rgba(0, 91, 181, 0.8);
-        }
-
-        .icon {
-            width: 24px;
-            height: 24px;
-            vertical-align: middle;
-            filter: invert(1);
-        }
-
         @media (max-width: 768px) {
-            .certificate.vertical,
-            .certificate.horizontal {
-                max-width: 48%; /* 2 obrazki w rzędzie na mniejszych ekranach */
+            .certificate {
+                max-width: 45%;
             }
         }
 
         @media (max-width: 480px) {
-            .certificate.vertical,
-            .certificate.horizontal {
-                max-width: 100%; /* 1 obrazek w rzędzie na bardzo małych ekranach */
+            .certificate {
+                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
 
-<button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">
-    <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
-</button>
+<button class="theme-switcher" onclick="toggleDarkMode()">🌙</button>
 
 <div class="language-switcher">
     <img src="uk.svg" alt="English" class="active" onclick="changeLanguage('en')">
@@ -238,63 +158,85 @@
     <div class="certificates-container" id="certificates-container"></div>
 </div>
 
-<div class="back-button">
-    <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
 <script>
-    const certificates = [
-        'c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c7.pdf', 'c8.pdf', 'c9.pdf', 'c10.pdf', 'c11.pdf', 'c12.pdf', 'c13.pdf', 'c14.pdf', 'c15.pdf', 'c16.pdf', 'c17.pdf', 'c18.pdf', 'c19.pdf', 'c20.pdf', 'c21.pdf', 'c22.pdf', 'c23.pdf', 'c24.pdf', 'c25.pdf', 'c26.pdf', 'c27.pdf', 'c28.pdf', 'c29.pdf', 'c30.pdf'
-    ];
+    const certificates = ['c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf'];
     const certsPath = 'resources/certs/';
 
-    const rowFlags = [true, false, false, false, false, false, false, false];
-
     const container = document.getElementById('certificates-container');
+    const maxWorkers = 4; // Maksymalna liczba równoległych workerów
+    const workers = [];
+    const pdfQueue = [];
+    let isProcessing = false;
 
-    const colorPalettes = [
-        ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'], // Default
-        ['#FFCC99', '#99FFCC', '#99CCFF', '#FF99CC'], // Pastel
-        ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'], // Vibrant
-        ['#333333', '#666666', '#999999', '#CCCCCC'], // Monochrome
-        ['#1E90FF', '#20B2AA', '#00CED1', '#87CEEB']  // Ocean
-    ];
+    // Tworzenie Web Workers
+    for (let i = 0; i < maxWorkers; i++) {
+        const worker = new Worker('pdf-converter-worker.js');
+        workers.push(worker);
 
-    const selectedPaletteIndex = 0;
-    const currentPalette = colorPalettes[selectedPaletteIndex];
-
-    function randomColor() {
-        return currentPalette[Math.floor(Math.random() * currentPalette.length)];
+        worker.onmessage = function (event) {
+            const { pdfId, imageUrl } = event.data;
+            const imgElement = document.querySelector(`[data-id="${pdfId}"]`);
+            if (imgElement) {
+                imgElement.style.backgroundImage = `url('${imageUrl}')`;
+                imgElement.style.backgroundSize = 'cover';
+            }
+            isProcessing = false;
+            processQueue(); // Przetwarzaj kolejny element z kolejki
+        };
     }
 
-    async function renderCertificates() {
-        let certIndex = 0;
+    // Funkcja dodająca PDF do kolejki
+    function addToQueue(pdfId, imgElement) {
+        pdfQueue.push({ pdfId, imgElement });
+        processQueue();
+    }
 
-        for (let rowIndex = 0; rowIndex < rowFlags.length; rowIndex++) {
-            const isVerticalRow = rowFlags[rowIndex];
+    // Funkcja przetwarzająca kolejkę
+    function processQueue() {
+        if (isProcessing || pdfQueue.length === 0) return;
+        isProcessing = true;
+
+        const { pdfId, imgElement } = pdfQueue.shift(); // Pobierz pierwszy element z kolejki
+        const worker = workers[pdfQueue.length % maxWorkers]; // Rozdzielaj zadania między workerów
+        worker.postMessage({ pdfId, pdfUrl: `${certsPath}${certificates[pdfId]}` });
+    }
+
+    // Lazy Loading z Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const imgElement = entry.target;
+                const pdfId = imgElement.dataset.id;
+                addToQueue(pdfId, imgElement); // Dodaj do kolejki, gdy element jest widoczny
+                observer.unobserve(imgElement);
+            }
+        });
+    }, {
+        rootMargin: '0px',
+        threshold: 0.1
+    });
+
+    // Renderowanie certyfikatów
+    function renderCertificates() {
+        for (let i = 0; i < certificates.length; i += 3) {
             const row = document.createElement('div');
             row.className = 'certificate-row';
 
-            const numCerts = 3; // 3 obrazki na rządek
-
-            for (let j = 0; j < numCerts && certIndex < certificates.length; j++) {
-                const cert = certificates[certIndex];
+            for (let j = 0; j < 3 && i + j < certificates.length; j++) {
+                const certIndex = i + j;
                 const img = document.createElement('div');
-                img.className = isVerticalRow ? 'certificate vertical' : 'certificate horizontal';
+                img.className = 'certificate';
+                img.dataset.id = certIndex; // Unikalny identyfikator dla każdego certyfikatu
 
-                try {
-                    const pdfUrl = `${certsPath}${cert}`;
-                    const imageUrl = await pdfToImage(pdfUrl);
-                    img.style.backgroundImage = `url('${imageUrl}')`;
-                    img.style.backgroundSize = 'cover';
-                } catch (error) {
-                    img.style.backgroundColor = randomColor();
-                    img.innerHTML = '<strong><em>More to come</em></strong>';
+                // Priorytetyzacja: pierwsze 6 certyfikatów przetwarzane od razu
+                if (certIndex < 6) {
+                    addToQueue(certIndex, img);
+                } else {
+                    observer.observe(img); // Reszta jest ładowana leniwie
                 }
 
                 row.appendChild(img);
-                certIndex++;
             }
 
             container.appendChild(row);
@@ -303,26 +245,7 @@
         animateCertificates();
     }
 
-    async function pdfToImage(pdfUrl) {
-        const pdf = await fetch(pdfUrl);
-        if (!pdf.ok) throw new Error('Failed to load PDF');
-
-        const pdfData = await pdf.arrayBuffer();
-        const pdfDoc = await pdfjsLib.getDocument({ data: pdfData }).promise;
-        const page = await pdfDoc.getPage(1);
-
-        const viewport = page.getViewport({ scale: 2 });
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-
-        await page.render({ canvasContext: context, viewport }).promise;
-
-        return canvas.toDataURL('image/png');
-    }
-
+    // Animacja przewijania certyfikatów
     function animateCertificates() {
         let startPosition = window.innerHeight;
         container.style.top = `${startPosition}px`;
@@ -339,6 +262,7 @@
         requestAnimationFrame(slideIn);
     }
 
+    // Funkcja do przewijania certyfikatów w pętli
     function startScrolling() {
         let topPosition = 0;
         const scrollSpeed = 1;
@@ -358,45 +282,6 @@
         }
 
         requestAnimationFrame(scrollLoop);
-    }
-
-    function toggleDarkMode() {
-        const body = document.body;
-        body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
-
-        const themeIcon = document.getElementById('themeIcon');
-        if (body.classList.contains('dark-mode')) {
-            themeIcon.src = 'sun.svg';
-            themeIcon.alt = 'Light Mode';
-        } else {
-            themeIcon.src = 'moon.svg';
-            themeIcon.alt = 'Dark Mode';
-        }
-    }
-
-    function changeLanguage(lang) {
-        const title = document.getElementById('header-title');
-        if (lang === 'en') {
-            title.textContent = 'My Certificates';
-        } else if (lang === 'pl') {
-            title.textContent = 'Moje Certyfikaty';
-        }
-
-        document.querySelectorAll('.language-switcher img').forEach(img => {
-            img.classList.remove('active');
-        });
-        document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
-    }
-
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    if (savedDarkMode) {
-        document.body.classList.add('dark-mode');
-        document.getElementById('themeIcon').src = 'sun.svg';
-        document.getElementById('themeIcon').alt = 'Light Mode';
-    } else {
-        document.getElementById('themeIcon').src = 'moon.svg';
-        document.getElementById('themeIcon').alt = 'Dark Mode';
     }
 
     renderCertificates();
