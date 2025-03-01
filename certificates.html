@@ -76,14 +76,19 @@
         .certificate-row {
             display: flex;
             justify-content: space-between;
-            gap: 5px; /* Mniejszy odstęp */
+            gap: 5px;
             width: 100%;
-            margin-bottom: 5px; /* Zmniejszono odstęp między wierszami */
+            margin-bottom: 5px;
             box-sizing: border-box;
         }
 
+        .certificate-row.vertical {
+            flex-direction: column;
+            align-items: center;
+        }
+
         .certificate {
-            flex: 1; /* Równa szerokość dla każdego certyfikatu */
+            flex: 1;
             height: auto;
             aspect-ratio: 50 / 70;
             border: 1px solid #ddd;
@@ -97,8 +102,13 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            min-width: 0;  /* Zmniejszono minimalną szerokość */
-            max-width: 33%;  /* Certyfikaty mogą zajmować do 1/3 szerokości */
+            min-width: 0;
+            max-width: 48%; /* Dla układu poziomego (2 certyfikaty) */
+        }
+
+        .certificate.vertical {
+            max-width: 100%; /* Dla układu pionowego (4 certyfikaty) */
+            width: 24%; /* 4 certyfikaty w rzędzie */
         }
 
         .theme-switcher {
@@ -128,16 +138,9 @@
             opacity: 1;
         }
 
-        /* Responsywność */
         @media (max-width: 768px) {
             .certificate {
-                max-width: 45%; /* Większa szerokość na mniejszych ekranach */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .certificate {
-                max-width: 100%; /* Na bardzo małych ekranach pełna szerokość */
+                max-width: 100%; /* Na mniejszych ekranach certyfikaty zajmują pełną szerokość */
             }
         }
     </style>
@@ -164,6 +167,9 @@
     const certificates = ['c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c7.pdf', 'c8.pdf', 'c9.pdf', 'c10.pdf', 'c11.pdf', 'c12.pdf'];
     const certsPath = 'resources/certs/';
 
+    // Tablica flag określająca układ dla każdego rzędu (true - pionowo, false - poziomo)
+    const rowLayouts = [false, true, false]; // Przykładowe ustawienia
+
     const container = document.getElementById('certificates-container');
 
     function randomColor() {
@@ -171,14 +177,28 @@
     }
 
     async function renderCertificates() {
-        for (let i = 0; i < certificates.length; i += 3) {
+        let i = 0;
+        while (i < certificates.length) {
             const row = document.createElement('div');
             row.className = 'certificate-row';
 
-            for (let j = 0; j < 3 && i + j < certificates.length; j++) {
-                const cert = certificates[i + j];
+            // Ustalamy układ rzędu na podstawie tablicy flag
+            const isVertical = rowLayouts[Math.floor(i / (isVertical ? 4 : 2))] || false;
+            if (isVertical) {
+                row.classList.add('vertical');
+            }
+
+            // Określamy, ile certyfikatów ma być w rzędzie
+            const certificatesPerRow = isVertical ? 4 : 2; // 4 pionowo, 2 poziomo
+
+            for (let j = 0; j < certificatesPerRow && i < certificates.length; j++) {
+                const cert = certificates[i];
                 const img = document.createElement('div');
                 img.className = 'certificate';
+
+                if (isVertical) {
+                    img.classList.add('vertical');
+                }
 
                 try {
                     const pdfUrl = `${certsPath}${cert}`;
@@ -191,6 +211,7 @@
                 }
 
                 row.appendChild(img);
+                i++; // Przechodzimy do następnego certyfikatu
             }
 
             container.appendChild(row);
