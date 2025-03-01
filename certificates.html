@@ -42,7 +42,7 @@
         header {
             text-align: center;
             padding: 20px 0;
-            margin-bottom: 10px; 
+            margin-bottom: 10px;
             background-color: rgba(0, 115, 230, 0.8);
             color: white;
             border-radius: 10px;
@@ -76,24 +76,15 @@
         .certificate-row {
             display: flex;
             justify-content: space-between;
-            gap: 5px; /* Mniejszy odstęp */
+            gap: 5px;
             width: 100%;
-            margin-bottom: 5px; /* Zmniejszono odstęp między wierszami */
+            margin-bottom: 5px;
             box-sizing: border-box;
         }
 
-        .certificate-row.horizontal-row {
-            flex-direction: row; /* Domyślna orientacja */
-        }
-
-        .certificate-row.vertical-row {
-            flex-direction: column; /* Odwrócona orientacja */
-        }
-
         .certificate {
-            flex: 1; /* Równa szerokość dla każdego certyfikatu */
+            flex: 1;
             height: auto;
-            aspect-ratio: 50 / 70;
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -105,13 +96,17 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            min-width: 0;  /* Zmniejszono minimalną szerokość */
-            max-width: 24%;  /* Certyfikaty mogą zajmować do 1/4 szerokości */
+            min-width: 0;
+        }
+
+        .certificate.vertical {
+            aspect-ratio: 50 / 70;
+            max-width: 24%;
         }
 
         .certificate.horizontal {
-            aspect-ratio: 70 / 50; /* Odwrócona proporcja dla orientacji poziomej */
-            max-width: 48%; /* Dwa poziome obrazki mają zajmować tyle samo szerokości co cztery pionowe */
+            aspect-ratio: 70 / 50;
+            max-width: 48%;
         }
 
         .theme-switcher {
@@ -119,6 +114,12 @@
             top: 20px;
             left: 20px;
             z-index: 1010;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .language-switcher {
@@ -141,20 +142,20 @@
             opacity: 1;
         }
 
-        /* Responsywność */
         @media (max-width: 768px) {
-            .certificate {
-                max-width: 48%; /* Większa szerokość na mniejszych ekranach */
+            .certificate.vertical {
+                max-width: 48%;
             }
 
             .certificate.horizontal {
-                max-width: 100%; /* Na mniejszych ekranach pełna szerokość */
+                max-width: 100%;
             }
         }
 
         @media (max-width: 480px) {
-            .certificate {
-                max-width: 100%; /* Na bardzo małych ekranach pełna szerokość */
+            .certificate.vertical,
+            .certificate.horizontal {
+                max-width: 100%;
             }
         }
     </style>
@@ -181,45 +182,57 @@
     const certificates = ['c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c7.pdf', 'c8.pdf', 'c9.pdf', 'c10.pdf', 'c11.pdf', 'c12.pdf'];
     const certsPath = 'resources/certs/';
 
+    const rowFlags = [true, false, false, false, false, false];
+
     const container = document.getElementById('certificates-container');
 
+    // Definiowanie palet kolorów
+    const colorPalettes = [
+        ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'], // Default
+        ['#FFCC99', '#99FFCC', '#99CCFF', '#FF99CC'], // Pastel
+        ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'], // Vibrant
+        ['#333333', '#666666', '#999999', '#CCCCCC'], // Monochrome
+        ['#1E90FF', '#20B2AA', '#00CED1', '#87CEEB']  // Ocean
+    ];
+
+    // Wybór palety kolorów (można zmienić indeks na 0, 1, 2, 3 lub 4)
+    const selectedPaletteIndex = 1; // Domyślnie ustawiona paleta "Default"
+    const currentPalette = colorPalettes[selectedPaletteIndex];
+
     function randomColor() {
-        return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        return currentPalette[Math.floor(Math.random() * currentPalette.length)];
     }
 
     async function renderCertificates() {
-        for (let i = 0; i < certificates.length; i += 6) {
-            // Rząd z czterema obrazkami (pionowo)
-            const verticalRow = document.createElement('div');
-            verticalRow.className = 'certificate-row vertical-row';
+        let certIndex = 0;
 
-            for (let j = 0; j < 4 && i + j < certificates.length; j++) {
-                const cert = certificates[i + j];
-                const img = document.createElement('div');
-                img.className = 'certificate';
+        for (let rowIndex = 0; rowIndex < rowFlags.length; rowIndex++) {
+            const isVerticalRow = rowFlags[rowIndex];
+            const row = document.createElement('div');
+            row.className = 'certificate-row';
 
-                try {
-                    const pdfUrl = `${certsPath}${cert}`;
-                    const imageUrl = await pdfToImage(pdfUrl);
-                    img.style.backgroundImage = `url('${imageUrl}')`;
-                    img.style.backgroundSize = 'cover';
-                } catch (error) {
-                    img.style.backgroundColor = randomColor();
-                    img.innerText = '';
+            if (isVerticalRow) {
+                for (let j = 0; j < 4 && certIndex < certificates.length; j++) {
+                    const cert = certificates[certIndex];
+                    const img = document.createElement('div');
+                    img.className = 'certificate vertical';
+
+                    try {
+                        const pdfUrl = `${certsPath}${cert}`;
+                        const imageUrl = await pdfToImage(pdfUrl);
+                        img.style.backgroundImage = `url('${imageUrl}')`;
+                        img.style.backgroundSize = 'cover';
+                    } catch (error) {
+                        img.style.backgroundColor = randomColor();
+                        img.innerText = '';
+                    }
+
+                    row.appendChild(img);
+                    certIndex++;
                 }
-
-                verticalRow.appendChild(img);
-            }
-
-            container.appendChild(verticalRow);
-
-            // Rząd z dwoma obrazkami (poziomo)
-            if (i + 4 < certificates.length) {
-                const horizontalRow = document.createElement('div');
-                horizontalRow.className = 'certificate-row horizontal-row';
-
-                for (let j = 4; j < 6 && i + j < certificates.length; j++) {
-                    const cert = certificates[i + j];
+            } else {
+                for (let j = 0; j < 2 && certIndex < certificates.length; j++) {
+                    const cert = certificates[certIndex];
                     const img = document.createElement('div');
                     img.className = 'certificate horizontal';
 
@@ -233,11 +246,12 @@
                         img.innerText = '';
                     }
 
-                    horizontalRow.appendChild(img);
+                    row.appendChild(img);
+                    certIndex++;
                 }
-
-                container.appendChild(horizontalRow);
             }
+
+            container.appendChild(row);
         }
 
         animateCertificates();
