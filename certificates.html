@@ -199,6 +199,9 @@
     const selectedPaletteIndex = 1; // Domyślnie ustawiona paleta "Default"
     const currentPalette = colorPalettes[selectedPaletteIndex];
 
+    // Dodaj zmienną densityMode
+    const densityMode = 'high'; // 'normal' lub 'high'
+
     function randomColor() {
         return currentPalette[Math.floor(Math.random() * currentPalette.length)];
     }
@@ -212,7 +215,8 @@
             row.className = 'certificate-row';
 
             if (isVerticalRow) {
-                for (let j = 0; j < 4 && certIndex < certificates.length; j++) {
+                const numCerts = densityMode === 'high' ? 8 : 4;
+                for (let j = 0; j < numCerts && certIndex < certificates.length; j++) {
                     const cert = certificates[certIndex];
                     const img = document.createElement('div');
                     img.className = 'certificate vertical';
@@ -231,7 +235,8 @@
                     certIndex++;
                 }
             } else {
-                for (let j = 0; j < 2 && certIndex < certificates.length; j++) {
+                const numCerts = densityMode === 'high' ? 4 : 2;
+                for (let j = 0; j < numCerts && certIndex < certificates.length; j++) {
                     const cert = certificates[certIndex];
                     const img = document.createElement('div');
                     img.className = 'certificate horizontal';
@@ -243,7 +248,7 @@
                         img.style.backgroundSize = 'cover';
                     } catch (error) {
                         img.style.backgroundColor = randomColor();
-                        img.innerText = '';
+                        img.innerText = 'More to come';
                     }
 
                     row.appendChild(img);
@@ -312,6 +317,19 @@
         }
 
         requestAnimationFrame(scrollLoop);
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    function changeLanguage(lang) {
+        const title = document.getElementById('header-title');
+        if (lang === 'en') {
+            title.textContent = 'My Certificates';
+        } else if (lang === 'pl') {
+            title.textContent = 'Moje Certyfikaty';
+        }
     }
 
     renderCertificates();
