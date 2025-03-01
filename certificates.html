@@ -82,6 +82,14 @@
             box-sizing: border-box;
         }
 
+        .certificate-row.horizontal-row {
+            flex-direction: row; /* Domyślna orientacja */
+        }
+
+        .certificate-row.vertical-row {
+            flex-direction: column; /* Odwrócona orientacja */
+        }
+
         .certificate {
             flex: 1; /* Równa szerokość dla każdego certyfikatu */
             height: auto;
@@ -98,7 +106,12 @@
             background-position: center;
             background-repeat: no-repeat;
             min-width: 0;  /* Zmniejszono minimalną szerokość */
-            max-width: 33%;  /* Certyfikaty mogą zajmować do 1/3 szerokości */
+            max-width: 24%;  /* Certyfikaty mogą zajmować do 1/4 szerokości */
+        }
+
+        .certificate.horizontal {
+            aspect-ratio: 70 / 50; /* Odwrócona proporcja dla orientacji poziomej */
+            max-width: 48%; /* Dwa poziome obrazki mają zajmować tyle samo szerokości co cztery pionowe */
         }
 
         .theme-switcher {
@@ -131,7 +144,11 @@
         /* Responsywność */
         @media (max-width: 768px) {
             .certificate {
-                max-width: 45%; /* Większa szerokość na mniejszych ekranach */
+                max-width: 48%; /* Większa szerokość na mniejszych ekranach */
+            }
+
+            .certificate.horizontal {
+                max-width: 100%; /* Na mniejszych ekranach pełna szerokość */
             }
         }
 
@@ -171,11 +188,12 @@
     }
 
     async function renderCertificates() {
-        for (let i = 0; i < certificates.length; i += 3) {
-            const row = document.createElement('div');
-            row.className = 'certificate-row';
+        for (let i = 0; i < certificates.length; i += 6) {
+            // Rząd z czterema obrazkami (pionowo)
+            const verticalRow = document.createElement('div');
+            verticalRow.className = 'certificate-row vertical-row';
 
-            for (let j = 0; j < 3 && i + j < certificates.length; j++) {
+            for (let j = 0; j < 4 && i + j < certificates.length; j++) {
                 const cert = certificates[i + j];
                 const img = document.createElement('div');
                 img.className = 'certificate';
@@ -190,10 +208,36 @@
                     img.innerText = '';
                 }
 
-                row.appendChild(img);
+                verticalRow.appendChild(img);
             }
 
-            container.appendChild(row);
+            container.appendChild(verticalRow);
+
+            // Rząd z dwoma obrazkami (poziomo)
+            if (i + 4 < certificates.length) {
+                const horizontalRow = document.createElement('div');
+                horizontalRow.className = 'certificate-row horizontal-row';
+
+                for (let j = 4; j < 6 && i + j < certificates.length; j++) {
+                    const cert = certificates[i + j];
+                    const img = document.createElement('div');
+                    img.className = 'certificate horizontal';
+
+                    try {
+                        const pdfUrl = `${certsPath}${cert}`;
+                        const imageUrl = await pdfToImage(pdfUrl);
+                        img.style.backgroundImage = `url('${imageUrl}')`;
+                        img.style.backgroundSize = 'cover';
+                    } catch (error) {
+                        img.style.backgroundColor = randomColor();
+                        img.innerText = '';
+                    }
+
+                    horizontalRow.appendChild(img);
+                }
+
+                container.appendChild(horizontalRow);
+            }
         }
 
         animateCertificates();
