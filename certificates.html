@@ -94,11 +94,12 @@
 
         .certificate-row.horizontal {
             flex-direction: row;
+            flex-wrap: wrap; /* Dodane, aby certyfikaty zawijały się do nowego rzędu */
         }
 
         .certificate-row.horizontal .certificate {
-            width: 50%;
-            max-width: 50%;
+            width: 24%; /* 4 certyfikaty w rzędzie z uwzględnieniem odstępów */
+            max-width: 24%;
             aspect-ratio: 50 / 70;
         }
 
@@ -154,8 +155,8 @@
                 max-width: 50%;
             }
             .certificate-row.horizontal .certificate {
-                width: 100%;
-                max-width: 100%;
+                width: 48%; /* 2 certyfikaty w rzędzie na mniejszych ekranach */
+                max-width: 48%;
             }
         }
 
@@ -199,11 +200,11 @@
     async function renderCertificates() {
         let isVertical = false; // Flaga do sterowania układem
 
-        for (let i = 0; i < certificates.length; i += (isVertical ? 4 : 2)) {
+        for (let i = 0; i < certificates.length; i += (isVertical ? 8 : 4)) {
             const row = document.createElement('div');
             row.className = `certificate-row ${isVertical ? 'vertical' : 'horizontal'}`;
 
-            for (let j = 0; j < (isVertical ? 4 : 2) && i + j < certificates.length; j++) {
+            for (let j = 0; j < (isVertical ? 8 : 4) && i + j < certificates.length; j++) {
                 const cert = certificates[i + j];
                 const img = document.createElement('div');
                 img.className = 'certificate';
