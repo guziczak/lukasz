@@ -114,12 +114,35 @@
             top: 20px;
             left: 20px;
             z-index: 1010;
-            background-color: #0073e6;
-            color: white;
+            background-color: rgba(0, 115, 230, 0.8);
+            color: #fff;
             border: none;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 0;
+            font-size: 1.2em;
             cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .theme-switcher:hover {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        body.dark-mode .theme-switcher {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        body.dark-mode .theme-switcher:hover {
+            background-color: rgba(0, 115, 230, 0.8);
         }
 
         .language-switcher {
@@ -142,6 +165,45 @@
             opacity: 1;
         }
 
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .back-button a {
+            background-color: rgba(0, 115, 230, 0.8);
+            color: #fff;
+            border: none;
+            padding: 0;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .back-button a:hover {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            filter: invert(1);
+        }
+
         @media (max-width: 768px) {
             .certificate.vertical {
                 max-width: 48%;
@@ -162,7 +224,9 @@
 </head>
 <body>
 
-<button class="theme-switcher" onclick="toggleDarkMode()">🌙</button>
+<button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">
+    <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
+</button>
 
 <div class="language-switcher">
     <img src="uk.svg" alt="English" class="active" onclick="changeLanguage('en')">
@@ -175,6 +239,10 @@
     </header>
 
     <div class="certificates-container" id="certificates-container"></div>
+</div>
+
+<div class="back-button">
+    <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
@@ -228,7 +296,7 @@
                         img.style.backgroundSize = 'cover';
                     } catch (error) {
                         img.style.backgroundColor = randomColor();
-                        img.innerText = 'More to come';
+                        img.innerHTML = '<strong><em>More to come</em></strong>';
                     }
 
                     row.appendChild(img);
@@ -248,7 +316,7 @@
                         img.style.backgroundSize = 'cover';
                     } catch (error) {
                         img.style.backgroundColor = randomColor();
-                        img.innerText = 'More to come';
+                        img.innerHTML = '<strong><em>More to come</em></strong>';
                     }
 
                     row.appendChild(img);
@@ -320,7 +388,18 @@
     }
 
     function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+
+        const themeIcon = document.getElementById('themeIcon');
+        if (body.classList.contains('dark-mode')) {
+            themeIcon.src = 'sun.svg';
+            themeIcon.alt = 'Light Mode';
+        } else {
+            themeIcon.src = 'moon.svg';
+            themeIcon.alt = 'Dark Mode';
+        }
     }
 
     function changeLanguage(lang) {
@@ -330,6 +409,21 @@
         } else if (lang === 'pl') {
             title.textContent = 'Moje Certyfikaty';
         }
+
+        document.querySelectorAll('.language-switcher img').forEach(img => {
+            img.classList.remove('active');
+        });
+        document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
+    }
+
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (savedDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeIcon').src = 'sun.svg';
+        document.getElementById('themeIcon').alt = 'Light Mode';
+    } else {
+        document.getElementById('themeIcon').src = 'moon.svg';
+        document.getElementById('themeIcon').alt = 'Dark Mode';
     }
 
     renderCertificates();
