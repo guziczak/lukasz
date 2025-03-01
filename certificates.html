@@ -12,6 +12,7 @@
             background-color: #f4f4f4;
             color: #333;
             overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body.dark-mode {
@@ -23,27 +24,66 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             position: relative;
             height: 100vh;
             overflow: hidden;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            background-color: rgba(0, 115, 230, 0.8);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        body.dark-mode header {
+            background-color: rgba(0, 91, 181, 0.8);
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
         }
 
         h1 {
-            margin-top: 20px;
+            margin: 0;
             font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .certificates-container {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            top: 100%;
         }
 
         .certificate-row {
             display: flex;
             justify-content: center;
             gap: 20px;
+            width: 100%;
             margin-bottom: 20px;
         }
 
         .certificate {
-            width: 300px;
-            height: 420px;
+            width: 30%;
+            max-width: 300px;
+            height: 400px;
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -92,13 +132,16 @@
 </div>
 
 <div class="container">
-    <h1 id="header-title">My Certificates</h1>
-    <div id="certificates-container"></div>
+    <header>
+        <h1 id="header-title">My Certificates</h1>
+    </header>
+
+    <div class="certificates-container" id="certificates-container"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
 <script>
-    const certificates = ['c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf',];
+    const certificates = ['c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf'];
     const certsPath = 'resources/certs/';
 
     const container = document.getElementById('certificates-container');
@@ -132,7 +175,8 @@
 
             container.appendChild(row);
         }
-        startScrolling();
+
+        animateCertificates();
     }
 
     async function pdfToImage(pdfUrl) {
@@ -155,6 +199,22 @@
         return canvas.toDataURL('image/png');
     }
 
+    function animateCertificates() {
+        let startPosition = window.innerHeight;
+        container.style.top = `${startPosition}px`;
+
+        function slideIn() {
+            let currentPosition = parseInt(container.style.top, 10);
+            if (currentPosition > 0) {
+                container.style.top = `${currentPosition - 2}px`;
+                requestAnimationFrame(slideIn);
+            } else {
+                startScrolling();
+            }
+        }
+        requestAnimationFrame(slideIn);
+    }
+
     function startScrolling() {
         let topPosition = 0;
         const scrollSpeed = 1;
@@ -174,16 +234,6 @@
         }
 
         requestAnimationFrame(scrollLoop);
-    }
-
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-    }
-
-    function changeLanguage(lang) {
-        document.getElementById('header-title').innerText = lang === 'en' ? 'My Certificates' : 'Moje Certyfikaty';
-        document.querySelectorAll('.language-switcher img').forEach(img => img.classList.remove('active'));
-        document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
     }
 
     renderCertificates();
