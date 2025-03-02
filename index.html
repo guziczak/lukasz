@@ -362,6 +362,27 @@
             vertical-align: middle;
             filter: invert(1); /* Odwróć kolory ikony */
         }
+
+        /* Styl dla przycisku symulującego interakcję */
+        #simulatedButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #0073e6;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 1; /* Domyślnie widoczny */
+        }
+
+        #simulatedButton:hover {
+            background-color: #005bb5;
+        }
     </style>
 </head>
 <body>
@@ -370,6 +391,9 @@
 <button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">
     <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
 </button>
+
+<!-- Dodaj element audio -->
+<audio id="backgroundAudio" src="voice.m4a"></audio>
 
 <div class="container">
     <!-- Przełącznik językowy -->
@@ -391,7 +415,7 @@
             <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
             <a href="https://github.com/guziczak" target="_blank">GitHub</a> |
             <a href="#" id="cv-link" class="cv-link">View my CV</a> |
-            <a href="certificates.html" id="certificates-link" class="cv-link">View my Certificates</a> <!-- Dodany link do certyfikatów -->
+            <a href="certificates.html" id="certificates-link" class="cv-link">View my Certificates</a>
         </p>
     </div>
 
@@ -435,6 +459,43 @@
 </div>
 
 <script>
+    // Zahardkodowana flaga
+    const showButton = true; // Przycisk domyślnie widoczny
+
+    // Funkcja do wymuszenia odtworzenia dźwięku poprzez symulację interakcji
+    function forcePlayAudio() {
+        const audio = document.getElementById('backgroundAudio');
+
+        // Tworzymy przycisk, który klikniemy programowo
+        const button = document.createElement('button');
+        button.id = 'simulatedButton'; // Nadajemy ID dla stylowania
+        button.innerText = 'Play Sound';
+        document.body.appendChild(button);
+
+        // Klikamy przycisk programowo
+        button.click();
+
+        // Po kliknięciu próbujemy odtworzyć dźwięk
+        audio.play().then(() => {
+            console.log("Dźwięk odtworzony po symulacji interakcji.");
+        }).catch(error => {
+            console.error("Nie udało się odtworzyć dźwięku:", error);
+        });
+
+        // Usuwamy przycisk po wszystkim (opcjonalnie)
+        setTimeout(() => {
+            document.body.removeChild(button);
+        }, 3000); // Usuń przycisk po 3 sekundach
+    }
+
+    // Wymuś odtworzenie dźwięku po załadowaniu strony
+    window.onload = function() {
+        forcePlayAudio();
+
+        // Reszta kodu onload pozostaje bez zmian
+    };
+
+    // Reszta kodu JavaScript pozostaje bez zmian
     let isFirstLoad = true;
 
     // Funkcja do zmiany języka
@@ -461,7 +522,7 @@
                     'phone': '<a href="tel:+48693069832">+48 693 069 832</a> | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
                     'location': 'Wrocław, Poland',
                     'cv-link': 'View my CV',
-                    'certificates-link': 'View my Certificates', // Dodany tekst dla języka angielskiego
+                    'certificates-link': 'View my Certificates',
                     'skills-title': 'Skills',
                     'skills-list': [
                         'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
@@ -486,7 +547,7 @@
                     'phone': '<a href="tel:+48693069832">+48 693 069 832</a> | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
                     'location': 'Wrocław, Polska',
                     'cv-link': 'Zobacz moje CV',
-                    'certificates-link': 'Zobacz moje Certyfikaty', // Dodany tekst dla języka polskiego
+                    'certificates-link': 'Zobacz moje Certyfikaty',
                     'skills-title': 'Umiejętności',
                     'skills-list': [
                         'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
@@ -513,7 +574,7 @@
             document.getElementById('phone').innerHTML = elements[lang]['phone'];
             document.getElementById('location').innerText = elements[lang]['location'];
             document.getElementById('cv-link').innerText = elements[lang]['cv-link'];
-            document.getElementById('certificates-link').innerText = elements[lang]['certificates-link']; // Aktualizacja tekstu dla certyfikatów
+            document.getElementById('certificates-link').innerText = elements[lang]['certificates-link'];
             document.getElementById('skills-title').innerText = elements[lang]['skills-title'];
             document.getElementById('skills-list').innerHTML = elements[lang]['skills-list'].map(item => `<li>${item}</li>`).join('');
             document.getElementById('achievements-title').innerText = elements[lang]['achievements-title'];
