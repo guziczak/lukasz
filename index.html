@@ -362,6 +362,50 @@
             vertical-align: middle;
             filter: invert(1); /* Odwróć kolory ikony */
         }
+
+        /* Styl dla przycisku odtwarzania audio */
+        .audio-player {
+            position: fixed;
+            top: 70px; /* Ustawiony pod przyciskiem zmiany motywu */
+            left: 20px;
+            z-index: 1000;
+            background-color: rgba(0, 115, 230, 0.8);
+            color: #fff;
+            border: none;
+            padding: 0;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .audio-player:hover {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        body.dark-mode .audio-player {
+            background-color: rgba(0, 91, 181, 0.8);
+        }
+
+        body.dark-mode .audio-player:hover {
+            background-color: rgba(0, 115, 230, 0.8);
+        }
+
+        .audio-icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            filter: invert(1); /* Odwróć kolory ikony */
+        }
     </style>
 </head>
 <body>
@@ -370,6 +414,14 @@
 <button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">
     <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
 </button>
+
+<!-- Przycisk odtwarzania audio -->
+<button class="audio-player" onclick="toggleAudio()" id="audioButton">
+    <img src="audio-icon.svg" alt="Play Audio" class="audio-icon" id="audioIcon">
+</button>
+
+<!-- Element audio -->
+<audio id="audioPlayer" src="voice.m4a"></audio>
 
 <div class="container">
     <!-- Przełącznik językowy -->
@@ -616,6 +668,29 @@
         setTimeout(function() {
             window.location.href = 'cv.html'; // Przekierowanie po półtora sekundy
         }, 1000); // Opóźnienie 1 sekundy
+    });
+
+    // Funkcja do odtwarzania/pauzowania audio
+    function toggleAudio() {
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioIcon = document.getElementById('audioIcon');
+
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            audioIcon.src = 'pause-icon.svg'; // Zmień ikonę na pauzę
+            audioIcon.alt = 'Pause Audio';
+        } else {
+            audioPlayer.pause();
+            audioIcon.src = 'audio-icon.svg'; // Zmień ikonę na odtwarzanie
+            audioIcon.alt = 'Play Audio';
+        }
+    }
+
+    // Obsługa zakończenia odtwarzania audio
+    document.getElementById('audioPlayer').addEventListener('ended', function() {
+        const audioIcon = document.getElementById('audioIcon');
+        audioIcon.src = 'audio-icon.svg'; // Przywróć ikonę odtwarzania
+        audioIcon.alt = 'Play Audio';
     });
 </script>
 
