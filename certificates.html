@@ -283,15 +283,12 @@
                 const img = document.createElement('div');
                 img.className = isVerticalRow ? 'certificate vertical' : 'certificate horizontal';
 
-                try {
-                    const pdfUrl = `${certsPath}${cert}`;
-                    const imageUrl = await pdfToImage(pdfUrl);
-                    img.style.backgroundImage = `url('${imageUrl}')`;
-                    img.style.backgroundSize = 'cover';
-                } catch (error) {
-                    img.style.backgroundColor = randomColor();
-                    img.innerHTML = '<strong><em>More to come</em></strong>';
-                }
+                // Ustawienie placeholder-a
+                img.style.backgroundColor = randomColor();
+                img.innerHTML = '<strong><em>Loading...</em></strong>';
+
+                // Asynchroniczne przetwarzanie PDF
+                processPDF(`${certsPath}${cert}`, img);
 
                 row.appendChild(img);
                 certIndex++;
@@ -303,24 +300,33 @@
         animateCertificates();
     }
 
-    async function pdfToImage(pdfUrl) {
-        const pdf = await fetch(pdfUrl);
-        if (!pdf.ok) throw new Error('Failed to load PDF');
+    async function processPDF(pdfUrl, imgElement) {
+        try {
+            const pdf = await fetch(pdfUrl);
+            if (!pdf.ok) throw new Error('Failed to load PDF');
 
-        const pdfData = await pdf.arrayBuffer();
-        const pdfDoc = await pdfjsLib.getDocument({ data: pdfData }).promise;
-        const page = await pdfDoc.getPage(1);
+            const pdfData = await pdf.arrayBuffer();
+            const pdfDoc = await pdfjsLib.getDocument({ data: pdfData }).promise;
+            const page = await pdfDoc.getPage(1);
 
-        const viewport = page.getViewport({ scale: 2 });
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
+            const viewport = page.getViewport({ scale: 2 });
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
 
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
 
-        await page.render({ canvasContext: context, viewport }).promise;
+            await page.render({ canvasContext: context, viewport }).promise;
 
-        return canvas.toDataURL('image/png');
+            const imageUrl = canvas.toDataURL('image/png');
+            imgElement.style.backgroundImage = `url('${imageUrl}')`;
+            imgElement.style.backgroundSize = 'cover';
+            imgElement.innerHTML = ''; // Usuń placeholder
+        } catch (error) {
+            console.error('Error processing PDF:', error);
+            imgElement.style.backgroundColor = randomColor();
+            imgElement.innerHTML = '<strong><em>Error loading PDF</em></strong>';
+        }
     }
 
     function animateCertificates() {
