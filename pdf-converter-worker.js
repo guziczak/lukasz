@@ -1,6 +1,9 @@
 // Ładowanie biblioteki pdf.js w workerze
 importScripts('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js');
 
+// Ustawienie ścieżki do pliku workerowego
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js';
+
 self.onmessage = function (event) {
     const { pdfId, pdfUrl } = event.data;
 
