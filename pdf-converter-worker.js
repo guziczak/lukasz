@@ -1,6 +1,3 @@
-// Ładowanie biblioteki pdf.js w workerze
-importScripts('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js');
-
 self.onmessage = function (event) {
     const { pdfId, pdfUrl } = event.data;
 
@@ -11,7 +8,6 @@ self.onmessage = function (event) {
         })
         .catch(error => {
             console.error('Błąd konwersji PDF:', error);
-            self.postMessage({ pdfId, imageUrl: null }); // Wysyłanie null w przypadku błędu
         });
 };
 
@@ -24,13 +20,13 @@ async function pdfToImage(pdfUrl) {
     const page = await pdfDoc.getPage(1);
 
     const viewport = page.getViewport({ scale: 2 });
-    const canvas = new OffscreenCanvas(viewport.width, viewport.height);
+    const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
 
     await page.render({ canvasContext: context, viewport }).promise;
 
-    // Konwersja OffscreenCanvas do obrazu
-    const imageBitmap = await canvas.transferToImageBitmap();
-    const blob = await new Promise((resolve) => canvas.convertToBlob({ type: 'image/png' }, resolve));
-    return URL.createObjectURL(blob);
+    return canvas.toDataURL('image/png');
 }

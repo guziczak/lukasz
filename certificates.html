@@ -177,12 +177,9 @@
         worker.onmessage = function (event) {
             const { pdfId, imageUrl } = event.data;
             const imgElement = document.querySelector(`[data-id="${pdfId}"]`);
-            if (imgElement && imageUrl) {
+            if (imgElement) {
                 imgElement.style.backgroundImage = `url('${imageUrl}')`;
                 imgElement.style.backgroundSize = 'cover';
-            } else {
-                imgElement.style.backgroundColor = '#ccc'; // Placeholder w przypadku błędu
-                imgElement.innerText = 'Błąd ładowania';
             }
             isProcessing = false;
             processQueue(); // Przetwarzaj kolejny element z kolejki
