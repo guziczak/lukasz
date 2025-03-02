@@ -245,18 +245,30 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
 <script>
     const certificates = [
-        'c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c7.pdf', 'c8.pdf', 'c9.pdf', 'c10.pdf', 
-        'c11.pdf', 'c12.pdf', 'c13.pdf', 'c14.pdf', 'c15.pdf', 'c16.pdf', 'c17.pdf', 'c18.pdf', 'c19.pdf', 
-        'c20.pdf', 'c21.pdf', 'c22.pdf', 'c23.pdf', 'c24.pdf', 'c25.pdf', 'c26.pdf', 'c27.pdf', 'c28.pdf', 
-        'c29.pdf', 'c30.pdf'
+        'c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c7.pdf', 'c8.pdf', 'c9.pdf', 'c10.pdf', 'c11.pdf', 'c12.pdf', 'c13.pdf', 'c14.pdf', 'c15.pdf', 'c16.pdf', 'c17.pdf', 'c18.pdf', 'c19.pdf', 'c20.pdf', 'c21.pdf', 'c22.pdf', 'c23.pdf', 'c24.pdf', 'c25.pdf', 'c26.pdf', 'c27.pdf', 'c28.pdf', 'c29.pdf', 'c30.pdf'
     ];
     const certsPath = 'resources/certs/';
 
     const rowFlags = [true, false, false, false, false, false, false, false];
+
     const container = document.getElementById('certificates-container');
 
-    // Tworzenie placeholderów
-    function createPlaceholders() {
+    const colorPalettes = [
+        ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'], // Default
+        ['#FFCC99', '#99FFCC', '#99CCFF', '#FF99CC'], // Pastel
+        ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'], // Vibrant
+        ['#333333', '#666666', '#999999', '#CCCCCC'], // Monochrome
+        ['#1E90FF', '#20B2AA', '#00CED1', '#87CEEB']  // Ocean
+    ];
+
+    const selectedPaletteIndex = 0;
+    const currentPalette = colorPalettes[selectedPaletteIndex];
+
+    function randomColor() {
+        return currentPalette[Math.floor(Math.random() * currentPalette.length)];
+    }
+
+    async function renderCertificates() {
         let certIndex = 0;
 
         for (let rowIndex = 0; rowIndex < rowFlags.length; rowIndex++) {
@@ -267,27 +279,9 @@
             const numCerts = 3; // 3 obrazki na rządek
 
             for (let j = 0; j < numCerts && certIndex < certificates.length; j++) {
+                const cert = certificates[certIndex];
                 const img = document.createElement('div');
                 img.className = isVerticalRow ? 'certificate vertical' : 'certificate horizontal';
-                img.style.backgroundColor = '#ddd'; // Placeholder tła
-                row.appendChild(img);
-                certIndex++;
-            }
-
-            container.appendChild(row);
-        }
-    }
-
-    // Asynchroniczne ładowanie obrazów
-    async function loadImages() {
-        let certIndex = 0;
-
-        for (let rowIndex = 0; rowIndex < rowFlags.length; rowIndex++) {
-            const numCerts = 3; // 3 obrazki na rządek
-
-            for (let j = 0; j < numCerts && certIndex < certificates.length; j++) {
-                const cert = certificates[certIndex];
-                const img = container.querySelectorAll('.certificate')[certIndex];
 
                 try {
                     const pdfUrl = `${certsPath}${cert}`;
@@ -295,16 +289,20 @@
                     img.style.backgroundImage = `url('${imageUrl}')`;
                     img.style.backgroundSize = 'cover';
                 } catch (error) {
-                    img.style.backgroundColor = '#ffcccc'; // Kolor błędu
-                    img.innerHTML = '<strong><em>Error loading image</em></strong>';
+                    img.style.backgroundColor = randomColor();
+                    img.innerHTML = '<strong><em>More to come</em></strong>';
                 }
 
+                row.appendChild(img);
                 certIndex++;
             }
+
+            container.appendChild(row);
         }
+
+        animateCertificates();
     }
 
-    // Konwersja PDF na obraz
     async function pdfToImage(pdfUrl) {
         const pdf = await fetch(pdfUrl);
         if (!pdf.ok) throw new Error('Failed to load PDF');
@@ -325,7 +323,6 @@
         return canvas.toDataURL('image/png');
     }
 
-    // Animacja przewijania
     function animateCertificates() {
         let startPosition = window.innerHeight;
         container.style.top = `${startPosition}px`;
@@ -342,7 +339,6 @@
         requestAnimationFrame(slideIn);
     }
 
-    // Pętla przewijania
     function startScrolling() {
         let topPosition = 0;
         const scrollSpeed = 1;
@@ -364,7 +360,6 @@
         requestAnimationFrame(scrollLoop);
     }
 
-    // Dark mode
     function toggleDarkMode() {
         const body = document.body;
         body.classList.toggle('dark-mode');
@@ -380,7 +375,6 @@
         }
     }
 
-    // Zmiana języka
     function changeLanguage(lang) {
         const title = document.getElementById('header-title');
         if (lang === 'en') {
@@ -395,12 +389,6 @@
         document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
     }
 
-    // Inicjalizacja
-    createPlaceholders(); // Tworzy puste kontenery
-    animateCertificates(); // Rozpoczyna animację przewijania
-    loadImages(); // Rozpoczyna asynchroniczne ładowanie obrazów
-
-    // Dark mode z localStorage
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
     if (savedDarkMode) {
         document.body.classList.add('dark-mode');
@@ -410,6 +398,8 @@
         document.getElementById('themeIcon').src = 'moon.svg';
         document.getElementById('themeIcon').alt = 'Dark Mode';
     }
+
+    renderCertificates();
 </script>
 </body>
 </html>
