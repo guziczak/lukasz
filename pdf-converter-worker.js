@@ -30,6 +30,7 @@ async function pdfToImage(pdfUrl) {
     await page.render({ canvasContext: context, viewport }).promise;
 
     // Konwersja OffscreenCanvas do obrazu
-    const blob = await canvas.convertToBlob({ type: 'image/png' });
+    const imageBitmap = await canvas.transferToImageBitmap();
+    const blob = await new Promise((resolve) => canvas.convertToBlob({ type: 'image/png' }, resolve));
     return URL.createObjectURL(blob);
 }
