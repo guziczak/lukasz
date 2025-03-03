@@ -501,7 +501,9 @@
 <script>
     let isFirstLoad = true;
     let isAudioPlaying = false; // Zmienna sesyjna do śledzenia stanu odtwarzania audio
-    let hasUserInteracted = false; // Zmienna do śledzenia, czy użytkownik wykonał interakcję
+
+    // Sprawdź, czy użytkownik już wykonał interakcję
+    let hasUserInteracted = localStorage.getItem('hasUserInteracted') === 'true';
 
     // Funkcja do zmiany języka
     function changeLanguage(lang) {
@@ -732,6 +734,7 @@
     function handleUserInteraction() {
         if (!hasUserInteracted) {
             hasUserInteracted = true; // Zapamiętaj, że użytkownik wykonał interakcję
+            localStorage.setItem('hasUserInteracted', 'true'); // Zapisz w localStorage
             playOnUserInteraction(); // Odtwórz audio
         }
     }
@@ -740,6 +743,11 @@
     document.addEventListener('click', handleUserInteraction); // Odtwarzaj po kliknięciu
     document.addEventListener('mousemove', handleUserInteraction); // Odtwarzaj po ruchu kursora
     document.addEventListener('touchstart', handleUserInteraction); // Odtwarzaj po dotknięciu
+
+    // Sprawdź, czy użytkownik już wykonał interakcję
+    if (hasUserInteracted) {
+        playOnUserInteraction(); // Odtwórz audio, jeśli użytkownik już wykonał interakcję
+    }
 </script>
 
 </body>
