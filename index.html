@@ -500,7 +500,6 @@
 
 <script>
     let isFirstLoad = true;
-    let isAudioPlaying = false; // Zmienna sesyjna do śledzenia stanu odtwarzania audio
 
     // Funkcja do zmiany języka
     function changeLanguage(lang) {
@@ -691,14 +690,12 @@
 
         if (audioPlayer.paused) {
             audioPlayer.play();
-            isAudioPlaying = true; // Ustaw stan odtwarzania na true
             audioIcon1.src = 'pause-icon.svg'; // Zmień ikonę na pauzę
             audioIcon1.alt = 'Pause Audio';
             audioIcon2.src = 'pause-icon.svg'; // Zmień ikonę na pauzę
             audioIcon2.alt = 'Pause Audio';
         } else {
             audioPlayer.pause();
-            isAudioPlaying = false; // Ustaw stan odtwarzania na false
             audioIcon1.src = 'audio-icon.svg'; // Zmień ikonę na odtwarzanie
             audioIcon1.alt = 'Play Audio';
             audioIcon2.src = 'audio-icon.svg'; // Zmień ikonę na odtwarzanie
@@ -710,7 +707,6 @@
     document.getElementById('audioPlayer').addEventListener('ended', function() {
         const audioIcon1 = document.getElementById('audioIcon1');
         const audioIcon2 = document.getElementById('audioIcon2');
-        isAudioPlaying = false; // Ustaw stan odtwarzania na false
         audioIcon1.src = 'audio-icon.svg'; // Przywróć ikonę odtwarzania
         audioIcon1.alt = 'Play Audio';
         audioIcon2.src = 'audio-icon.svg'; // Przywróć ikonę odtwarzania
@@ -720,23 +716,21 @@
     // Rozwiązanie 2: Automatyczne odtwarzanie z opóźnieniem
     function autoPlayWithDelay() {
         const audioPlayer = document.getElementById('audioPlayer');
-        if (!isAudioPlaying && audioPlayer.paused) { // Sprawdź, czy audio nie jest już odtwarzane
+        if (audioPlayer.paused) { // Sprawdź, czy audio nie jest już odtwarzane
             setTimeout(() => {
-                if (!isAudioPlaying && audioPlayer.paused) { // Ponownie sprawdź po opóźnieniu
+                if (audioPlayer.paused) { // Ponownie sprawdź po opóźnieniu
                     audioPlayer.play();
-                    isAudioPlaying = true; // Ustaw stan odtwarzania na true
                     console.log('Audio odtworzone automatycznie po opóźnieniu.');
                 }
             }, 1000); // Opóźnienie 1 sekundy
         }
     }
 
-    // Rozwiązanie 4: Odtwarzanie po interakcji użytkownika (kliknięcie, ruch kursora, dotknięcie)
+    // Rozwiązanie 4: Odtwarzanie po interakcji użytkownika
     function playOnUserInteraction() {
         const audioPlayer = document.getElementById('audioPlayer');
-        if (!isAudioPlaying && audioPlayer.paused) { // Sprawdź, czy audio nie jest już odtwarzane
+        if (audioPlayer.paused) { // Sprawdź, czy audio nie jest już odtwarzane
             audioPlayer.play();
-            isAudioPlaying = true; // Ustaw stan odtwarzania na true
             console.log('Audio odtworzone po interakcji użytkownika.');
         }
     }
@@ -744,9 +738,7 @@
     // Połącz oba rozwiązania
     window.onload = function() {
         autoPlayWithDelay(); // Spróbuj odtworzyć automatycznie po opóźnieniu
-        document.addEventListener('click', playOnUserInteraction); // Odtwarzaj po kliknięciu
-        document.addEventListener('mousemove', playOnUserInteraction); // Odtwarzaj po ruchu kursora
-        document.addEventListener('touchstart', playOnUserInteraction); // Odtwarzaj po dotknięciu
+        document.addEventListener('click', playOnUserInteraction); // Odtwarzaj po interakcji użytkownika
     };
 </script>
 
