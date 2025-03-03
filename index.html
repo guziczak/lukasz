@@ -692,6 +692,26 @@
         audioIcon.src = 'audio-icon.svg'; // Przywróć ikonę odtwarzania
         audioIcon.alt = 'Play Audio';
     });
+
+    // Automatyczne odtwarzanie audio po kliknięciu w dowolne miejsce na stronie
+    document.body.addEventListener('click', function() {
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            document.getElementById('audioIcon').src = 'pause-icon.svg';
+            document.getElementById('audioIcon').alt = 'Pause Audio';
+        }
+    });
+
+    // Automatyczne odtwarzanie audio po przesunięciu palcem po ekranie dotykowym
+    document.body.addEventListener('touchstart', function() {
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            document.getElementById('audioIcon').src = 'pause-icon.svg';
+            document.getElementById('audioIcon').alt = 'Pause Audio';
+        }
+    });
 </script>
 
 </body>
