@@ -363,9 +363,10 @@
             filter: invert(1); /* Odwróć kolory ikony */
         }
 
-        /* Styl dla przycisków odtwarzania audio */
+        /* Styl dla przycisku odtwarzania audio */
         .audio-player {
             position: fixed;
+            top: 70px; /* Ustawiony pod przyciskiem zmiany motywu */
             left: 20px;
             z-index: 1000;
             background-color: rgba(0, 115, 230, 0.8);
@@ -385,14 +386,6 @@
             width: 40px;
             min-width: 40px;
             text-align: center;
-        }
-
-        #audioButton1 {
-            top: 70px; /* Pierwszy przycisk */
-        }
-
-        #audioButton2 {
-            top: 120px; /* Drugi przycisk pod pierwszym */
         }
 
         .audio-player:hover {
@@ -422,14 +415,9 @@
     <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
 </button>
 
-<!-- Pierwszy przycisk odtwarzania audio -->
-<button class="audio-player" onclick="toggleAudio()" id="audioButton1">
-    <img src="audio-icon.svg" alt="Play Audio" class="audio-icon" id="audioIcon1">
-</button>
-
-<!-- Drugi przycisk odtwarzania audio -->
-<button class="audio-player" onclick="toggleAudio()" id="audioButton2">
-    <img src="audio-icon.svg" alt="Play Audio" class="audio-icon" id="audioIcon2">
+<!-- Przycisk odtwarzania audio -->
+<button class="audio-player" onclick="toggleAudio()" id="audioButton">
+    <img src="audio-icon.svg" alt="Play Audio" class="audio-icon" id="audioIcon">
 </button>
 
 <!-- Element audio -->
@@ -455,7 +443,7 @@
             <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
             <a href="https://github.com/guziczak" target="_blank">GitHub</a> |
             <a href="#" id="cv-link" class="cv-link">View my CV</a> |
-            <a href="certificates.html" id="certificates-link" class="cv-link">View my Certificates</a>
+            <a href="certificates.html" id="certificates-link" class="cv-link">View my Certificates</a> <!-- Dodany link do certyfikatów -->
         </p>
     </div>
 
@@ -525,7 +513,7 @@
                     'phone': '<a href="tel:+48693069832">+48 693 069 832</a> | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
                     'location': 'Wrocław, Poland',
                     'cv-link': 'View my CV',
-                    'certificates-link': 'View my Certificates',
+                    'certificates-link': 'View my Certificates', // Dodany tekst dla języka angielskiego
                     'skills-title': 'Skills',
                     'skills-list': [
                         'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
@@ -550,7 +538,7 @@
                     'phone': '<a href="tel:+48693069832">+48 693 069 832</a> | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
                     'location': 'Wrocław, Polska',
                     'cv-link': 'Zobacz moje CV',
-                    'certificates-link': 'Zobacz moje Certyfikaty',
+                    'certificates-link': 'Zobacz moje Certyfikaty', // Dodany tekst dla języka polskiego
                     'skills-title': 'Umiejętności',
                     'skills-list': [
                         'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
@@ -577,7 +565,7 @@
             document.getElementById('phone').innerHTML = elements[lang]['phone'];
             document.getElementById('location').innerText = elements[lang]['location'];
             document.getElementById('cv-link').innerText = elements[lang]['cv-link'];
-            document.getElementById('certificates-link').innerText = elements[lang]['certificates-link'];
+            document.getElementById('certificates-link').innerText = elements[lang]['certificates-link']; // Aktualizacja tekstu dla certyfikatów
             document.getElementById('skills-title').innerText = elements[lang]['skills-title'];
             document.getElementById('skills-list').innerHTML = elements[lang]['skills-list'].map(item => `<li>${item}</li>`).join('');
             document.getElementById('achievements-title').innerText = elements[lang]['achievements-title'];
@@ -685,39 +673,25 @@
     // Funkcja do odtwarzania/pauzowania audio
     function toggleAudio() {
         const audioPlayer = document.getElementById('audioPlayer');
-        const audioIcon1 = document.getElementById('audioIcon1');
-        const audioIcon2 = document.getElementById('audioIcon2');
+        const audioIcon = document.getElementById('audioIcon');
 
         if (audioPlayer.paused) {
             audioPlayer.play();
-            audioIcon1.src = 'pause-icon.svg'; // Zmień ikonę na pauzę
-            audioIcon1.alt = 'Pause Audio';
-            audioIcon2.src = 'pause-icon.svg'; // Zmień ikonę na pauzę
-            audioIcon2.alt = 'Pause Audio';
+            audioIcon.src = 'pause-icon.svg'; // Zmień ikonę na pauzę
+            audioIcon.alt = 'Pause Audio';
         } else {
             audioPlayer.pause();
-            audioIcon1.src = 'audio-icon.svg'; // Zmień ikonę na odtwarzanie
-            audioIcon1.alt = 'Play Audio';
-            audioIcon2.src = 'audio-icon.svg'; // Zmień ikonę na odtwarzanie
-            audioIcon2.alt = 'Play Audio';
+            audioIcon.src = 'audio-icon.svg'; // Zmień ikonę na odtwarzanie
+            audioIcon.alt = 'Play Audio';
         }
     }
 
     // Obsługa zakończenia odtwarzania audio
     document.getElementById('audioPlayer').addEventListener('ended', function() {
-        const audioIcon1 = document.getElementById('audioIcon1');
-        const audioIcon2 = document.getElementById('audioIcon2');
-        audioIcon1.src = 'audio-icon.svg'; // Przywróć ikonę odtwarzania
-        audioIcon1.alt = 'Play Audio';
-        audioIcon2.src = 'audio-icon.svg'; // Przywróć ikonę odtwarzania
-        audioIcon2.alt = 'Play Audio';
+        const audioIcon = document.getElementById('audioIcon');
+        audioIcon.src = 'audio-icon.svg'; // Przywróć ikonę odtwarzania
+        audioIcon.alt = 'Play Audio';
     });
-
-    // Automatyczne odtwarzanie audio po załadowaniu strony
-    window.onload = function() {
-        const audioButton1 = document.getElementById('audioButton1');
-        audioButton1.click(); // Symuluj kliknięcie w pierwszy przycisk
-    };
 </script>
 
 </body>
