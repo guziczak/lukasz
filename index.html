@@ -715,14 +715,24 @@
 
     // Automatyczne odtwarzanie audio po rozpoczęciu scrollowania strony
     let isScrolling = false;
-    document.body.addEventListener('scroll', function() {
+    let scrollTimeout;
+
+    window.addEventListener('scroll', function() {
         const audioPlayer = document.getElementById('audioPlayer');
-        if (!isScrolling && audioPlayer.paused) {
+
+        // Jeśli audio jest zatrzymane i scrollowanie zostało wykryte
+        if (audioPlayer.paused && !isScrolling) {
             audioPlayer.play();
             document.getElementById('audioIcon').src = 'pause-icon.svg';
             document.getElementById('audioIcon').alt = 'Pause Audio';
             isScrolling = true; // Zapobiegaj wielokrotnemu uruchamianiu
         }
+
+        // Resetuj flagę scrollowania po zakończeniu scrollowania
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+            isScrolling = false;
+        }, 100); // Czas oczekiwania na zakończenie scrollowania (100 ms)
     });
 </script>
 
