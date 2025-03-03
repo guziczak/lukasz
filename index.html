@@ -712,6 +712,18 @@
             document.getElementById('audioIcon').alt = 'Pause Audio';
         }
     });
+
+    // Automatyczne odtwarzanie audio po rozpoczęciu scrollowania strony
+    let isScrolling = false;
+    document.body.addEventListener('scroll', function() {
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (!isScrolling && audioPlayer.paused) {
+            audioPlayer.play();
+            document.getElementById('audioIcon').src = 'pause-icon.svg';
+            document.getElementById('audioIcon').alt = 'Pause Audio';
+            isScrolling = true; // Zapobiegaj wielokrotnemu uruchamianiu
+        }
+    });
 </script>
 
 </body>
