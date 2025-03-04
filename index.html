@@ -669,12 +669,11 @@
         }, 1000);
     };
 
-    // Obsługa kliknięcia na link "View my CV" z opóźnieniem
+    // Obsługa kliknięcia na link "View my CV" bez preventDefault
     document.getElementById('cv-link').addEventListener('click', function(event) {
-        event.preventDefault();
         setTimeout(function() {
             window.location.href = 'cv.html';
-        }, 1000);
+        }, 1000); // Opóźnienie 1 sekunda (możesz je dostosować lub usunąć)
     });
 
     // Funkcja do pokazania przycisków
