@@ -685,9 +685,16 @@
         showButtons();
         const audioPlayer = document.getElementById('audioPlayer');
         if (audioPlayer.paused) {
-            audioPlayer.play();
-            document.getElementById('audioIcon').src = 'audio-on.svg';
-            document.getElementById('audioIcon').alt = 'Pause Audio';
+            audioPlayer.play()
+                .then(() => {
+                    document.getElementById('audioIcon').src = 'audio-on.svg';
+                    document.getElementById('audioIcon').alt = 'Pause Audio';
+                })
+                .catch((error) => {
+                    console.error("Błąd odtwarzania audio:", error);
+                    document.getElementById('audioIcon').src = 'audio-off.svg';
+                    document.getElementById('audioIcon').alt = 'Play Audio';
+                });
         }
     });
 
@@ -696,9 +703,16 @@
         showButtons();
         const audioPlayer = document.getElementById('audioPlayer');
         if (audioPlayer.paused) {
-            audioPlayer.play();
-            document.getElementById('audioIcon').src = 'audio-on.svg';
-            document.getElementById('audioIcon').alt = 'Pause Audio';
+            audioPlayer.play()
+                .then(() => {
+                    document.getElementById('audioIcon').src = 'audio-on.svg';
+                    document.getElementById('audioIcon').alt = 'Pause Audio';
+                })
+                .catch((error) => {
+                    console.error("Błąd odtwarzania audio:", error);
+                    document.getElementById('audioIcon').src = 'audio-off.svg';
+                    document.getElementById('audioIcon').alt = 'Play Audio';
+                });
         }
     });
 
@@ -711,10 +725,17 @@
         const audioPlayer = document.getElementById('audioPlayer');
 
         if (audioPlayer.paused && !isScrolling) {
-            audioPlayer.play();
-            document.getElementById('audioIcon').src = 'audio-on.svg';
-            document.getElementById('audioIcon').alt = 'Pause Audio';
-            isScrolling = true;
+            audioPlayer.play()
+                .then(() => {
+                    document.getElementById('audioIcon').src = 'audio-on.svg';
+                    document.getElementById('audioIcon').alt = 'Pause Audio';
+                    isScrolling = true;
+                })
+                .catch((error) => {
+                    console.error("Błąd odtwarzania audio:", error);
+                    document.getElementById('audioIcon').src = 'audio-off.svg';
+                    document.getElementById('audioIcon').alt = 'Play Audio';
+                });
         }
 
         clearTimeout(scrollTimeout);
@@ -729,10 +750,21 @@
         const audioIcon = document.getElementById('audioIcon');
 
         if (audioPlayer.paused) {
-            audioPlayer.play();
-            audioIcon.src = 'audio-on.svg';
-            audioIcon.alt = 'Pause Audio';
+            // Jeśli audio jest zatrzymane, zacznij odtwarzanie
+            audioPlayer.play()
+                .then(() => {
+                    // Jeśli odtwarzanie się udało, zmień ikonkę na audio-on.svg
+                    audioIcon.src = 'audio-on.svg';
+                    audioIcon.alt = 'Pause Audio';
+                })
+                .catch((error) => {
+                    // Jeśli odtwarzanie się nie udało, pozostaw ikonkę jako audio-off.svg
+                    console.error("Błąd odtwarzania audio:", error);
+                    audioIcon.src = 'audio-off.svg';
+                    audioIcon.alt = 'Play Audio';
+                });
         } else {
+            // Jeśli audio jest odtwarzane, zatrzymaj je i zmień ikonkę na audio-off.svg
             audioPlayer.pause();
             audioIcon.src = 'audio-off.svg';
             audioIcon.alt = 'Play Audio';
@@ -752,10 +784,20 @@
         const audioIcon = document.getElementById('audioIcon');
 
         if (audioIcon.src.includes('audio-off.svg')) {
+            // Jeśli ikonka to audio-off.svg, zresetuj audio i zacznij odtwarzanie
             audioPlayer.currentTime = 0; // Resetuj audio do początku
-            audioPlayer.play();
-            audioIcon.src = 'audio-on.svg';
-            audioIcon.alt = 'Pause Audio';
+            audioPlayer.play()
+                .then(() => {
+                    // Jeśli odtwarzanie się udało, zmień ikonkę na audio-on.svg
+                    audioIcon.src = 'audio-on.svg';
+                    audioIcon.alt = 'Pause Audio';
+                })
+                .catch((error) => {
+                    // Jeśli odtwarzanie się nie udało, pozostaw ikonkę jako audio-off.svg
+                    console.error("Błąd odtwarzania audio:", error);
+                    audioIcon.src = 'audio-off.svg';
+                    audioIcon.alt = 'Play Audio';
+                });
         }
     });
 </script>
