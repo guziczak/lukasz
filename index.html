@@ -406,6 +406,10 @@
             vertical-align: middle;
             filter: invert(1); /* Odwróć kolory ikony */
         }
+        /* Ukrycie przycisków na początku */
+        .theme-switcher, .audio-player {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -417,7 +421,7 @@
 
 <!-- Przycisk odtwarzania audio -->
 <button class="audio-player" onclick="toggleAudio()" id="audioButton">
-    <img src="audio-icon.svg" alt="Play Audio" class="audio-icon" id="audioIcon">
+    <img src="audio-off.svg" alt="Play Audio" class="audio-icon" id="audioIcon">
 </button>
 
 <!-- Element audio -->
@@ -513,7 +517,7 @@
                     'phone': '<a href="tel:+48693069832">+48 693 069 832</a> | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
                     'location': 'Wrocław, Poland',
                     'cv-link': 'View my CV',
-                    'certificates-link': 'View my Certificates', // Dodany tekst dla języka angielskiego
+                    'certificates-link': 'View my Certificates',
                     'skills-title': 'Skills',
                     'skills-list': [
                         'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
@@ -538,7 +542,7 @@
                     'phone': '<a href="tel:+48693069832">+48 693 069 832</a> | <a href="mailto:guziczak@pm.me">guziczak@pm.me</a>',
                     'location': 'Wrocław, Polska',
                     'cv-link': 'Zobacz moje CV',
-                    'certificates-link': 'Zobacz moje Certyfikaty', // Dodany tekst dla języka polskiego
+                    'certificates-link': 'Zobacz moje Certyfikaty',
                     'skills-title': 'Umiejętności',
                     'skills-list': [
                         'Java, Python, SQL, Spring Framework, React.js, TypeScript, Node.js',
@@ -565,7 +569,7 @@
             document.getElementById('phone').innerHTML = elements[lang]['phone'];
             document.getElementById('location').innerText = elements[lang]['location'];
             document.getElementById('cv-link').innerText = elements[lang]['cv-link'];
-            document.getElementById('certificates-link').innerText = elements[lang]['certificates-link']; // Aktualizacja tekstu dla certyfikatów
+            document.getElementById('certificates-link').innerText = elements[lang]['certificates-link'];
             document.getElementById('skills-title').innerText = elements[lang]['skills-title'];
             document.getElementById('skills-list').innerHTML = elements[lang]['skills-list'].map(item => `<li>${item}</li>`).join('');
             document.getElementById('achievements-title').innerText = elements[lang]['achievements-title'];
@@ -598,7 +602,7 @@
 
     // Sprawdź, czy w localStorage jest zapisany język
     const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-    changeLanguage(savedLanguage); // Zastosuj zapisany język
+    changeLanguage(savedLanguage);
 
     // Funkcje do modala
     function openModal() {
@@ -631,10 +635,10 @@
         // Zmiana ikonki w przycisku
         const themeIcon = document.getElementById('themeIcon');
         if (body.classList.contains('dark-mode')) {
-            themeIcon.src = 'sun.svg'; // Słoneczko dla trybu ciemnego
+            themeIcon.src = 'sun.svg';
             themeIcon.alt = 'Light Mode';
         } else {
-            themeIcon.src = 'moon.svg'; // Księżyc dla trybu jasnego
+            themeIcon.src = 'moon.svg';
             themeIcon.alt = 'Dark Mode';
         }
     }
@@ -658,16 +662,65 @@
 
             setTimeout(function() {
                 cvLink.classList.remove('hover-effect');
-            }, 200); // Po 200 ms usuwamy efekt
-        }, 1000); // Efekt zaczyna się po sekundzie
+            }, 200);
+        }, 1000);
     };
 
     // Obsługa kliknięcia na link "View my CV" z opóźnieniem
     document.getElementById('cv-link').addEventListener('click', function(event) {
-        event.preventDefault(); // Zatrzymaj domyślne zachowanie linku
+        event.preventDefault();
         setTimeout(function() {
-            window.location.href = 'cv.html'; // Przekierowanie po półtora sekundy
-        }, 1000); // Opóźnienie 1 sekundy
+            window.location.href = 'cv.html';
+        }, 1000);
+    });
+
+    // Funkcja do pokazania przycisków
+    function showButtons() {
+        document.querySelector('.theme-switcher').style.display = 'inline-flex';
+        document.querySelector('.audio-player').style.display = 'inline-flex';
+    }
+
+    // Obsługa kliknięcia w dowolne miejsce na stronie
+    document.body.addEventListener('click', function() {
+        showButtons();
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            document.getElementById('audioIcon').src = 'audio-on.svg';
+            document.getElementById('audioIcon').alt = 'Pause Audio';
+        }
+    });
+
+    // Obsługa przesunięcia palcem po ekranie dotykowym
+    document.body.addEventListener('touchstart', function() {
+        showButtons();
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            document.getElementById('audioIcon').src = 'audio-on.svg';
+            document.getElementById('audioIcon').alt = 'Pause Audio';
+        }
+    });
+
+    // Obsługa scrollowania strony
+    let isScrolling = false;
+    let scrollTimeout;
+
+    window.addEventListener('scroll', function() {
+        showButtons();
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        if (audioPlayer.paused && !isScrolling) {
+            audioPlayer.play();
+            document.getElementById('audioIcon').src = 'audio-on.svg';
+            document.getElementById('audioIcon').alt = 'Pause Audio';
+            isScrolling = true;
+        }
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+            isScrolling = false;
+        }, 100);
     });
 
     // Funkcja do odtwarzania/pauzowania audio
@@ -677,11 +730,11 @@
 
         if (audioPlayer.paused) {
             audioPlayer.play();
-            audioIcon.src = 'pause-icon.svg'; // Zmień ikonę na pauzę
+            audioIcon.src = 'audio-on.svg';
             audioIcon.alt = 'Pause Audio';
         } else {
             audioPlayer.pause();
-            audioIcon.src = 'audio-icon.svg'; // Zmień ikonę na odtwarzanie
+            audioIcon.src = 'audio-off.svg';
             audioIcon.alt = 'Play Audio';
         }
     }
@@ -689,50 +742,21 @@
     // Obsługa zakończenia odtwarzania audio
     document.getElementById('audioPlayer').addEventListener('ended', function() {
         const audioIcon = document.getElementById('audioIcon');
-        audioIcon.src = 'audio-icon.svg'; // Przywróć ikonę odtwarzania
+        audioIcon.src = 'audio-off.svg';
         audioIcon.alt = 'Play Audio';
     });
 
-    // Automatyczne odtwarzanie audio po kliknięciu w dowolne miejsce na stronie
-    document.body.addEventListener('click', function() {
+    // Resetowanie audio po kliknięciu w przycisk, gdy audio jest wyłączone
+    document.getElementById('audioButton').addEventListener('click', function() {
         const audioPlayer = document.getElementById('audioPlayer');
-        if (audioPlayer.paused) {
+        const audioIcon = document.getElementById('audioIcon');
+
+        if (audioIcon.src.includes('audio-off.svg')) {
+            audioPlayer.currentTime = 0; // Resetuj audio do początku
             audioPlayer.play();
-            document.getElementById('audioIcon').src = 'pause-icon.svg';
-            document.getElementById('audioIcon').alt = 'Pause Audio';
+            audioIcon.src = 'audio-on.svg';
+            audioIcon.alt = 'Pause Audio';
         }
-    });
-
-    // Automatyczne odtwarzanie audio po przesunięciu palcem po ekranie dotykowym
-    document.body.addEventListener('touchstart', function() {
-        const audioPlayer = document.getElementById('audioPlayer');
-        if (audioPlayer.paused) {
-            audioPlayer.play();
-            document.getElementById('audioIcon').src = 'pause-icon.svg';
-            document.getElementById('audioIcon').alt = 'Pause Audio';
-        }
-    });
-
-    // Automatyczne odtwarzanie audio po rozpoczęciu scrollowania strony
-    let isScrolling = false;
-    let scrollTimeout;
-
-    window.addEventListener('scroll', function() {
-        const audioPlayer = document.getElementById('audioPlayer');
-
-        // Jeśli audio jest zatrzymane i scrollowanie zostało wykryte
-        if (audioPlayer.paused && !isScrolling) {
-            audioPlayer.play();
-            document.getElementById('audioIcon').src = 'pause-icon.svg';
-            document.getElementById('audioIcon').alt = 'Pause Audio';
-            isScrolling = true; // Zapobiegaj wielokrotnemu uruchamianiu
-        }
-
-        // Resetuj flagę scrollowania po zakończeniu scrollowania
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(function() {
-            isScrolling = false;
-        }, 100); // Czas oczekiwania na zakończenie scrollowania (100 ms)
     });
 </script>
 
