@@ -447,7 +447,7 @@
             <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
             <a href="https://github.com/guziczak" target="_blank">GitHub</a> |
             <a href="cv.html" id="cv-link" class="cv-link">View my CV</a> |
-            <a href="certificates.html" id="certificates-link" class="cv-link">View my Certificates</a> <!-- Dodany link do certyfikatów -->
+            <a href="certificates.html" id="certificates-link" class="cv-link">View my Certificates</a>
         </p>
     </div>
 
@@ -492,10 +492,11 @@
 
 <script>
     let isFirstLoad = true;
+    let scrollListenerAdded = false; // Flaga sprawdzająca, czy listener został już dodany
 
     // Funkcja do zmiany języka
     function changeLanguage(lang) {
-        localStorage.setItem('selectedLanguage', lang); // Zapisz wybrany język do localStorage
+        localStorage.setItem('selectedLanguage', lang);
         applyLanguage(lang);
     }
 
@@ -720,7 +721,7 @@
     let isScrolling = false;
     let scrollTimeout;
 
-    window.addEventListener('scroll', function() {
+    function handleScroll() {
         showButtons();
         const audioPlayer = document.getElementById('audioPlayer');
 
@@ -742,7 +743,16 @@
         scrollTimeout = setTimeout(function() {
             isScrolling = false;
         }, 100);
-    });
+
+        // Usuń listenera po pierwszym wywołaniu
+        if (!scrollListenerAdded) {
+            window.removeEventListener('scroll', handleScroll);
+            scrollListenerAdded = true;
+        }
+    }
+
+    // Dodaj listenera scrollowania
+    window.addEventListener('scroll', handleScroll);
 
     // Funkcja do odtwarzania/pauzowania audio
     function toggleAudio() {
@@ -750,21 +760,17 @@
         const audioIcon = document.getElementById('audioIcon');
 
         if (audioPlayer.paused) {
-            // Jeśli audio jest zatrzymane, zacznij odtwarzanie
             audioPlayer.play()
                 .then(() => {
-                    // Jeśli odtwarzanie się udało, zmień ikonkę na audio-on.svg
                     audioIcon.src = 'audio-on.svg';
                     audioIcon.alt = 'Pause Audio';
                 })
                 .catch((error) => {
-                    // Jeśli odtwarzanie się nie udało, pozostaw ikonkę jako audio-off.svg
                     console.error("Błąd odtwarzania audio:", error);
                     audioIcon.src = 'audio-off.svg';
                     audioIcon.alt = 'Play Audio';
                 });
         } else {
-            // Jeśli audio jest odtwarzane, zatrzymaj je i zmień ikonkę na audio-off.svg
             audioPlayer.pause();
             audioIcon.src = 'audio-off.svg';
             audioIcon.alt = 'Play Audio';
@@ -784,21 +790,17 @@
         const audioIcon = document.getElementById('audioIcon');
 
         if (audioIcon.src.includes('audio-on.svg')) {
-            // Jeśli ikonka to audio-on.svg, zatrzymaj audio
             audioPlayer.pause();
             audioIcon.src = 'audio-off.svg';
             audioIcon.alt = 'Play Audio';
         } else {
-            // Jeśli ikonka to audio-off.svg, zresetuj audio i zacznij odtwarzanie
-            audioPlayer.currentTime = 0; // Resetuj audio do początku
+            audioPlayer.currentTime = 0;
             audioPlayer.play()
                 .then(() => {
-                    // Jeśli odtwarzanie się udało, zmień ikonkę na audio-on.svg
                     audioIcon.src = 'audio-on.svg';
                     audioIcon.alt = 'Pause Audio';
                 })
                 .catch((error) => {
-                    // Jeśli odtwarzanie się nie udało, pozostaw ikonkę jako audio-off.svg
                     console.error("Błąd odtwarzania audio:", error);
                     audioIcon.src = 'audio-off.svg';
                     audioIcon.alt = 'Play Audio';
