@@ -446,7 +446,7 @@
         <p>
             <a href="https://linkedin.com/in/guziczak" target="_blank">LinkedIn</a> | 
             <a href="https://github.com/guziczak" target="_blank">GitHub</a> |
-            <a href="#" id="cv-link" class="cv-link">View my CV</a> |
+            <a href="cv.html" id="cv-link" class="cv-link">View my CV</a> |
             <a href="certificates.html" id="certificates-link" class="cv-link">View my Certificates</a> <!-- Dodany link do certyfikatów -->
         </p>
     </div>
@@ -778,12 +778,17 @@
         audioIcon.alt = 'Play Audio';
     });
 
-    // Resetowanie audio po kliknięciu w przycisk, gdy audio jest wyłączone
+    // Obsługa kliknięcia w przycisk audio
     document.getElementById('audioButton').addEventListener('click', function() {
         const audioPlayer = document.getElementById('audioPlayer');
         const audioIcon = document.getElementById('audioIcon');
 
-        if (audioIcon.src.includes('audio-off.svg')) {
+        if (audioIcon.src.includes('audio-on.svg')) {
+            // Jeśli ikonka to audio-on.svg, zatrzymaj audio
+            audioPlayer.pause();
+            audioIcon.src = 'audio-off.svg';
+            audioIcon.alt = 'Play Audio';
+        } else {
             // Jeśli ikonka to audio-off.svg, zresetuj audio i zacznij odtwarzanie
             audioPlayer.currentTime = 0; // Resetuj audio do początku
             audioPlayer.play()
