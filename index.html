@@ -492,7 +492,9 @@
 
 <script>
     let isFirstLoad = true;
-    let scrollListenerAdded = false; // Flaga sprawdzająca, czy listener został już dodany
+    let scrollListenerAdded = false; // Flaga sprawdzająca, czy listener scrollowania został już dodany
+    let clickListenerAdded = false; // Flaga sprawdzająca, czy listener kliknięcia został już dodany
+    let touchListenerAdded = false; // Flaga sprawdzająca, czy listener touchstart został już dodany
 
     // Funkcja do zmiany języka
     function changeLanguage(lang) {
@@ -682,7 +684,7 @@
     }
 
     // Obsługa kliknięcia w dowolne miejsce na stronie
-    document.body.addEventListener('click', function() {
+    function handleClick() {
         showButtons();
         const audioPlayer = document.getElementById('audioPlayer');
         if (audioPlayer.paused) {
@@ -697,10 +699,19 @@
                     document.getElementById('audioIcon').alt = 'Play Audio';
                 });
         }
-    });
+
+        // Usuń listenera po pierwszym wywołaniu
+        if (!clickListenerAdded) {
+            document.body.removeEventListener('click', handleClick);
+            clickListenerAdded = true;
+        }
+    }
+
+    // Dodaj listenera kliknięcia
+    document.body.addEventListener('click', handleClick);
 
     // Obsługa przesunięcia palcem po ekranie dotykowym
-    document.body.addEventListener('touchstart', function() {
+    function handleTouch() {
         showButtons();
         const audioPlayer = document.getElementById('audioPlayer');
         if (audioPlayer.paused) {
@@ -715,7 +726,16 @@
                     document.getElementById('audioIcon').alt = 'Play Audio';
                 });
         }
-    });
+
+        // Usuń listenera po pierwszym wywołaniu
+        if (!touchListenerAdded) {
+            document.body.removeEventListener('touchstart', handleTouch);
+            touchListenerAdded = true;
+        }
+    }
+
+    // Dodaj listenera touchstart
+    document.body.addEventListener('touchstart', handleTouch);
 
     // Obsługa scrollowania strony
     let isScrolling = false;
@@ -759,7 +779,8 @@
         const audioPlayer = document.getElementById('audioPlayer');
         const audioIcon = document.getElementById('audioIcon');
 
-        if (audioPlayer.paused) {
+        if (audioPlayer.paused || audioPlayer.ended) {
+            audioPlayer.currentTime = 0; // Przewiń audio do początku
             audioPlayer.play()
                 .then(() => {
                     audioIcon.src = 'audio-on.svg';
@@ -777,35 +798,16 @@
         }
     }
 
+    // Obsługa kliknięcia w przycisk audio
+    document.getElementById('audioButton').addEventListener('click', function() {
+        toggleAudio();
+    });
+
     // Obsługa zakończenia odtwarzania audio
     document.getElementById('audioPlayer').addEventListener('ended', function() {
         const audioIcon = document.getElementById('audioIcon');
         audioIcon.src = 'audio-off.svg';
         audioIcon.alt = 'Play Audio';
-    });
-
-    // Obsługa kliknięcia w przycisk audio
-    document.getElementById('audioButton').addEventListener('click', function() {
-        const audioPlayer = document.getElementById('audioPlayer');
-        const audioIcon = document.getElementById('audioIcon');
-
-        if (audioIcon.src.includes('audio-on.svg')) {
-            audioPlayer.pause();
-            audioIcon.src = 'audio-off.svg';
-            audioIcon.alt = 'Play Audio';
-        } else {
-            audioPlayer.currentTime = 0;
-            audioPlayer.play()
-                .then(() => {
-                    audioIcon.src = 'audio-on.svg';
-                    audioIcon.alt = 'Pause Audio';
-                })
-                .catch((error) => {
-                    console.error("Błąd odtwarzania audio:", error);
-                    audioIcon.src = 'audio-off.svg';
-                    audioIcon.alt = 'Play Audio';
-                });
-        }
     });
 </script>
 
