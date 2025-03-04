@@ -683,6 +683,65 @@
     // Obsługa kliknięcia w dowolne miejsce na stronie
     document.body.addEventListener('click', function() {
         showButtons();
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer.paused) {
+            audioPlayer.play()
+                .then(() => {
+                    document.getElementById('audioIcon').src = 'audio-on.svg';
+                    document.getElementById('audioIcon').alt = 'Pause Audio';
+                })
+                .catch((error) => {
+                    console.error("Błąd odtwarzania audio:", error);
+                    document.getElementById('audioIcon').src = 'audio-off.svg';
+                    document.getElementById('audioIcon').alt = 'Play Audio';
+                });
+        }
+    });
+
+    // Obsługa przesunięcia palcem po ekranie dotykowym
+    document.body.addEventListener('touchstart', function() {
+        showButtons();
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer.paused) {
+            audioPlayer.play()
+                .then(() => {
+                    document.getElementById('audioIcon').src = 'audio-on.svg';
+                    document.getElementById('audioIcon').alt = 'Pause Audio';
+                })
+                .catch((error) => {
+                    console.error("Błąd odtwarzania audio:", error);
+                    document.getElementById('audioIcon').src = 'audio-off.svg';
+                    document.getElementById('audioIcon').alt = 'Play Audio';
+                });
+        }
+    });
+
+    // Obsługa scrollowania strony
+    let isScrolling = false;
+    let scrollTimeout;
+
+    window.addEventListener('scroll', function() {
+        showButtons();
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        if (audioPlayer.paused && !isScrolling) {
+            audioPlayer.play()
+                .then(() => {
+                    document.getElementById('audioIcon').src = 'audio-on.svg';
+                    document.getElementById('audioIcon').alt = 'Pause Audio';
+                    isScrolling = true;
+                })
+                .catch((error) => {
+                    console.error("Błąd odtwarzania audio:", error);
+                    document.getElementById('audioIcon').src = 'audio-off.svg';
+                    document.getElementById('audioIcon').alt = 'Play Audio';
+                });
+        }
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+            isScrolling = false;
+        }, 100);
     });
 
     // Funkcja do odtwarzania/pauzowania audio
@@ -708,17 +767,34 @@
         }
     }
 
-    // Obsługa kliknięcia w przycisk audio
-    document.getElementById('audioButton').addEventListener('click', function(event) {
-        event.stopPropagation(); // Zapobiega propagacji zdarzenia do elementu nadrzędnego
-        toggleAudio();
-    });
-
     // Obsługa zakończenia odtwarzania audio
     document.getElementById('audioPlayer').addEventListener('ended', function() {
         const audioIcon = document.getElementById('audioIcon');
         audioIcon.src = 'audio-off.svg';
         audioIcon.alt = 'Play Audio';
+    });
+
+    // Obsługa kliknięcia w przycisk audio
+    document.getElementById('audioButton').addEventListener('click', function() {
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioIcon = document.getElementById('audioIcon');
+
+        if (audioPlayer.paused) {
+            audioPlayer.play()
+                .then(() => {
+                    audioIcon.src = 'audio-on.svg';
+                    audioIcon.alt = 'Pause Audio';
+                })
+                .catch((error) => {
+                    console.error("Błąd odtwarzania audio:", error);
+                    audioIcon.src = 'audio-off.svg';
+                    audioIcon.alt = 'Play Audio';
+                });
+        } else {
+            audioPlayer.pause();
+            audioIcon.src = 'audio-off.svg';
+            audioIcon.alt = 'Play Audio';
+        }
     });
 </script>
 
