@@ -766,41 +766,41 @@
     // Dodaj listenera scrollowania
     window.addEventListener('scroll', handleScroll);
 
-    // Funkcja do odtwarzania/pauzowania audio
-    function toggleAudio() {
-        const audioPlayer = document.getElementById('audioPlayer');
-        const audioIcon = document.getElementById('audioIcon');
+// Funkcja do odtwarzania/pauzowania audio
+function toggleAudio() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const audioIcon = document.getElementById('audioIcon');
 
-        if (audioPlayer.paused || audioPlayer.ended) {
-            audioPlayer.currentTime = 0; // Przewiń audio do początku
-            audioPlayer.play()
-                .then(() => {
-                    audioIcon.src = 'audio-on.svg';
-                    audioIcon.alt = 'Pause Audio';
-                })
-                .catch((error) => {
-                    console.error("Błąd odtwarzania audio:", error);
-                    audioIcon.src = 'audio-off.svg';
-                    audioIcon.alt = 'Play Audio';
-                });
-        } else {
-            audioPlayer.pause();
-            audioIcon.src = 'audio-off.svg';
-            audioIcon.alt = 'Play Audio';
-        }
-    }
-
-    // Obsługa kliknięcia w przycisk audio
-    document.getElementById('audioButton').addEventListener('click', function() {
-        toggleAudio();
-    });
-
-    // Obsługa zakończenia odtwarzania audio
-    document.getElementById('audioPlayer').addEventListener('ended', function() {
-        const audioIcon = document.getElementById('audioIcon');
+    if (audioPlayer.paused || audioPlayer.ended) {
+        audioPlayer.play()
+            .then(() => {
+                audioIcon.src = 'audio-on.svg';
+                audioIcon.alt = 'Pause Audio';
+            })
+            .catch((error) => {
+                console.error("Błąd odtwarzania audio:", error);
+                audioIcon.src = 'audio-off.svg';
+                audioIcon.alt = 'Play Audio';
+            });
+    } else {
+        audioPlayer.pause();
         audioIcon.src = 'audio-off.svg';
         audioIcon.alt = 'Play Audio';
-    });
+    }
+}
+
+// Obsługa kliknięcia w przycisk audio
+document.getElementById('audioButton').addEventListener('click', function() {
+    toggleAudio();
+});
+
+// Obsługa zakończenia odtwarzania audio
+document.getElementById('audioPlayer').addEventListener('ended', function() {
+    const audioIcon = document.getElementById('audioIcon');
+    audioIcon.src = 'audio-off.svg';
+    audioIcon.alt = 'Play Audio';
+});
+    
 </script>
 
 </body>
