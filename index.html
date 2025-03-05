@@ -767,26 +767,28 @@
     window.addEventListener('scroll', handleScroll);
 
 // Funkcja do odtwarzania/pauzowania audio
-function toggleAudio() {
-    const audioPlayer = document.getElementById('audioPlayer');
-    const audioIcon = document.getElementById('audioIcon');
-
-    if (audioPlayer.paused || audioPlayer.ended) {
-        audioPlayer.play()
-            .then(() => {
-                audioIcon.src = 'audio-on.svg';
-                audioIcon.alt = 'Pause Audio';
-            })
-            .catch((error) => {
-                console.error("Błąd odtwarzania audio:", error);
-                audioIcon.src = 'audio-off.svg';
-                audioIcon.alt = 'Play Audio';
-            });
-    } else {
-        audioPlayer.pause();
-        audioIcon.src = 'audio-off.svg';
-        audioIcon.alt = 'Play Audio';
-    }
+769| // Funkcja do odtwarzania/pauzowania audio
+770| function toggleAudio() {
+771|     const audioPlayer = document.getElementById('audioPlayer');
+772|     const audioIcon = document.getElementById('audioIcon');
+773| 
+774|     if (audioPlayer.paused || audioPlayer.ended) {
+775|         audioPlayer.play()
+776|             .then(() => {
+777|                 audioIcon.src = 'audio-on.svg';
+778|                 audioIcon.alt = 'Pause Audio';
+779|             })
+780|             .catch((error) => {
+781|                 console.error("Błąd odtwarzania audio:", error);
+782|                 audioIcon.src = 'audio-off.svg';
+783|                 audioIcon.alt = 'Play Audio';
+784|             });
+785|     } else {
+786|         audioPlayer.pause();
+787|         audioIcon.src = 'audio-off.svg';
+788|         audioIcon.alt = 'Play Audio';
+789|     }
+790| }
 }
 
 // Obsługa kliknięcia w przycisk audio
