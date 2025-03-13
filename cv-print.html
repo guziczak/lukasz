@@ -57,9 +57,9 @@
 <div class="container">
     <!-- Kontener na BMP -->
     <div class="svg-viewer">
-        <img id="svg1" src="cv_1_en.png" alt="CV Page 1">
+        <img id="svg1" src="cv_en/Slide1.PNG" alt="CV Page 1">
         <div class="page-break"></div> <!-- Dodany element do wymuszenia podziału strony -->
-        <img id="svg2" src="cv_2_en.png" alt="CV Page 2">
+        <img id="svg2" src="cv_en/Slide2.PNG" alt="CV Page 2">
     </div>
 </div>
 
@@ -87,11 +87,11 @@
         const svg2 = document.getElementById('svg2');
 
         if (lang === 'en') {
-            svg1.src = 'cv_1_en.png';
-            svg2.src = 'cv_2_en.png';
+            svg1.src = 'cv_en/Slide1.PNG';
+            svg2.src = 'cv_en/Slide2.PNG';
         } else if (lang === 'pl') {
-            svg1.src = 'cv_1_pl.png';
-            svg2.src = 'cv_2_pl.png';
+            svg1.src = 'cv_pl/Slide1.PNG';
+            svg2.src = 'cv_pl/Slide2.PNG';
         }
     }
 
