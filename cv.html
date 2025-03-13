@@ -292,15 +292,15 @@
         const cvTitle = document.getElementById('cv-title');
 
         if (lang === 'en') {
-            svg1.src = 'cv_1_en.png';
-            svg2.src = 'cv_2_en.png';
+            svg1.src = 'cv_en/Slide1.PNG';
+            svg2.src = 'cv_en/Slide2.PNG';
             pdfIframe.src = 'cv_en.pdf';
             downloadLink.setAttribute('href', 'cv_en.pdf');
             downloadLink.setAttribute('download', 'cv_en.pdf');
             cvTitle.innerText = 'Curriculum Vitae';
         } else if (lang === 'pl') {
-            svg1.src = 'cv_1_pl.png';
-            svg2.src = 'cv_2_pl.png';
+            svg1.src = 'cv_pl/Slide1.PNG';
+            svg2.src = 'cv_pl/Slide2.PNG';
             pdfIframe.src = 'cv_pl.pdf';
             downloadLink.setAttribute('href', 'cv_pl.pdf');
             downloadLink.setAttribute('download', 'cv_pl.pdf');
@@ -322,14 +322,14 @@
         let currentSvg2 = svg2.src;
 
         if (direction === 'next') {
-            if (currentSvg1.includes('cv_1_en.png') || currentSvg1.includes('cv_1_pl.png')) {
-                svg1.src = currentSvg1.replace('cv_1_', 'cv_2_');
-                svg2.src = currentSvg2.replace('cv_2_', 'cv_1_');
+            if (currentSvg1.includes('Slide1.PNG')) {
+                svg1.src = currentSvg1.replace('Slide1.PNG', 'Slide2.PNG');
+                svg2.src = currentSvg2.replace('Slide2.PNG', 'Slide1.PNG');
             }
         } else if (direction === 'prev') {
-            if (currentSvg1.includes('cv_2_en.png') || currentSvg1.includes('cv_2_pl.png')) {
-                svg1.src = currentSvg1.replace('cv_2_', 'cv_1_');
-                svg2.src = currentSvg2.replace('cv_1_', 'cv_2_');
+            if (currentSvg1.includes('Slide2.PNG')) {
+                svg1.src = currentSvg1.replace('Slide2.PNG', 'Slide1.PNG');
+                svg2.src = currentSvg2.replace('Slide1.PNG', 'Slide2.PNG');
             }
         }
     }
