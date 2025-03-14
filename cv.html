@@ -341,12 +341,12 @@
         const fileName = this.getAttribute('download') || 'cv_en.pdf';
         
         // Tworzy tymczasowy element <a> do pobrania pliku
-        // const tempLink = document.createElement('a');
-        // tempLink.href = link;
-        // tempLink.download = fileName;
-        // document.body.appendChild(tempLink);
-        // tempLink.click();
-        // document.body.removeChild(tempLink);
+        const tempLink = document.createElement('a');
+        tempLink.href = link;
+        tempLink.download = fileName;
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
     });
 
     document.addEventListener('DOMContentLoaded', function() {
