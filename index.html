@@ -368,37 +368,51 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            justify-content: center; /* Wyśrodkowanie ikonek */
         }
 
         .games li {
-            flex: 1 1 calc(33.333% - 20px);
+            flex: 0 0 auto; /* Nie rozciągaj ikonek */
             text-align: center;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             background-color: #f9f9f9;
-            padding: 10px;
+            padding: 15px;
             border-radius: 10px;
             border-left: 5px solid #0073e6;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Cień dla ikonki */
         }
 
         .games li:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px) scale(1.05); /* Lekkie przesunięcie w górę i powiększenie */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Większy cień przy hover */
         }
 
         .games li img {
             width: 100px; /* Zmniejszona szerokość ikonki */
             height: 100px; /* Zmniejszona wysokość ikonki */
             border-radius: 10px;
+            transition: transform 0.3s ease; /* Płynne przejście dla ikonki */
         }
 
         .games li p {
             margin-top: 10px;
             font-size: 1.1em;
             color: #333;
+            transition: color 0.3s ease; /* Płynne przejście dla tekstu */
+        }
+
+        body.dark-mode .games li {
+            background-color: #2d2d2d;
+            border-left: 5px solid #005bb5;
         }
 
         body.dark-mode .games li p {
             color: #e0e0e0;
+        }
+
+        body.dark-mode .games li:hover {
+            box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1); /* Cień w trybie ciemnym */
         }
     </style>
 </head>
@@ -458,7 +472,7 @@
     <div class="games">
         <h2 id="games-title">Games</h2>
         <ul id="games-list">
-            <li onclick="window.location.href='https://guziczak.github.io/games/index.html'">
+            <li onclick="window.location.href='https://guziczak.github.io/games/cosmic-shooter'">
                 <img src="resources/icons/cosmic-shooter.svg" alt="Cosmic Shooter">
                 <p>Cosmic Shooter</p>
             </li>
