@@ -375,6 +375,10 @@
             text-align: center;
             cursor: pointer;
             transition: transform 0.3s ease;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 10px;
+            border-left: 5px solid #0073e6;
         }
 
         .games li:hover {
@@ -382,9 +386,19 @@
         }
 
         .games li img {
-            width: 100%;
-            height: auto;
+            width: 100px; /* Zmniejszona szerokość ikonki */
+            height: 100px; /* Zmniejszona wysokość ikonki */
             border-radius: 10px;
+        }
+
+        .games li p {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        body.dark-mode .games li p {
+            color: #e0e0e0;
         }
     </style>
 </head>
@@ -444,7 +458,7 @@
     <div class="games">
         <h2 id="games-title">Games</h2>
         <ul id="games-list">
-            <li onclick="window.location.href='cosmic-shooter.html'">
+            <li onclick="window.location.href='https://guziczak.github.io/games/index.html'">
                 <img src="resources/icons/cosmic-shooter.svg" alt="Cosmic Shooter">
                 <p>Cosmic Shooter</p>
             </li>
