@@ -488,22 +488,33 @@
     </div>
 
     <!-- Sekcja gier -->
-    <div class="games">
-        <h2 id="games-title">My Games</h2>
-        <p id="games-description">Check out the games I've developed. Click on a game to play it or visit the repository to see the code.</p>
-        <ul id="games-list">
-            <li onclick="window.location.href='https://guziczak.github.io/games/cosmic-shooter'">
-                <img src="resources/icons/cosmic-shooter.svg" alt="Cosmic Shooter">
-                <p>Cosmic Shooter</p>
-                <a href="https://github.com/guziczak/games/blob/main/cosmic-shooter/index.html" class="repo-link" onclick="event.stopPropagation()">View Code</a>
-            </li>
-            <li onclick="window.location.href='https://guziczak.github.io/games/speed-dash'">
-                <img src="resources/icons/speed-dash.svg" alt="Speed Dash">
-                <p>Speed Dash</p>
-                <a href="https://github.com/guziczak/games/blob/main/speed-dash/index.html" class="repo-link" onclick="event.stopPropagation()">View Code</a>
-            </li>
-        </ul>
-    </div>
+<div class="games">
+    <h2 id="games-title">My Games</h2>
+    <p id="games-description">Check out the games I've developed. Click on a game to play it or visit the repository to see the code.</p>
+    <ul id="games-list">
+        <li onclick="window.location.href='https://guziczak.github.io/games/cosmic-shooter'">
+            <img src="resources/icons/cosmic-shooter.svg" alt="Cosmic Shooter">
+            <p>Cosmic Shooter</p>
+            <a href="https://github.com/guziczak/games/blob/main/cosmic-shooter/index.html" class="repo-link" onclick="event.stopPropagation()">View Code</a>
+        </li>
+        <li onclick="window.location.href='https://guziczak.github.io/games/speed-dash'">
+            <img src="resources/icons/speed-dash.svg" alt="Speed Dash">
+            <p>Speed Dash</p>
+            <a href="https://github.com/guziczak/games/blob/main/speed-dash/index.html" class="repo-link" onclick="event.stopPropagation()">View Code</a>
+        </li>
+        <!-- Dodaj nowe gry -->
+        <li style="opacity: 0.6; cursor: not-allowed;">
+            <img src="resources/icons/sky-dodge.svg" alt="Sky Dodge">
+            <p>Sky Dodge</p>
+            <p style="color: #777; font-size: 0.9em;">Coming Soon</p>
+        </li>
+        <li style="opacity: 0.6; cursor: not-allowed;">
+            <img src="resources/icons/snake-quest.svg" alt="Snake Quest">
+            <p>Snake Quest</p>
+            <p style="color: #777; font-size: 0.9em;">Coming Soon</p>
+        </li>
+    </ul>
+</div>
 
     <div class="contact-form">
         <button onclick="openModal()" id="contact-button">Contact me</button>
