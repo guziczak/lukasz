@@ -1,0 +1,31 @@
+category,name,level
+Programming Languages,Java,95
+Programming Languages,Python,90
+Programming Languages,JavaScript / TypeScript,92
+Programming Languages,SQL,88
+Programming Languages,HTML/CSS,95
+Frameworks & Libraries,Spring Framework,90
+Frameworks & Libraries,React.js,88
+Frameworks & Libraries,Node.js,85
+Frameworks & Libraries,Django,80
+Frameworks & Libraries,Express.js,87
+Cloud & DevOps,AWS,82
+Cloud & DevOps,Azure,78
+Cloud & DevOps,Docker,85
+Cloud & DevOps,Kubernetes,80
+Cloud & DevOps,CI/CD (Jenkins GitHub Actions),85
+Databases,PostgreSQL,90
+Databases,MongoDB,85
+Databases,MySQL/MariaDB,92
+Databases,Redis,80
+Databases,Elasticsearch,75
+Architecture & Methodologies,Microservices,88
+Architecture & Methodologies,REST APIs,95
+Architecture & Methodologies,GraphQL,80
+Architecture & Methodologies,Agile/Scrum,90
+Architecture & Methodologies,Test-Driven Development,85
+AI & Tools,ChatGPT,90
+AI & Tools,DeepSeek,85
+AI & Tools,Copilot,88
+AI & Tools,Data Analysis,82
+AI & Tools,Machine Learning Basics,75

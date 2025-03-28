@@ -1,0 +1,6 @@
+title,description,imageSrc,playLink,codeLink
+Cosmic Shooter,A space-themed shooter game with multiple levels and power-ups.,resources/icons/cosmic-shooter.svg,https://guziczak.github.io/games/cosmic-shooter,https://github.com/guziczak/games/blob/main/cosmic-shooter/index.html
+Speed Dash,A fast-paced racing game with multiple tracks and vehicles.,resources/icons/speed-dash.svg,https://guziczak.github.io/games/speed-dash,https://github.com/guziczak/games/blob/main/speed-dash/index.html
+Sky Dodge,An aerial dodge game with increasing difficulty and obstacles.,resources/icons/sky-dodge.svg,https://guziczak.github.io/games/sky-dodge,https://github.com/guziczak/games/blob/main/sky-dodge/index.html
+Snake Quest,A modern take on the classic snake game with special power-ups.,resources/icons/snake-quest.svg,https://guziczak.github.io/games/snake-quest,https://github.com/guziczak/games/blob/main/snake-quest/index.html
+Icy Tower,A vertical platformer game with random platforms and collectibles.,resources/icons/icy-tower.svg,https://guziczak.github.io/games/icy-tower,https://github.com/guziczak/games/blob/main/icy-tower/index.html
