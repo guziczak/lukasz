@@ -5,55 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Certificates</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #0070f3;
+            --primary-dark: #0050a0;
+            --secondary-color: #34d399;
+            --tertiary-color: #8b5cf6;
+            --light-bg: #f9fafb;
+            --dark-bg: #111827;
+            --light-card: #ffffff;
+            --dark-card: #1f2937;
+            --light-text: #1f2937;
+            --dark-text: #f3f4f6;
+            --gray-text: #6b7280;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --dark-card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --heading-font: 'Poppins', 'Segoe UI', sans-serif;
+            --body-font: 'Inter', 'Roboto', 'Arial', sans-serif;
+            --transition-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: var(--body-font);
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: var(--light-bg);
+            color: var(--light-text);
             overflow: hidden;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body.dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: var(--light-card);
+            box-shadow: var(--card-shadow);
             text-align: center;
             position: relative;
             height: 100vh;
             overflow: hidden;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            transition: var(--transition);
             box-sizing: border-box;
         }
 
         body.dark-mode .container {
-            background-color: #1e1e1e;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            background-color: var(--dark-card);
+            box-shadow: var(--dark-card-shadow);
         }
 
         header {
             text-align: center;
             padding: 20px 0;
             margin-bottom: 10px;
-            background-color: rgba(0, 115, 230, 0.8);
+            background-color: var(--primary-color);
             color: white;
-            border-radius: 10px;
+            border-radius: var(--border-radius);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            transition: var(--transition);
             position: relative;
             z-index: 10;
         }
 
         body.dark-mode header {
-            background-color: rgba(0, 91, 181, 0.8);
+            background-color: var(--primary-dark);
             box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
         }
 
@@ -61,6 +84,7 @@
             margin: 0;
             font-size: 2.5em;
             font-weight: bold;
+            font-family: var(--heading-font);
         }
 
         .certificates-container {
@@ -76,27 +100,78 @@
         .certificate-row {
             display: flex;
             justify-content: space-between;
-            gap: 5px;
+            gap: 15px;
             width: 100%;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
             box-sizing: border-box;
+            padding: 0 10px;
         }
 
         .certificate {
             flex: 1;
             height: auto;
             border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 12px;
+            font-size: 14px;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             min-width: 0;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .certificate {
+            border-color: #444;
+            box-shadow: var(--dark-card-shadow);
+        }
+
+        .certificate.animate {
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .certificate:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            z-index: 5;
+        }
+
+        body.dark-mode .certificate:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Certificate Hover Effect Enhancement */
+        .certificate::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 112, 243, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            border-radius: var(--border-radius);
+        }
+
+        .certificate:hover::after {
+            opacity: 1;
         }
 
         .certificate.vertical {
@@ -114,19 +189,19 @@
             top: 20px;
             left: 20px;
             z-index: 1010;
-            background-color: rgba(0, 115, 230, 0.8);
+            background-color: var(--primary-color);
             color: #fff;
             border: none;
             padding: 0;
             font-size: 1.2em;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 50%;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
+            transition: var(--transition);
             height: 40px;
             width: 40px;
             min-width: 40px;
@@ -134,15 +209,17 @@
         }
 
         .theme-switcher:hover {
-            background-color: rgba(0, 91, 181, 0.8);
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         body.dark-mode .theme-switcher {
-            background-color: rgba(0, 91, 181, 0.8);
+            background-color: var(--primary-dark);
         }
 
         body.dark-mode .theme-switcher:hover {
-            background-color: rgba(0, 115, 230, 0.8);
+            background-color: var(--primary-color);
         }
 
         .language-switcher {
@@ -150,58 +227,149 @@
             top: 20px;
             right: 20px;
             z-index: 1010;
+            display: flex;
+            gap: 10px;
         }
 
         .language-switcher img {
             width: 40px;
             height: 30px;
             cursor: pointer;
-            margin-left: 10px;
             opacity: 0.5;
-            transition: opacity 0.3s ease;
+            transition: var(--transition);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .language-switcher img.active {
             opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
+        .language-switcher img:hover {
+            transform: translateY(-2px);
+        }
+
+        /* New Back Button Styles from cosmic-shooter.html */
         .back-button {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 1000;
-        }
-
-        .back-button a {
-            background-color: rgba(0, 115, 230, 0.8);
+            background: linear-gradient(to bottom, rgba(0, 115, 230, 0.8), rgba(0, 80, 200, 0.8));
             color: #fff;
-            border: none;
+            border: 2px solid rgba(0, 175, 255, 0.8);
             padding: 0;
             font-size: 1.2em;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 50%;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 175, 255, 0.8);
+            transition: all 0.3s ease;
             height: 40px;
             width: 40px;
             min-width: 40px;
             text-align: center;
-            line-height: 40px;
         }
 
-        .back-button a:hover {
-            background-color: rgba(0, 91, 181, 0.8);
+        .back-button a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(to bottom, rgba(0, 175, 255, 0.8), rgba(0, 115, 230, 0.8));
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 175, 255, 0.8);
         }
 
         .icon {
             width: 24px;
             height: 24px;
-            vertical-align: middle;
-            filter: invert(1);
+            filter: invert(1) drop-shadow(0 0 2px #08f);
+        }
+
+        /* Scroll Control Button - simplified version */
+        .scroll-control {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 999;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, rgba(0, 115, 230, 0.8), rgba(0, 80, 200, 0.8));
+            border: 2px solid rgba(0, 175, 255, 0.8);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 175, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .scroll-control:hover {
+            background: linear-gradient(to bottom, rgba(0, 175, 255, 0.8), rgba(0, 115, 230, 0.8));
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 175, 255, 0.8);
+        }
+
+        /* Loading indicator */
+        .loading-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .certificate-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .certificate-placeholder i {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
         @media (max-width: 768px) {
@@ -215,6 +383,11 @@
             .certificate.vertical,
             .certificate.horizontal {
                 max-width: 100%; /* 1 obrazek w rzędzie na bardzo małych ekranach */
+            }
+
+            .certificate-row {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -242,16 +415,27 @@
     <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
 </div>
 
+<div class="loading-indicator" id="loadingIndicator">
+    <div class="spinner"></div>
+    <div id="loading-text">Loading certificates...</div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 <script>
     const certificates = [
-        'c1.pdf', 'c2.pdf', 'c3.pdf', 'c4.pdf', 'c5.pdf', 'c6.pdf', 'c7.pdf', 'c8.pdf', 'c9.pdf', 'c10.pdf', 'c11.pdf', 'c12.pdf', 'c13.pdf', 'c14.pdf', 'c15.pdf', 'c16.pdf', 'c17.pdf', 'c18.pdf', 'c19.pdf', 'c20.pdf', 'c21.pdf', 'c22.pdf', 'c23.pdf', 'c24.pdf', 'c25.pdf', 'c26.pdf', 'c27.pdf', 'c28.pdf', 'c29.pdf', 'c30.pdf'
+        'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10',
+        'c11', 'c12', 'c13', 'c14', 'c15', 'c16', 'c17', 'c18', 'c19', 'c20',
+        'c21', 'c22', 'c23', 'c24', 'c25', 'c26', 'c27', 'c28', 'c29', 'c30'
     ];
+
+    const tmpPath = 'resources/certs/tmp/';
     const certsPath = 'resources/certs/';
 
     const rowFlags = [true, false, false, false, false, false, false, false];
 
     const container = document.getElementById('certificates-container');
+    const loadingIndicator = document.getElementById('loadingIndicator');
 
     const colorPalettes = [
         ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'], // Default
@@ -268,13 +452,20 @@
         return currentPalette[Math.floor(Math.random() * currentPalette.length)];
     }
 
+    // Cache dla załadowanych obrazów certyfikatów
+    const imageCache = {};
+
     async function renderCertificates() {
         let certIndex = 0;
 
+        // Utwórz wszystkie rzędy certyfikatów zgodnie z oryginałem
         for (let rowIndex = 0; rowIndex < rowFlags.length; rowIndex++) {
             const isVerticalRow = rowFlags[rowIndex];
             const row = document.createElement('div');
             row.className = 'certificate-row';
+
+            // Dodaj atrybut data-row-id dla identyfikacji rzędu
+            row.setAttribute('data-row-id', `row-${rowIndex}`);
 
             const numCerts = 3; // 3 obrazki na rządek
 
@@ -283,12 +474,20 @@
                 const img = document.createElement('div');
                 img.className = isVerticalRow ? 'certificate vertical' : 'certificate horizontal';
 
+                // Dodaj atrybut data-cert-id dla identyfikacji certyfikatu
+                img.setAttribute('data-cert-id', cert);
+
+                // Animacja pojawienia się z opóźnieniem
+                setTimeout(() => {
+                    img.classList.add('animate');
+                }, 100 + (certIndex * 50));
+
                 // Ustawienie placeholder-a
                 img.style.backgroundColor = randomColor();
-                img.innerHTML = '<strong><em>Loading...</em></strong>';
+                img.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-certificate"></i><strong><em>Loading...</em></strong></div>';
 
-                // Asynchroniczne przetwarzanie PDF
-                processPDF(`${certsPath}${cert}`, img);
+                // Asynchroniczne przetwarzanie obrazu/PDF
+                processImage(cert, img);
 
                 row.appendChild(img);
                 certIndex++;
@@ -297,15 +496,53 @@
             container.appendChild(row);
         }
 
+        // Rozpocznij animację
         animateCertificates();
     }
 
-    async function processPDF(pdfUrl, imgElement) {
-        try {
-            const pdf = await fetch(pdfUrl);
-            if (!pdf.ok) throw new Error('Failed to load PDF');
+    async function processImage(certName, imgElement) {
+        // Sprawdź, czy obraz jest już w cache
+        if (imageCache[certName]) {
+            // Użyj obrazu z cache
+            imgElement.style.backgroundImage = imageCache[certName].backgroundImage;
+            imgElement.style.backgroundSize = 'cover';
+            imgElement.innerHTML = ''; // Usuń placeholder
+            return;
+        }
 
-            const pdfData = await pdf.arrayBuffer();
+        try {
+            // Próbuj załadować PNG z folderu tmp
+            const pngUrl = `${tmpPath}${certName}.png`;
+
+            try {
+                const pngResponse = await fetch(pngUrl, { method: 'HEAD' });
+
+                if (pngResponse.ok) {
+                    // Zapisz URL obrazu w cache
+                    imageCache[certName] = {
+                        backgroundImage: `url('${pngUrl}')`
+                    };
+
+                    // Zastosuj obraz
+                    imgElement.style.backgroundImage = `url('${pngUrl}')`;
+                    imgElement.style.backgroundSize = 'cover';
+                    imgElement.innerHTML = ''; // Usuń placeholder
+                    return;
+                }
+            } catch (pngError) {
+                // Kontynuuj do przetwarzania PDF, jeśli PNG nie zostało znalezione
+                console.log(`PNG nie znaleziono dla ${certName}, próbuję PDF...`);
+            }
+
+            // Jeśli PNG nie znaleziono, próbuj przetworzyć PDF
+            const pdfUrl = `${certsPath}${certName}.pdf`;
+            const pdfResponse = await fetch(pdfUrl);
+
+            if (!pdfResponse.ok) {
+                throw new Error(`Nie udało się załadować certyfikatu: ${certName}`);
+            }
+
+            const pdfData = await pdfResponse.arrayBuffer();
             const pdfDoc = await pdfjsLib.getDocument({ data: pdfData }).promise;
             const page = await pdfDoc.getPage(1);
 
@@ -316,53 +553,157 @@
             canvas.width = viewport.width;
             canvas.height = viewport.height;
 
-            await page.render({ canvasContext: context, viewport }).promise;
+            // Wskaźnik przetwarzania PDF
+            imgElement.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-file-pdf"></i><strong><em>Processing PDF...</em></strong></div>';
+
+            await page.render({ canvasContext: context, viewport: viewport }).promise;
 
             const imageUrl = canvas.toDataURL('image/png');
+
+            // Zapisz wygenerowany obraz w cache
+            imageCache[certName] = {
+                backgroundImage: `url('${imageUrl}')`
+            };
+
+            // Zastosuj obraz
             imgElement.style.backgroundImage = `url('${imageUrl}')`;
             imgElement.style.backgroundSize = 'cover';
             imgElement.innerHTML = ''; // Usuń placeholder
+
+            // Zwolnij zasoby canvas
+            canvas.width = 1;
+            canvas.height = 1;
+            context.clearRect(0, 0, 1, 1);
+
         } catch (error) {
-            console.error('Error processing PDF:', error);
-            imgElement.style.backgroundColor = randomColor();
-            imgElement.innerHTML = '<strong><em>More to come</em></strong>';
+            console.error(`Błąd przetwarzania certyfikatu ${certName}:`, error);
+
+            // Zapisz placeholder w cache
+            imageCache[certName] = {
+                isPlaceholder: true,
+                backgroundColor: randomColor()
+            };
+
+            // Zastosuj placeholder
+            imgElement.style.backgroundColor = imageCache[certName].backgroundColor;
+            imgElement.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-award"></i><strong><em>More to come</em></strong></div>';
         }
     }
 
     function animateCertificates() {
+        // Najpierw użyj właściwości top do początkowej animacji
         let startPosition = window.innerHeight;
         container.style.top = `${startPosition}px`;
 
+        // Płynne wsunięcie kontenera z dołu
         function slideIn() {
             let currentPosition = parseInt(container.style.top, 10);
             if (currentPosition > 0) {
+                // Przesuń kontener do góry o 2px na każdej klatce animacji
                 container.style.top = `${currentPosition - 2}px`;
                 requestAnimationFrame(slideIn);
             } else {
+                // Kiedy kontener jest na pozycji 0, rozpocznij przewijanie
+                loadingIndicator.style.display = 'none';
                 startScrolling();
             }
         }
+
+        // Rozpocznij animację wsuwania
         requestAnimationFrame(slideIn);
     }
 
+    // Funkcja do sterowania przewijaniem
+    function addScrollControl() {
+        // Dodaj przycisk kontroli przewijania
+        const controlButton = document.createElement('button');
+        controlButton.className = 'scroll-control';
+        controlButton.innerHTML = '<i class="fas fa-pause"></i>';
+        controlButton.title = 'Pause scrolling';
+        document.body.appendChild(controlButton);
+
+        // Stan pauzy
+        let isPaused = false;
+
+        // Przełączenie stanu pauzy/odtwarzania
+        controlButton.addEventListener('click', function() {
+            isPaused = !isPaused;
+
+            if (isPaused) {
+                // Zatrzymaj przewijanie
+                window.pauseScrolling = true;
+                controlButton.innerHTML = '<i class="fas fa-play"></i>';
+                controlButton.title = 'Resume scrolling';
+            } else {
+                // Wznów przewijanie
+                window.pauseScrolling = false;
+                controlButton.innerHTML = '<i class="fas fa-pause"></i>';
+                controlButton.title = 'Pause scrolling';
+            }
+        });
+    }
+
     function startScrolling() {
+        // Początkowa pozycja przewijania
         let topPosition = 0;
+        // Stała prędkość przewijania w pikselach na klatkę
         const scrollSpeed = 1;
 
-        function scrollLoop() {
-            topPosition -= scrollSpeed;
-            const firstRow = container.firstElementChild;
-            const rowHeight = firstRow.offsetHeight + 5;
+        // Inicjalizacja stanu pauzy
+        window.pauseScrolling = false;
 
-            if (topPosition <= -rowHeight) {
-                container.appendChild(firstRow);
-                topPosition += rowHeight;
+        // Dodaj przycisk kontroli
+        addScrollControl();
+
+        // Główna funkcja przewijania
+        function scrollLoop() {
+            // Sprawdź czy przewijanie nie jest wstrzymane
+            if (!window.pauseScrolling) {
+                // Przesuń o stałą wartość na każdej klatce animacji
+                topPosition -= scrollSpeed;
+
+                // Sprawdź, czy pierwszy rząd wyszedł całkowicie poza ekran
+                const firstRow = container.firstElementChild;
+                if (!firstRow) return;
+
+                const rowHeight = firstRow.offsetHeight + 15; // Dodaj trochę więcej miejsca
+
+                if (topPosition <= -rowHeight) {
+                    // Przenieś pierwszy rząd na koniec
+                    container.appendChild(firstRow);
+
+                    // Upewnij się, że wszystkie certyfikaty w przeniesionym rzędzie są prawidłowo załadowane
+                    const certs = firstRow.querySelectorAll('.certificate');
+                    certs.forEach(certElement => {
+                        const certId = certElement.getAttribute('data-cert-id');
+                        if (certId && imageCache[certId]) {
+                            // Zastosuj obraz z cache
+                            if (imageCache[certId].isPlaceholder) {
+                                // Jeśli to placeholder
+                                certElement.style.backgroundColor = imageCache[certId].backgroundColor;
+                                certElement.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-award"></i><strong><em>More to come</em></strong></div>';
+                            } else {
+                                // Jeśli to normalny obraz
+                                certElement.style.backgroundImage = imageCache[certId].backgroundImage;
+                                certElement.style.backgroundSize = 'cover';
+                                certElement.innerHTML = ''; // Usuń placeholder
+                            }
+                        }
+                    });
+
+                    // Dostosuj pozycję, aby uniknąć skoku
+                    topPosition += rowHeight;
+                }
+
+                // Zastosuj transformację dla płynnej animacji
+                container.style.transform = `translateY(${topPosition}px)`;
             }
 
-            container.style.transform = `translateY(${topPosition}px)`;
+            // Kontynuuj animację
             requestAnimationFrame(scrollLoop);
         }
 
+        // Rozpocznij pętlę animacji
         requestAnimationFrame(scrollLoop);
     }
 
@@ -383,29 +724,43 @@
 
     function changeLanguage(lang) {
         const title = document.getElementById('header-title');
+        const loadingText = document.getElementById('loading-text');
+
         if (lang === 'en') {
             title.textContent = 'My Certificates';
+            loadingText.textContent = 'Loading certificates...';
         } else if (lang === 'pl') {
             title.textContent = 'Moje Certyfikaty';
+            loadingText.textContent = 'Ładowanie certyfikatów...';
         }
 
         document.querySelectorAll('.language-switcher img').forEach(img => {
             img.classList.remove('active');
         });
         document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
+
+        localStorage.setItem('selectedLanguage', lang);
     }
 
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    if (savedDarkMode) {
-        document.body.classList.add('dark-mode');
-        document.getElementById('themeIcon').src = 'sun.svg';
-        document.getElementById('themeIcon').alt = 'Light Mode';
-    } else {
-        document.getElementById('themeIcon').src = 'moon.svg';
-        document.getElementById('themeIcon').alt = 'Dark Mode';
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Apply saved dark mode setting
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeIcon').src = 'sun.svg';
+            document.getElementById('themeIcon').alt = 'Light Mode';
+        } else {
+            document.getElementById('themeIcon').src = 'moon.svg';
+            document.getElementById('themeIcon').alt = 'Dark Mode';
+        }
 
-    renderCertificates();
+        // Apply saved language setting
+        const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+        changeLanguage(savedLanguage);
+
+        // Start rendering certificates
+        renderCertificates();
+    });
 </script>
 </body>
 </html>
