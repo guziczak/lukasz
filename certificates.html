@@ -482,114 +482,209 @@
                     img.classList.add('animate');
                 }, 100 + (certIndex * 50));
 
-                // Ustawienie placeholder-a
+                // Ustawienie placeholder-a - od razu rozpoczynamy z placeholderem
                 img.style.backgroundColor = randomColor();
                 img.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-certificate"></i><strong><em>Loading...</em></strong></div>';
 
-                // Asynchroniczne przetwarzanie obrazu/PDF
-                processImage(cert, img);
-
+                // Dodaj certyfikat do DOM przed rozpoczęciem przetwarzania
                 row.appendChild(img);
+
+                // Uruchom asynchroniczne przetwarzanie obrazu/PDF w tle
+                // Użyj setTimeout, aby dać przeglądarce czas na wyrenderowanie placeholdera
+                setTimeout(() => {
+                    processImage(cert, img);
+                }, 50 + (certIndex * 20)); // Rozłóż przetwarzanie certyfikatów w czasie
+
                 certIndex++;
             }
 
             container.appendChild(row);
         }
 
-        // Rozpocznij animację
+        // Rozpocznij animację od razu, nie czekając na załadowanie certyfikatów
         animateCertificates();
     }
 
-    async function processImage(certName, imgElement) {
-        // Sprawdź, czy obraz jest już w cache
-        if (imageCache[certName]) {
-            // Użyj obrazu z cache
+    // System kolejkowania przetwarzania certyfikatów
+    const processingQueue = {
+        active: false,
+        queue: [],
+        concurrentLimit: 2, // Limit równoczesnych przetwarzań
+        activeCount: 0,
+
+        // Dodaj zadanie do kolejki
+        add: function(certName, imgElement) {
+            this.queue.push({ certName, imgElement });
+            if (!this.active) {
+                this.processQueue();
+            }
+        },
+
+        // Uruchom przetwarzanie kolejki
+        processQueue: function() {
+            if (this.queue.length === 0) {
+                this.active = false;
+                return;
+            }
+
+            this.active = true;
+
+            // Przetwarzaj tyle certyfikatów naraz, ile pozwala limit
+            while (this.queue.length > 0 && this.activeCount < this.concurrentLimit) {
+                const task = this.queue.shift();
+                this.activeCount++;
+
+                // Przetwórz certyfikat asynchronicznie
+                this.processItem(task.certName, task.imgElement)
+                    .then(() => {
+                        this.activeCount--;
+                        // Kontynuuj przetwarzanie kolejki
+                        this.processQueue();
+                    })
+                    .catch(error => {
+                        console.error("Błąd przetwarzania:", error);
+                        this.activeCount--;
+                        // Kontynuuj mimo błędu
+                        this.processQueue();
+                    });
+            }
+        },
+
+        // Przetwórz pojedynczy certyfikat
+        processItem: async function(certName, imgElement) {
+            try {
+                // Sprawdź, czy obraz jest już w cache
+                if (imageCache[certName]) {
+                    // Użyj obrazu z cache bez blokowania wątku głównego
+                    setTimeout(() => {
+                        applyImageFromCache(certName, imgElement);
+                    }, 0);
+                    return;
+                }
+
+                // Próbuj załadować PNG z folderu tmp
+                const pngUrl = `${tmpPath}${certName}.png`;
+
+                try {
+                    const pngResponse = await fetch(pngUrl, { method: 'HEAD' });
+
+                    if (pngResponse.ok) {
+                        // Zapisz URL obrazu w cache
+                        imageCache[certName] = {
+                            backgroundImage: `url('${pngUrl}')`
+                        };
+
+                        // Zastosuj obraz bez blokowania wątku głównego
+                        setTimeout(() => {
+                            applyImageFromCache(certName, imgElement);
+                        }, 0);
+                        return;
+                    }
+                } catch (pngError) {
+                    // Kontynuuj do przetwarzania PDF, jeśli PNG nie zostało znalezione
+                    console.log(`PNG nie znaleziono dla ${certName}, próbuję PDF...`);
+                }
+
+                // Jeśli PNG nie znaleziono, próbuj przetworzyć PDF
+                const pdfUrl = `${certsPath}${certName}.pdf`;
+                const pdfResponse = await fetch(pdfUrl);
+
+                if (!pdfResponse.ok) {
+                    throw new Error(`Nie udało się załadować certyfikatu: ${certName}`);
+                }
+
+                const pdfData = await pdfResponse.arrayBuffer();
+
+                // Przetwórz PDF w mikro-zadaniu, aby nie blokować głównego wątku
+                await new Promise(resolve => setTimeout(resolve, 0));
+
+                const pdfDoc = await pdfjsLib.getDocument({ data: pdfData }).promise;
+
+                // Kolejne mikro-zadanie
+                await new Promise(resolve => setTimeout(resolve, 0));
+
+                const page = await pdfDoc.getPage(1);
+
+                // Kolejne mikro-zadanie
+                await new Promise(resolve => setTimeout(resolve, 0));
+
+                const viewport = page.getViewport({ scale: 2 });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                // Kolejne mikro-zadanie przed renderowaniem
+                await new Promise(resolve => setTimeout(resolve, 0));
+
+                // Renderuj PDF na canvas
+                await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+                // Kolejne mikro-zadanie po renderowaniu
+                await new Promise(resolve => setTimeout(resolve, 0));
+
+                const imageUrl = canvas.toDataURL('image/png');
+
+                // Zapisz wygenerowany obraz w cache
+                imageCache[certName] = {
+                    backgroundImage: `url('${imageUrl}')`
+                };
+
+                // Zastosuj obraz bez blokowania wątku głównego
+                setTimeout(() => {
+                    applyImageFromCache(certName, imgElement);
+                }, 0);
+
+                // Zwolnij zasoby canvas
+                canvas.width = 1;
+                canvas.height = 1;
+                context.clearRect(0, 0, 1, 1);
+
+            } catch (error) {
+                console.error(`Błąd przetwarzania certyfikatu ${certName}:`, error);
+
+                // Zapisz placeholder w cache
+                imageCache[certName] = {
+                    isPlaceholder: true,
+                    backgroundColor: randomColor()
+                };
+
+                // Zastosuj placeholder bez blokowania wątku głównego
+                setTimeout(() => {
+                    applyImageFromCache(certName, imgElement);
+                }, 0);
+            }
+        }
+    };
+
+    // Funkcja do stosowania obrazu z pamięci podręcznej
+    function applyImageFromCache(certName, imgElement) {
+        if (!imageCache[certName]) return;
+
+        // Upewnij się, że element nadal istnieje w DOM
+        if (!document.body.contains(imgElement)) return;
+
+        // Zastosuj odpowiedni wygląd
+        if (imageCache[certName].isPlaceholder) {
+            // Jeśli to placeholder
+            imgElement.style.backgroundColor = imageCache[certName].backgroundColor;
+            imgElement.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-award"></i><strong><em>More to come</em></strong></div>';
+        } else {
+            // Jeśli to normalny obraz
             imgElement.style.backgroundImage = imageCache[certName].backgroundImage;
             imgElement.style.backgroundSize = 'cover';
             imgElement.innerHTML = ''; // Usuń placeholder
-            return;
-        }
-
-        try {
-            // Próbuj załadować PNG z folderu tmp
-            const pngUrl = `${tmpPath}${certName}.png`;
-
-            try {
-                const pngResponse = await fetch(pngUrl, { method: 'HEAD' });
-
-                if (pngResponse.ok) {
-                    // Zapisz URL obrazu w cache
-                    imageCache[certName] = {
-                        backgroundImage: `url('${pngUrl}')`
-                    };
-
-                    // Zastosuj obraz
-                    imgElement.style.backgroundImage = `url('${pngUrl}')`;
-                    imgElement.style.backgroundSize = 'cover';
-                    imgElement.innerHTML = ''; // Usuń placeholder
-                    return;
-                }
-            } catch (pngError) {
-                // Kontynuuj do przetwarzania PDF, jeśli PNG nie zostało znalezione
-                console.log(`PNG nie znaleziono dla ${certName}, próbuję PDF...`);
-            }
-
-            // Jeśli PNG nie znaleziono, próbuj przetworzyć PDF
-            const pdfUrl = `${certsPath}${certName}.pdf`;
-            const pdfResponse = await fetch(pdfUrl);
-
-            if (!pdfResponse.ok) {
-                throw new Error(`Nie udało się załadować certyfikatu: ${certName}`);
-            }
-
-            const pdfData = await pdfResponse.arrayBuffer();
-            const pdfDoc = await pdfjsLib.getDocument({ data: pdfData }).promise;
-            const page = await pdfDoc.getPage(1);
-
-            const viewport = page.getViewport({ scale: 2 });
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-
-            canvas.width = viewport.width;
-            canvas.height = viewport.height;
-
-            // Wskaźnik przetwarzania PDF
-            imgElement.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-file-pdf"></i><strong><em>Processing PDF...</em></strong></div>';
-
-            await page.render({ canvasContext: context, viewport: viewport }).promise;
-
-            const imageUrl = canvas.toDataURL('image/png');
-
-            // Zapisz wygenerowany obraz w cache
-            imageCache[certName] = {
-                backgroundImage: `url('${imageUrl}')`
-            };
-
-            // Zastosuj obraz
-            imgElement.style.backgroundImage = `url('${imageUrl}')`;
-            imgElement.style.backgroundSize = 'cover';
-            imgElement.innerHTML = ''; // Usuń placeholder
-
-            // Zwolnij zasoby canvas
-            canvas.width = 1;
-            canvas.height = 1;
-            context.clearRect(0, 0, 1, 1);
-
-        } catch (error) {
-            console.error(`Błąd przetwarzania certyfikatu ${certName}:`, error);
-
-            // Zapisz placeholder w cache
-            imageCache[certName] = {
-                isPlaceholder: true,
-                backgroundColor: randomColor()
-            };
-
-            // Zastosuj placeholder
-            imgElement.style.backgroundColor = imageCache[certName].backgroundColor;
-            imgElement.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-award"></i><strong><em>More to come</em></strong></div>';
         }
     }
 
+    // Uproszczona funkcja przetwarzania obrazu - tylko dodaje do kolejki
+    async function processImage(certName, imgElement) {
+        // Dodaj do kolejki asynchronicznego przetwarzania
+        processingQueue.add(certName, imgElement);
+    }
+
+    // Natychmiastowe rozpoczęcie przewijania z placeholderami
     function animateCertificates() {
         // Najpierw użyj właściwości top do początkowej animacji
         let startPosition = window.innerHeight;
@@ -604,7 +699,10 @@
                 requestAnimationFrame(slideIn);
             } else {
                 // Kiedy kontener jest na pozycji 0, rozpocznij przewijanie
+                // Ukryj wskaźnik ładowania, ale kontynuuj ładowanie w tle
                 loadingIndicator.style.display = 'none';
+
+                // Natychmiastowe rozpoczęcie przewijania - nie czekamy na załadowanie wszystkich certyfikatów
                 startScrolling();
             }
         }
