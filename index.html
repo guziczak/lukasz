@@ -3739,6 +3739,34 @@
 
 <!-- Scripts -->
 <script>
+    // Immediately check for #contact hash on page load
+    (function() {
+        // Check if URL has #contact and set priority flag
+        if (window.location.hash === '#contact') {
+            window.isPriorityContact = true;
+
+            // Add a class to body to prioritize contact section styles
+            document.body.classList.add('priority-contact');
+        }
+    })();
+
+    // Add priority styles for contact section
+    (function addPriorityStyles() {
+        const styleEl = document.createElement('style');
+        styleEl.textContent = `
+            /* Priority styles for contact section */
+            body.priority-contact #contact {
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            body.priority-contact .preloader {
+                animation-duration: 0.3s !important;
+            }
+        `;
+        document.head.appendChild(styleEl);
+    })();
+
     // Function to load CSV file
     async function loadCSV(filename) {
         try {
@@ -3789,6 +3817,101 @@
         } catch (error) {
             console.error("Error initializing from CSV:", error);
         }
+    }
+
+    // Priority loading for contact section
+    async function initializeWithContactPriority() {
+        // If contact hash is present, prioritize contact section loading
+        if (window.isPriorityContact) {
+            // Always initialize contact form immediately
+            enhanceContactForm();
+
+            try {
+                // Load only testimonials for contact section
+                const testimonials = await loadCSV('data/testimonials.csv');
+                generateTestimonialsHTML(testimonials);
+
+                // Load other data with lower priority
+                setTimeout(async () => {
+                    await loadRemainingData();
+                }, 1000);
+            } catch (error) {
+                console.error("Error loading contact section data:", error);
+            }
+        } else {
+            // Regular loading for other sections
+            initializeFromCSV();
+        }
+    }
+
+    // Helper function to load remaining data with lower priority
+    async function loadRemainingData() {
+        try {
+            const skills = await loadCSV('data/skills.csv');
+            const projects = await loadCSV('data/projects.csv');
+            const games = await loadCSV('data/games.csv');
+            const certificates = await loadCSV('data/certificates.csv');
+            const achievements = await loadCSV('data/achievements.csv');
+            const experiences = await loadCSV('data/experience.csv');
+            const educations = await loadCSV('data/education.csv');
+
+            generateSkillsHTML(skills);
+            generateProjectsHTML(projects);
+            generateGamesHTML(games);
+            generateCertificatesHTML(certificates);
+            generateAchievementsHTML(achievements);
+            generateExperienceHTML(experiences);
+            generateEducationHTML(educations);
+
+            reinitializeUIComponents();
+        } catch (error) {
+            console.error("Error loading remaining data:", error);
+        }
+    }
+
+    // Function to scroll to contact section and open modal
+    function scrollToContactAndOpenModal() {
+        const contactSection = document.getElementById('contact');
+        if (!contactSection) return;
+
+        // Calculate offset based on navbar height
+        const navbar = document.getElementById('navbar');
+        const navbarHeight = navbar ? navbar.offsetHeight : 80;
+        const offset = navbarHeight + 15;
+
+        // Scroll to contact section
+        window.scrollTo({
+            top: contactSection.offsetTop - offset,
+            behavior: 'smooth'
+        });
+
+        // Open contact modal after scrolling completes
+        setTimeout(() => {
+            const openModalBtn = document.getElementById('openContactModalBtn');
+            if (openModalBtn) {
+                openModalBtn.click();
+            }
+        }, 500);
+    }
+
+    // Enhanced preloader handling with hash awareness
+    function handlePreloaderAndHash() {
+        const preloader = document.getElementById('preloader');
+        if (!preloader) return;
+
+        // Shorter preloader time for contact hash
+        const hideTime = window.isPriorityContact ? 300 : 1000;
+
+        setTimeout(() => {
+            preloader.classList.add('hidden');
+
+            // After preloader is hidden, handle hash navigation
+            if (window.location.hash === '#contact') {
+                setTimeout(() => {
+                    scrollToContactAndOpenModal();
+                }, 200);
+            }
+        }, hideTime);
     }
 
     // Generate Skills HTML
@@ -4295,7 +4418,7 @@
                         <p>${messageHtml}</p>
                     `
                     };
-                    
+
                     // Send using Brevo API
                     const a = 'xkeysib-d2bb993880b31aec370449c';
                     const b = '9cc0390614409f8f82ddff56c5aba2b5';
@@ -5280,11 +5403,16 @@
             themeIcon.classList.add('fa-sun');
         }
 
-        // Hide preloader
-        if (preloader) {
-            setTimeout(() => {
-                preloader.classList.add('hidden');
-            }, 1000);
+        // Enhanced preloader handling for #contact hash
+        if (window.isPriorityContact) {
+            handlePreloaderAndHash();
+        } else {
+            // Original preloader code for non-contact URLs
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                }, 1000);
+            }
         }
 
         // Mobile Menu Toggle
@@ -5452,8 +5580,13 @@
         // Initialize chart
         initializeRadarChart();
 
-        // Initialize all data from CSV files
-        initializeFromCSV();
+        // Prioritize contact section if needed
+        if (window.isPriorityContact) {
+            initializeWithContactPriority();
+        } else {
+            // Original initialization
+            initializeFromCSV();
+        }
 
         // Initialize scroll animations
         enhanceScrollAnimations();
@@ -5480,14 +5613,26 @@
         });
     });
 
-    // Hide preloader when page is fully loaded
-    window.addEventListener('load', () => {
-        setTimeout(() => {
+    // Enhanced window load event
+    window.addEventListener('load', function() {
+        // Hide preloader faster for contact hash
+        if (window.isPriorityContact) {
             const preloader = document.getElementById('preloader');
-            if (preloader) {
+            if (preloader && !preloader.classList.contains('hidden')) {
                 preloader.classList.add('hidden');
             }
-        }, 500);
+
+            // Ensure scrolling and modal opening happens
+            setTimeout(scrollToContactAndOpenModal, 300);
+        } else {
+            // Original code
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if (preloader) {
+                    preloader.classList.add('hidden');
+                }
+            }, 500);
+        }
     });
 </script>
 </body>
