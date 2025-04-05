@@ -74,6 +74,10 @@
             flex-direction: column;
             align-items: center;
             top: 100%;
+            /* Performance optimization */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
         }
 
         .certificate-row {
@@ -106,6 +110,10 @@
             transform: translateY(20px);
             position: relative;
             overflow: hidden;
+            /* Performance optimization */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased;
         }
 
         body.dark-mode .certificate {
@@ -128,6 +136,12 @@
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
             z-index: 5;
+        }
+
+        /* Disable hover effects during scrolling for better performance */
+        .scrolling .certificate:hover {
+            transform: none !important;
+            box-shadow: none !important;
         }
 
         body.dark-mode .certificate:hover {
@@ -617,14 +631,27 @@
             if (isPaused) {
                 // Zatrzymaj przewijanie
                 window.pauseScrolling = true;
+                container.classList.remove('scrolling');
                 controlButton.innerHTML = '<i class="fas fa-play"></i>';
                 controlButton.title = 'Resume scrolling';
             } else {
                 // Wznów przewijanie
                 window.pauseScrolling = false;
+                container.classList.add('scrolling');
                 controlButton.innerHTML = '<i class="fas fa-pause"></i>';
                 controlButton.title = 'Pause scrolling';
             }
+        });
+    }
+
+    // Optimization: Add performance hints to relevant elements
+    function addPerformanceHints() {
+        // Add will-change hint to the certificates container
+        container.style.willChange = 'transform';
+
+        // Add will-change hints to all certificates to optimize hover effects
+        document.querySelectorAll('.certificate').forEach(cert => {
+            cert.style.willChange = 'transform, box-shadow';
         });
     }
 
@@ -634,14 +661,32 @@
         // Stała prędkość przewijania w pikselach na klatkę
         const scrollSpeed = 1;
 
+        // Track the last timestamp to optimize animation
+        let lastTimestamp = 0;
+        const FRAME_THROTTLE = 1000/60; // Target 60fps
+
         // Inicjalizacja stanu pauzy
         window.pauseScrolling = false;
 
         // Dodaj przycisk kontroli
         addScrollControl();
 
-        // Główna funkcja przewijania
-        function scrollLoop() {
+        // Add performance hints
+        addPerformanceHints();
+
+        // Disable hover effects during scrolling for better performance
+        container.classList.add('scrolling');
+
+        // Główna funkcja przewijania - zoptymalizowana
+        function scrollLoop(timestamp) {
+            // Throttle to consistent frame rate
+            if (timestamp - lastTimestamp < FRAME_THROTTLE) {
+                requestAnimationFrame(scrollLoop);
+                return;
+            }
+
+            lastTimestamp = timestamp;
+
             // Sprawdź czy przewijanie nie jest wstrzymane
             if (!window.pauseScrolling) {
                 // Przesuń o stałą wartość na każdej klatce animacji
@@ -649,47 +694,56 @@
 
                 // Sprawdź, czy pierwszy rząd wyszedł całkowicie poza ekran
                 const firstRow = container.firstElementChild;
-                if (!firstRow) return;
+                if (!firstRow) {
+                    requestAnimationFrame(scrollLoop);
+                    return;
+                }
 
-                // Używamy dokładnej wysokości wiersza - to jest kluczowa zmiana
-                const rowHeight = firstRow.offsetHeight + 5; // Zmniejszone z 15 na 5
+                // Get the total row height WITH the margin-bottom (key fix)
+                const rowHeight = firstRow.offsetHeight;
+                const marginBottom = 8; // From CSS .certificate-row margin-bottom
+                const totalHeight = rowHeight + marginBottom;
 
-                if (topPosition <= -rowHeight) {
+                if (topPosition <= -totalHeight) {
                     // Najpierw dostosuj pozycję, aby uniknąć skoku
-                    topPosition += rowHeight;
+                    // This is the key fix: adjust by full height including margin
+                    topPosition += totalHeight;
 
                     // Następnie przenieś pierwszy rząd na koniec
                     container.appendChild(firstRow);
 
-                    // Ponownie zastosuj kolekcję obrazów do przeniesionych certyfikatów
-                    const certs = firstRow.querySelectorAll('.certificate');
-                    certs.forEach(certElement => {
-                        const certId = certElement.getAttribute('data-cert-id');
-                        if (certId && imageCache[certId]) {
-                            // Zastosuj obraz z cache
-                            if (imageCache[certId].isPlaceholder) {
-                                // Jeśli to placeholder
-                                certElement.style.backgroundColor = imageCache[certId].backgroundColor;
-                                certElement.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-award"></i><strong><em>More to come</em></strong></div>';
-                            } else {
-                                // Jeśli to normalny obraz
-                                certElement.style.backgroundImage = imageCache[certId].backgroundImage;
-                                certElement.style.backgroundSize = 'cover';
-                                certElement.innerHTML = ''; // Usuń placeholder
+                    // Process images asynchronously
+                    setTimeout(() => {
+                        // Ponownie zastosuj kolekcję obrazów do przeniesionych certyfikatów
+                        const certs = firstRow.querySelectorAll('.certificate');
+                        certs.forEach(certElement => {
+                            const certId = certElement.getAttribute('data-cert-id');
+                            if (certId && imageCache[certId]) {
+                                // Zastosuj obraz z cache
+                                if (imageCache[certId].isPlaceholder) {
+                                    // Jeśli to placeholder
+                                    certElement.style.backgroundColor = imageCache[certId].backgroundColor;
+                                    certElement.innerHTML = '<div class="certificate-placeholder"><i class="fas fa-award"></i><strong><em>More to come</em></strong></div>';
+                                } else {
+                                    // Jeśli to normalny obraz
+                                    certElement.style.backgroundImage = imageCache[certId].backgroundImage;
+                                    certElement.style.backgroundSize = 'cover';
+                                    certElement.innerHTML = ''; // Usuń placeholder
+                                }
                             }
-                        }
-                    });
+                        });
+                    }, 0);
                 }
 
-                // Zastosuj transformację dla płynnej animacji
-                container.style.transform = `translateY(${topPosition}px)`;
+                // Use translate3d for hardware acceleration
+                container.style.transform = `translate3d(0, ${topPosition}px, 0)`;
             }
 
-            // Kontynuuj animację
+            // Continue animation
             requestAnimationFrame(scrollLoop);
         }
 
-        // Rozpocznij pętlę animacji
+        // Start animation loop with timestamp
         requestAnimationFrame(scrollLoop);
     }
 
