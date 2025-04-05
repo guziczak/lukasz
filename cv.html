@@ -1,404 +1,1030 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Łukasz Guziczak - CV</title>
+    <meta name="description" content="Łukasz Guziczak - Professional CV - Full-stack Developer & Analyst">
+    <title>Łukasz Guziczak | Curriculum Vitae</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #0070f3;
+            --primary-dark: #0050a0;
+            --secondary-color: #34d399;
+            --tertiary-color: #8b5cf6;
+            --light-bg: #f9fafb;
+            --dark-bg: #111827;
+            --light-card: #ffffff;
+            --dark-card: #1f2937;
+            --light-text: #1f2937;
+            --dark-text: #f3f4f6;
+            --gray-text: #6b7280;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --dark-card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --heading-font: 'Poppins', 'Segoe UI', sans-serif;
+            --body-font: 'Inter', 'Roboto', 'Arial', sans-serif;
+            --transition-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+            scroll-behavior: smooth;
+            min-height: 100vh;
         }
 
         body.dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding-bottom: 80px;
-            position: relative;
-            z-index: 1;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            padding: 0 20px;
         }
 
-        body.dark-mode .container {
-            background-color: #1e1e1e;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-
-        .language-switcher {
-            text-align: right;
-            margin-bottom: 0;
-        }
-
-        .language-switcher img {
-            width: 40px;
-            height: 30px;
-            cursor: pointer;
-            margin-left: 10px;
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
-        }
-
-        .language-switcher img.active {
-            opacity: 1;
-        }
-
-        header {
-            text-align: center;
-            padding: 0;
-            margin: 0;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-
-        header p {
-            margin: 0;
-            font-size: 1.2em;
-            color: #777;
-        }
-
-        .svg-viewer {
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background-color: var(--light-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        body.dark-mode .preloader {
+            background-color: var(--dark-bg);
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
         }
 
-        .svg-viewer img {
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 112, 243, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .preloader-text {
+            margin-top: 1rem;
+            font-family: var(--heading-font);
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            z-index: 2000;
+            transition: top 0.3s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.2rem 0;
+            z-index: 1000;
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+            background-color: rgba(249, 250, 251, 0.8);
+        }
+
+        body.dark-mode .navbar {
+            background-color: rgba(17, 24, 39, 0.8);
+        }
+
+        .navbar.scrolled {
+            padding: 0.7rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--heading-font);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover .logo-img {
+            transform: scale(1.1);
+        }
+
+        .utility-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-btn,
+        .lang-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .theme-btn,
+        body.dark-mode .lang-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-btn:hover,
+        .lang-btn:hover {
+            background-color: rgba(0, 112, 243, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-btn i,
+        .lang-btn img {
+            font-size: 1.2rem;
+            color: var(--light-text);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .theme-btn i,
+        body.dark-mode .lang-btn img {
+            color: var(--dark-text);
+        }
+
+        .lang-btn img {
+            width: 24px;
+            height: 18px;
+            border-radius: 2px;
+        }
+
+        /* Language switcher dropdown */
+        .lang-dropdown {
+            position: relative;
+        }
+
+        .lang-current {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .lang-options {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--light-card);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            min-width: 120px;
+            padding: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        body.dark-mode .lang-options {
+            background-color: var(--dark-card);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-dropdown:hover .lang-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .lang-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 0.3rem;
+        }
+
+        .lang-option:hover {
+            background-color: rgba(0, 112, 243, 0.1);
+        }
+
+        .lang-flag {
+            width: 24px;
+            height: 18px;
+            border-radius: 2px;
+        }
+
+        .lang-name {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        body.dark-mode .lang-name {
+            color: var(--dark-text);
+        }
+
+        /* CV Header Section */
+        .cv-header {
+            padding: 8rem 0 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .cv-title {
+            font-family: var(--heading-font);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .cv-subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--gray-text);
+            margin-bottom: 2rem;
+        }
+
+        /* CV Viewer Container */
+        .cv-viewer-container {
+            background-color: var(--light-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin: 2rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .cv-viewer-container {
+            background-color: var(--dark-card);
+            box-shadow: var(--dark-card-shadow);
+        }
+
+        .cv-viewer-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 112, 243, 0.05) 0%, rgba(52, 211, 153, 0.05) 100%);
+            z-index: -1; /* Changed from 0 to -1 to prevent blocking clicks */
+        }
+
+        /* PDF Viewer (Desktop) */
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: none;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            display: none;
+        }
+
+        .pdf-viewer.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* PNG Viewer (Mobile) */
+        .png-viewer {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .png-slide {
             width: 100%;
             max-width: 100%;
-            height: auto;
-            display: block;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .pdf-viewer {
+        .png-slide.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body.dark-mode .png-slide {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            filter: brightness(0.95);
+        }
+
+        /* Mobile Navigation for PNG Slides */
+        .mobile-navigation {
             display: none;
-            width: 100%;
-            height: 80vh;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .nav-dot {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* Action Buttons */
+        .cv-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 10; /* Added higher z-index to ensure buttons are clickable */
+        }
+
+        .cv-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-width: 160px;
+            position: relative;
+            z-index: 15; /* Added to ensure buttons are clickable */
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background-color: #2bb583;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--light-text);
+            border: 2px solid var(--primary-color);
+        }
+
+        body.dark-mode .btn-outline {
+            color: var(--dark-text);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(0, 112, 243, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Floating Action Buttons */
+        .floating-actions {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .floating-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
             border: none;
         }
 
-        @media (max-width: 768px) {
-            .svg-viewer {
-                display: flex;
+        .floating-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Mobile Floating Action Buttons */
+        .mobile-floating-actions {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            display: none;
+            flex-direction: row;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--light-card);
+            padding: 3rem 0;
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .footer {
+            background-color: var(--dark-card);
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo {
+            font-family: var(--heading-font);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-copyright {
+            color: var(--gray-text);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-link {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 0.5rem;
+        }
+
+        body.dark-mode .footer-link {
+            color: var(--dark-text);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-cv-link {
+            background-color: var(--secondary-color);
+            color: white !important;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .footer-cv-link:hover {
+            background-color: #2bb583;
+            transform: translateY(-2px);
+            color: white !important;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            .pdf-viewer {
-                display: none;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        @media (min-width: 769px) {
-            .svg-viewer {
-                display: none;
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
             }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* Responsive Styles */
+        @media (min-width: 769px) {
             .pdf-viewer {
                 display: block;
             }
-        }
-
-        .back-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .back-button a, .mobile-buttons a {
-            background-color: rgba(0, 115, 230, 0.8);
-            color: #fff;
-            border: none;
-            padding: 0;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-            height: 40px;
-            width: 40px;
-            min-width: 40px;
-            text-align: center;
-            line-height: 40px;
-        }
-
-        .back-button a:hover, .mobile-buttons a:hover {
-            background-color: rgba(0, 91, 181, 0.8);
-        }
-
-        .mobile-buttons {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
-
-        .mobile-buttons a {
-            margin-right: 10px;
+            .png-viewer,
+            .mobile-navigation,
+            .mobile-floating-actions {
+                display: none;
+            }
         }
 
         @media (max-width: 768px) {
-            .mobile-buttons {
+            .pdf-viewer {
+                display: none;
+            }
+            .png-viewer {
                 display: flex;
+            }
+            .mobile-navigation,
+            .mobile-floating-actions {
+                display: flex;
+            }
+            .floating-actions {
+                display: none;
+            }
+            .cv-viewer-container {
+                padding: 1rem;
+            }
+            .cv-title {
+                font-size: 2.2rem;
+            }
+            .cv-subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cv-actions {
+                flex-direction: column;
                 align-items: center;
             }
-        }
-
-        .icon {
-            width: 24px;
-            height: 24px;
-            vertical-align: middle;
-            filter: invert(1);
-        }
-
-        .mobile-buttons a {
-            color: white;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
+            .cv-btn {
+                width: 100%;
             }
-            50% {
-                transform: scale(1.2);
+            .cv-title {
+                font-size: 1.8rem;
             }
-            100% {
-                transform: scale(1);
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
             }
-        }
-
-        .pulse-once {
-            animation: pulse 0.5s ease-in-out;
-        }
-
-        /* Przycisk przełączania motywu */
-        .theme-switcher {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            background-color: rgba(0, 115, 230, 0.8);
-            color: #fff;
-            border: none;
-            padding: 0;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-            height: 40px;
-            width: 40px;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .theme-switcher:hover {
-            background-color: rgba(0, 91, 181, 0.8);
-        }
-
-        body.dark-mode .theme-switcher {
-            background-color: rgba(0, 91, 181, 0.8);
-        }
-
-        body.dark-mode .theme-switcher:hover {
-            background-color: rgba(0, 115, 230, 0.8);
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-
-<!-- Przycisk przełączania motywu -->
-<button class="theme-switcher" onclick="toggleDarkMode()" id="themeButton">
-    <img src="moon.svg" alt="Dark Mode" class="icon" id="themeIcon">
-</button>
-
-<div class="container">
-    <div class="language-switcher">
-        <img src="uk.svg" alt="English" class="active" onclick="changeLanguage('en')">
-        <img src="pl.svg" alt="Polski" onclick="changeLanguage('pl')">
+<!-- Preloader -->
+<div class="preloader" id="preloader">
+    <div class="preloader-content">
+        <div class="preloader-spinner"></div>
+        <div class="preloader-text">Loading CV...</div>
     </div>
-
-    <header>
-        <h1>Łukasz Guziczak</h1>
-        <p id="cv-title">Curriculum Vitae</p>
-    </header>
-
-    <!-- Sekcja dla wersji mobilnej (PNG) -->
-    <div class="svg-viewer">
-        <img id="svg1" src="cv_1_en.png" alt="CV Page 1">
-        <img id="svg2" src="cv_2_en.png" alt="CV Page 2">
-    </div>
-
-    <!-- Sekcja dla wersji desktopowej (PDF) -->
-    <div class="pdf-viewer">
-        <iframe id="pdf-iframe" width="100%" height="100%"></iframe>
-    </div>
-
-    <div id="bottom-anchor" class="anchor"></div>
 </div>
 
-<div class="back-button">
-    <a href="index.html"><img src="return.svg" alt="Return" class="icon"></a>
+<!-- Accessibility Skip Link -->
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar" role="navigation">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <img src="photo.jpg" alt="Łukasz Guziczak" class="logo-img">
+            <span>Łukasz Guziczak</span>
+        </a>
+        <div class="utility-buttons">
+            <div class="lang-dropdown">
+                <button class="lang-btn" id="langToggle" aria-label="Change language">
+                    <img src="uk.svg" alt="English" id="currentLangFlag">
+                </button>
+                <div class="lang-options">
+                    <div class="lang-option" onclick="changeLanguage('en')">
+                        <img src="uk.svg" alt="English" class="lang-flag">
+                        <span class="lang-name">English</span>
+                    </div>
+                    <div class="lang-option" onclick="changeLanguage('pl')">
+                        <img src="pl.svg" alt="Polski" class="lang-flag">
+                        <span class="lang-name">Polski</span>
+                    </div>
+                </div>
+            </div>
+            <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main id="main">
+    <!-- CV Header Section -->
+    <section class="cv-header">
+        <div class="container">
+            <h1 class="cv-title">Curriculum Vitae</h1>
+            <h2 class="cv-subtitle" id="cvSubtitle">Full-stack Developer & Analyst</h2>
+        </div>
+    </section>
+
+    <!-- CV Viewer -->
+    <section class="container">
+        <div class="cv-viewer-container">
+            <!-- PDF Viewer (Desktop) -->
+            <iframe id="pdf-viewer" class="pdf-viewer" title="CV PDF Document"></iframe>
+
+            <!-- PNG Viewer (Mobile) -->
+            <div class="png-viewer" id="png-viewer">
+                <img id="png-slide-1" class="png-slide" alt="CV Page 1">
+                <img id="png-slide-2" class="png-slide" alt="CV Page 2">
+            </div>
+
+            <!-- Transparent overlay to prevent PDF from capturing clicks on buttons -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 5; pointer-events: none;"></div>
+
+            <!-- Mobile Navigation -->
+            <div class="mobile-navigation">
+                <div class="nav-dot active" data-slide="1" onclick="showSlide(1)"></div>
+                <div class="nav-dot" data-slide="2" onclick="showSlide(2)"></div>
+            </div>
+
+            <!-- Actions -->
+            <div class="cv-actions">
+                <a href="#" id="download-cv" class="cv-btn btn-primary">
+                    <i class="fas fa-download"></i>
+                    <span>Download CV</span>
+                </a>
+                <a href="redirect.html" target="_blank" class="cv-btn btn-secondary">
+                    <i class="fas fa-print"></i>
+                    <span>Print CV</span>
+                </a>
+                <a href="index.html#contact" class="cv-btn btn-outline">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Me</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Floating Actions -->
+<div class="floating-actions">
+    <button class="floating-btn" onclick="window.location.href='index.html'" aria-label="Back to home">
+        <i class="fas fa-home"></i>
+    </button>
+    <button class="floating-btn" id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 </div>
 
-<div class="mobile-buttons">
-    <a href="#" onclick="changeSvg('prev'); return false;"><img src="left.svg" alt="Previous" class="icon"></a>
-    <a href="#" onclick="changeSvg('next'); return false;"><img src="right.svg" alt="Next" class="icon"></a>
-    <a id="download-link" href="cv_en.pdf" download="cv_en.pdf"><img src="download.svg" alt="Download" class="icon"></a>
-    <a href="redirect.html" target="_blank"><img src="print.svg" alt="Print" class="icon"></a>
+<!-- Mobile Floating Actions -->
+<div class="mobile-floating-actions">
+    <button class="floating-btn" onclick="changeSlide('prev')" aria-label="Previous slide">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="floating-btn" onclick="changeSlide('next')" aria-label="Next slide">
+        <i class="fas fa-chevron-right"></i>
+    </button>
 </div>
+
+<!-- Footer -->
+<footer class="footer" role="contentinfo">
+    <div class="container footer-content">
+        <div class="footer-text">
+            <div class="footer-logo">Łukasz Guziczak</div>
+            <div class="footer-copyright" id="copyright">
+                &copy; 2025 All Rights Reserved
+            </div>
+        </div>
+        <div class="footer-links">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="index.html#about" class="footer-link">About</a>
+            <a href="index.html#skills" class="footer-link">Skills</a>
+            <a href="index.html#projects" class="footer-link">Projects</a>
+            <a href="index.html#contact" class="footer-link">Contact</a>
+        </div>
+    </div>
+</footer>
 
 <script>
-    let currentLanguage = localStorage.getItem('selectedLanguage');
+    // Variables
+    let currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    let currentSlide = 1;
+    const totalSlides = 2;
 
-    if (!currentLanguage) {
-        currentLanguage = 'en';
-        localStorage.setItem('selectedLanguage', currentLanguage);
+    // DOM Elements
+    const preloader = document.getElementById('preloader');
+    const navbar = document.getElementById('navbar');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const currentLangFlag = document.getElementById('currentLangFlag');
+    const pdfViewer = document.getElementById('pdf-viewer');
+    const pngViewer = document.getElementById('png-viewer');
+    const pngSlide1 = document.getElementById('png-slide-1');
+    const pngSlide2 = document.getElementById('png-slide-2');
+    const downloadBtn = document.getElementById('download-cv');
+    const backToTopBtn = document.getElementById('back-to-top');
+    const navDots = document.querySelectorAll('.nav-dot');
+    const cvSubtitle = document.getElementById('cvSubtitle');
+
+    // Initialize Theme
+    function initTheme() {
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
     }
 
+    // Toggle Dark Mode
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+
+        localStorage.setItem('darkMode', isDarkMode);
+
+        if (isDarkMode) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+    }
+
+    // Change Language
     function changeLanguage(lang) {
         localStorage.setItem('selectedLanguage', lang);
         currentLanguage = lang;
         updateContent(lang);
     }
 
+    // Update Content Based on Language
     function updateContent(lang) {
-        const svg1 = document.getElementById('svg1');
-        const svg2 = document.getElementById('svg2');
-        const pdfIframe = document.getElementById('pdf-iframe');
-        const downloadLink = document.getElementById('download-link');
-        const cvTitle = document.getElementById('cv-title');
+        // Update language flag
+        currentLangFlag.src = lang === 'en' ? 'uk.svg' : 'pl.svg';
 
+        // Update subtitle
+        cvSubtitle.textContent = lang === 'en' ? 'Full-stack Developer & Analyst' : 'Programista Full-stack & Analityk';
+
+        // Update CV PDFs and PNGs
+        pdfViewer.src = lang === 'en' ? 'cv_en.pdf' : 'cv_pl.pdf';
+        pngSlide1.src = lang === 'en' ? 'cv_en/Slide1.PNG' : 'cv_pl/Slide1.PNG';
+        pngSlide2.src = lang === 'en' ? 'cv_en/Slide2.PNG' : 'cv_pl/Slide2.PNG';
+
+        // Update download link
+        downloadBtn.href = lang === 'en' ? 'cv_en.pdf' : 'cv_pl.pdf';
+        downloadBtn.download = lang === 'en' ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
+
+        // Update other text elements
         if (lang === 'en') {
-            svg1.src = 'cv_en/Slide1.PNG';
-            svg2.src = 'cv_en/Slide2.PNG';
-            pdfIframe.src = 'cv_en.pdf';
-            downloadLink.setAttribute('href', 'cv_en.pdf');
-            downloadLink.setAttribute('download', 'cv_en.pdf');
-            cvTitle.innerText = 'Curriculum Vitae';
-        } else if (lang === 'pl') {
-            svg1.src = 'cv_pl/Slide1.PNG';
-            svg2.src = 'cv_pl/Slide2.PNG';
-            pdfIframe.src = 'cv_pl.pdf';
-            downloadLink.setAttribute('href', 'cv_pl.pdf');
-            downloadLink.setAttribute('download', 'cv_pl.pdf');
-            cvTitle.innerText = 'Życiorys';
+            document.querySelector('.cv-title').textContent = 'Curriculum Vitae';
+            document.querySelector('#download-cv span').textContent = 'Download CV';
+            document.querySelector('.btn-secondary span').textContent = 'Print CV';
+            document.querySelector('.btn-outline span').textContent = 'Contact Me';
+            document.querySelector('#copyright').innerHTML = '&copy; 2025 All Rights Reserved';
+            document.querySelector('.preloader-text').textContent = 'Loading CV...';
+        } else {
+            document.querySelector('.cv-title').textContent = 'Życiorys';
+            document.querySelector('#download-cv span').textContent = 'Pobierz CV';
+            document.querySelector('.btn-secondary span').textContent = 'Drukuj CV';
+            document.querySelector('.btn-outline span').textContent = 'Kontakt';
+            document.querySelector('#copyright').innerHTML = '&copy; 2025 Wszelkie Prawa Zastrzeżone';
+            document.querySelector('.preloader-text').textContent = 'Ładowanie CV...';
         }
+    }
 
-        document.querySelectorAll('.language-switcher img').forEach(img => {
-            img.classList.remove('active');
+    // Show Slide (for mobile)
+    function showSlide(slideNum) {
+        if (slideNum < 1 || slideNum > totalSlides) return;
+
+        currentSlide = slideNum;
+
+        // Update active dot
+        navDots.forEach(dot => {
+            dot.classList.remove('active');
         });
-        document.querySelector(`.language-switcher img[alt="${lang === 'en' ? 'English' : 'Polski'}"]`).classList.add('active');
+        document.querySelector(`.nav-dot[data-slide="${slideNum}"]`).classList.add('active');
+
+        // Scroll to slide
+        const targetSlide = document.getElementById(`png-slide-${slideNum}`);
+        if (targetSlide) {
+            targetSlide.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 
-    updateContent(currentLanguage);
-
-    function changeSvg(direction) {
-        const svg1 = document.getElementById('svg1');
-        const svg2 = document.getElementById('svg2');
-        let currentSvg1 = svg1.src;
-        let currentSvg2 = svg2.src;
-
+    // Change Slide (for mobile buttons)
+    function changeSlide(direction) {
         if (direction === 'next') {
-            if (currentSvg1.includes('Slide1.PNG')) {
-                svg1.src = currentSvg1.replace('Slide1.PNG', 'Slide2.PNG');
-                svg2.src = currentSvg2.replace('Slide2.PNG', 'Slide1.PNG');
-            }
-        } else if (direction === 'prev') {
-            if (currentSvg1.includes('Slide2.PNG')) {
-                svg1.src = currentSvg1.replace('Slide2.PNG', 'Slide1.PNG');
-                svg2.src = currentSvg2.replace('Slide1.PNG', 'Slide2.PNG');
-            }
+            currentSlide = currentSlide < totalSlides ? currentSlide + 1 : 1;
+        } else {
+            currentSlide = currentSlide > 1 ? currentSlide - 1 : totalSlides;
         }
+        showSlide(currentSlide);
     }
 
-    // Obsługa pobierania pliku PDF
-    document.getElementById('download-link').addEventListener('click', function(event) {
-        event.preventDefault(); // Zapobiega domyślnej akcji linku
-        const link = this.href;
-        const fileName = this.getAttribute('download') || 'cv_en.pdf';
+    // Back to Top
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
 
-        // Tworzy tymczasowy element <a> do pobrania pliku
-        const tempLink = document.createElement('a');
-        tempLink.href = link;
-        tempLink.download = fileName;
-        document.body.appendChild(tempLink);
-        tempLink.click();
-        document.body.removeChild(tempLink);
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            const buttons = document.querySelectorAll('.mobile-buttons a, .back-button a');
-            buttons.forEach(button => {
-                button.classList.add('pulse-once');
+    // Intersection Observer for Animation
+    function setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('loaded');
+                    observer.unobserve(entry.target);
+                }
             });
-        }, 1000);
+        }, { threshold: 0.1 });
+
+        // Observe PDF viewer
+        if (pdfViewer) observer.observe(pdfViewer);
+
+        // Observe PNG slides
+        if (pngSlide1) observer.observe(pngSlide1);
+        if (pngSlide2) observer.observe(pngSlide2);
+    }
+
+    // Handle Scroll
+    function handleScroll() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize theme
+        initTheme();
+
+        // Update content based on language
+        updateContent(currentLanguage);
+
+        // Setup event listeners
+        themeToggle.addEventListener('click', toggleDarkMode);
+        backToTopBtn.addEventListener('click', scrollToTop);
+        window.addEventListener('scroll', handleScroll);
+
+        // Setup Intersection Observer for animations
+        setupIntersectionObserver();
+
+        // Hide preloader
+        setTimeout(() => {
+            preloader.classList.add('hidden');
+        }, 1500);
+
+        // Load PDF after delay
+        setTimeout(() => {
+            pdfViewer.src = currentLanguage === 'en' ? 'cv_en.pdf' : 'cv_pl.pdf';
+        }, 500);
+
+        // Load PNG slides
+        pngSlide1.src = currentLanguage === 'en' ? 'cv_en/Slide1.PNG' : 'cv_pl/Slide1.PNG';
+        pngSlide2.src = currentLanguage === 'en' ? 'cv_en/Slide2.PNG' : 'cv_pl/Slide2.PNG';
     });
-
-    // Funkcja do przełączania motywu ciemnego
-    function toggleDarkMode() {
-        const body = document.body;
-        body.classList.toggle('dark-mode');
-        localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
-
-        // Zmiana ikonki w przycisku
-        const themeIcon = document.getElementById('themeIcon');
-        if (body.classList.contains('dark-mode')) {
-            themeIcon.src = 'sun.svg'; // Słoneczko dla trybu ciemnego
-            themeIcon.alt = 'Light Mode';
-        } else {
-            themeIcon.src = 'moon.svg'; // Księżyc dla trybu jasnego
-            themeIcon.alt = 'Dark Mode';
-        }
-    }
-
-    // Sprawdź, czy użytkownik ma zapisany preferowany motyw
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    if (savedDarkMode) {
-        document.body.classList.add('dark-mode');
-        document.getElementById('themeIcon').src = 'sun.svg';
-        document.getElementById('themeIcon').alt = 'Light Mode';
-    } else {
-        document.getElementById('themeIcon').src = 'moon.svg';
-        document.getElementById('themeIcon').alt = 'Dark Mode';
-    }
-
-    // Dynamiczne ładowanie PDF tylko w wersji desktopowej
-    function loadPdfIfDesktop() {
-        const pdfIframe = document.getElementById('pdf-iframe');
-        if (window.innerWidth >= 769) {
-            pdfIframe.src = currentLanguage === 'en' ? 'cv_en.pdf' : 'cv_pl.pdf';
-        } else {
-            pdfIframe.src = '';
-        }
-    }
-
-    window.addEventListener('resize', loadPdfIfDesktop);
-    loadPdfIfDesktop();
 </script>
-
 </body>
 </html>
