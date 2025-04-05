@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Łukasz Guziczak - Full-stack Developer & Analyst. Expertise in Java, Python, React.js, and cloud technologies.">
+    <meta name="description"
+          content="Łukasz Guziczak - Full-stack Developer & Analyst. Expertise in Java, Python, React.js, and cloud technologies.">
     <title>Łukasz Guziczak | Full-stack Developer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -486,6 +487,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .hero::before {
             content: "";
             position: absolute;
@@ -1129,7 +1131,7 @@
             background-color: var(--light-card);
             border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         body.dark-mode .skills-radar-container {
@@ -1176,7 +1178,7 @@
             border-radius: var(--border-radius);
             padding: 2rem;
             box-shadow: var(--card-shadow);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
         }
@@ -2725,8 +2727,12 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* Ulepszenia dostępności */
@@ -2952,15 +2958,41 @@
         }
 
         /* Opóźnienie animacji dla każdego kolejnego elementu menu */
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(2) { transition-delay: 0.15s; }
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(3) { transition-delay: 0.2s; }
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(4) { transition-delay: 0.25s; }
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(5) { transition-delay: 0.3s; }
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(6) { transition-delay: 0.35s; }
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(7) { transition-delay: 0.4s; }
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(8) { transition-delay: 0.45s; }
-        .mobile-nav-menu.active .mobile-nav-item:nth-child(9) { transition-delay: 0.5s; }
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(2) {
+            transition-delay: 0.15s;
+        }
+
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(4) {
+            transition-delay: 0.25s;
+        }
+
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(5) {
+            transition-delay: 0.3s;
+        }
+
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(6) {
+            transition-delay: 0.35s;
+        }
+
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(7) {
+            transition-delay: 0.4s;
+        }
+
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(8) {
+            transition-delay: 0.45s;
+        }
+
+        .mobile-nav-menu.active .mobile-nav-item:nth-child(9) {
+            transition-delay: 0.5s;
+        }
 
         /* Ulepszone okno modalne */
         .modal {
@@ -3168,7 +3200,8 @@
             <li class="nav-item"><a href="#certificates">Certificates</a></li>
             <li class="nav-item"><a href="#testimonials">Testimonials</a></li>
             <li class="nav-item"><a href="#contact">Contact</a></li>
-            <li class="nav-item cv-nav-item"><a href="https://guziczak.github.io/lukasz/cv.html" target="_blank"><i class="fas fa-file-alt"></i> CV</a></li>
+            <li class="nav-item cv-nav-item"><a href="https://guziczak.github.io/lukasz/cv.html" target="_blank"><i
+                    class="fas fa-file-alt"></i> CV</a></li>
         </ul>
         <div class="utility-buttons">
             <div class="lang-dropdown">
@@ -3227,7 +3260,8 @@
                         <a href="https://github.com/guziczak" class="social-btn" target="_blank" aria-label="GitHub">
                             <i class="fab fa-github"></i>
                         </a>
-                        <a href="https://linkedin.com/in/guziczak" class="social-btn" target="_blank" aria-label="LinkedIn">
+                        <a href="https://linkedin.com/in/guziczak" class="social-btn" target="_blank"
+                           aria-label="LinkedIn">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
                         <a href="mailto:guziczak@pm.me" class="social-btn" aria-label="Email">
@@ -3263,9 +3297,12 @@
 
                     <div class="about-tab-content active" id="profile-content">
                         <p class="about-description" id="aboutDescription">
-                            I'm a Full-stack Developer and Analyst with a passion for building efficient and scalable applications.
-                            With extensive experience in both front-end and back-end technologies, I enjoy solving complex problems and optimizing systems.
-                            I'm always eager to learn new technologies and methodologies to improve my skills and deliver better results.
+                            I'm a Full-stack Developer and Analyst with a passion for building efficient and scalable
+                            applications.
+                            With extensive experience in both front-end and back-end technologies, I enjoy solving
+                            complex problems and optimizing systems.
+                            I'm always eager to learn new technologies and methodologies to improve my skills and
+                            deliver better results.
                         </p>
 
                         <div class="about-highlights">
@@ -3393,8 +3430,11 @@
     <section class="section" id="games">
         <div class="container">
             <h2 class="section-title animate" id="gamesTitle">My Games</h2>
-            <p class="animate" style="text-align: center; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;" id="gamesDescription">
-                Check out the games I've developed using JavaScript and HTML5 Canvas. Feel free to play them online or explore the source code on GitHub.
+            <p class="animate"
+               style="text-align: center; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;"
+               id="gamesDescription">
+                Check out the games I've developed using JavaScript and HTML5 Canvas. Feel free to play them online or
+                explore the source code on GitHub.
             </p>
             <div class="games-grid">
                 <!-- Games will be loaded from CSV -->
@@ -3560,7 +3600,8 @@
                     <div class="form-feedback"></div>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="modalMessageInput" placeholder="Your Message" required></textarea>
+                    <textarea class="form-control" id="modalMessageInput" placeholder="Your Message"
+                              required></textarea>
                     <label for="modalMessageInput" class="form-label">Your Message</label>
                     <div class="form-error"></div>
                     <div class="form-feedback"></div>
@@ -3685,7 +3726,8 @@
             <a href="#games" class="footer-link">Games</a>
             <a href="#testimonials" class="footer-link">Testimonials</a>
             <a href="#contact" class="footer-link">Contact</a>
-            <a href="https://guziczak.github.io/lukasz/cv.html" class="footer-link footer-cv-link" id="footerCV" target="_blank">CV</a>
+            <a href="https://guziczak.github.io/lukasz/cv.html" class="footer-link footer-cv-link" id="footerCV"
+               target="_blank">CV</a>
         </div>
     </div>
 </footer>
@@ -3708,7 +3750,7 @@
                     header: true,
                     dynamicTyping: true,
                     skipEmptyLines: true,
-                    complete: function(results) {
+                    complete: function (results) {
                         resolve(results.data);
                     }
                 });
@@ -3788,18 +3830,18 @@
             delay += 0.1;
 
             skillCard.innerHTML = `
-                    <div class="skill-card-content">
-                        <div class="skill-icon">
-                            <i class="${categoryIcons[category] || 'fas fa-code'}"></i>
-                        </div>
-                        <h3 class="skill-title">${category}</h3>
-                        <ul class="skill-items">
-                            ${skillsInCategory.map(skill => `
-                                <li class="skill-item" data-level="${skill.level}">${skill.name}</li>
-                            `).join('')}
-                        </ul>
+                <div class="skill-card-content">
+                    <div class="skill-icon">
+                        <i class="${categoryIcons[category] || 'fas fa-code'}"></i>
                     </div>
-                `;
+                    <h3 class="skill-title">${category}</h3>
+                    <ul class="skill-items">
+                        ${skillsInCategory.map(skill => `
+                            <li class="skill-item" data-level="${skill.level}">${skill.name}</li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
 
             skillsContainer.appendChild(skillCard);
         });
@@ -3819,30 +3861,30 @@
             projectCard.style.animationDelay = `${index * 0.1}s`;
 
             projectCard.innerHTML = `
-                    <img src="${project.imageSrc}" alt="${project.title}" class="project-img lazy-load" data-src="${project.imageSrc}">
-                    <div class="project-img-overlay"></div>
-                    <div class="project-content">
-                        <h3 class="project-title">${project.title}</h3>
-                        <p class="project-description" id="project${index+1}Desc">
-                            ${project.description}
-                        </p>
-                        <div class="project-tech-tags">
-                            ${project.tags.split(' ').map(tag => `
-                                <span class="project-tech-tag">${tag}</span>
-                            `).join('')}
-                        </div>
-                        <div class="project-links">
-                            <a href="${project.projectLink}" class="project-link">
-                                <i class="fas fa-external-link-alt"></i>
-                                <span id="viewProject">View Project</span>
-                            </a>
-                            <a href="${project.codeLink}" class="project-link">
-                                <i class="fas fa-code"></i>
-                                <span id="viewCode">View Code</span>
-                            </a>
-                        </div>
+                <img src="${project.imageSrc}" alt="${project.title}" class="project-img lazy-load" data-src="${project.imageSrc}">
+                <div class="project-img-overlay"></div>
+                <div class="project-content">
+                    <h3 class="project-title">${project.title}</h3>
+                    <p class="project-description" id="project${index + 1}Desc">
+                        ${project.description}
+                    </p>
+                    <div class="project-tech-tags">
+                        ${project.tags.split(' ').map(tag => `
+                            <span class="project-tech-tag">${tag}</span>
+                        `).join('')}
                     </div>
-                `;
+                    <div class="project-links">
+                        <a href="${project.projectLink}" class="project-link">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span id="viewProject">View Project</span>
+                        </a>
+                        <a href="${project.codeLink}" class="project-link">
+                            <i class="fas fa-code"></i>
+                            <span id="viewCode">View Code</span>
+                        </a>
+                    </div>
+                </div>
+            `;
 
             projectsContainer.appendChild(projectCard);
         });
@@ -3861,22 +3903,22 @@
             gameCard.style.animationDelay = `${index * 0.1}s`;
 
             gameCard.innerHTML = `
-                    <div class="game-img-container">
-                        <img src="${game.imageSrc}" alt="${game.title}" class="game-img lazy-load" data-src="${game.imageSrc}">
+                <div class="game-img-container">
+                    <img src="${game.imageSrc}" alt="${game.title}" class="game-img lazy-load" data-src="${game.imageSrc}">
+                </div>
+                <div class="game-content">
+                    <h3 class="game-title">${game.title}</h3>
+                    <p class="game-description">${game.description}</p>
+                    <div class="game-links">
+                        <a href="${game.playLink}" class="game-btn play-btn">
+                            <i class="fas fa-play"></i> Play
+                        </a>
+                        <a href="${game.codeLink}" class="game-btn code-btn">
+                            <i class="fas fa-code"></i> Code
+                        </a>
                     </div>
-                    <div class="game-content">
-                        <h3 class="game-title">${game.title}</h3>
-                        <p class="game-description">${game.description}</p>
-                        <div class="game-links">
-                            <a href="${game.playLink}" class="game-btn play-btn">
-                                <i class="fas fa-play"></i> Play
-                            </a>
-                            <a href="${game.codeLink}" class="game-btn code-btn">
-                                <i class="fas fa-code"></i> Code
-                            </a>
-                        </div>
-                    </div>
-                `;
+                </div>
+            `;
 
             gamesGrid.appendChild(gameCard);
         });
@@ -3896,29 +3938,29 @@
             certCard.style.animationDelay = `${index * 0.1}s`;
 
             certCard.innerHTML = `
-                    <div class="certificate-header">
-                        <img src="${certificate.logo}" alt="${certificate.issuer} Logo" class="certificate-logo lazy-load" data-src="${certificate.logo}">
-                        <div class="certificate-info">
-                            <h3 class="certificate-name">${certificate.name}</h3>
-                            <p class="certificate-issuer">${certificate.issuer}</p>
-                        </div>
+                <div class="certificate-header">
+                    <img src="${certificate.logo}" alt="${certificate.issuer} Logo" class="certificate-logo lazy-load" data-src="${certificate.logo}">
+                    <div class="certificate-info">
+                        <h3 class="certificate-name">${certificate.name}</h3>
+                        <p class="certificate-issuer">${certificate.issuer}</p>
                     </div>
-                    <div class="certificate-content">
-                        <p class="certificate-date">
-                            <i class="far fa-calendar-alt"></i> Issued: ${certificate.date}
-                        </p>
-                        ${certificate.credential ? `<p class="certificate-credential">Credential ID: ${certificate.credential}</p>` : ''}
-                        <div class="certificate-skills">
-                            ${certificate.skills.split(' ').map(skill => `
-                                <span class="certificate-skill">${skill}</span>
-                            `).join('')}
-                        </div>
-                        <a href="#certificates" class="view-certificate">
-                            <span id="viewCertificate">View Certificate</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                </div>
+                <div class="certificate-content">
+                    <p class="certificate-date">
+                        <i class="far fa-calendar-alt"></i> Issued: ${certificate.date}
+                    </p>
+                    ${certificate.credential ? `<p class="certificate-credential">Credential ID: ${certificate.credential}</p>` : ''}
+                    <div class="certificate-skills">
+                        ${certificate.skills.split(' ').map(skill => `
+                            <span class="certificate-skill">${skill}</span>
+                        `).join('')}
                     </div>
-                `;
+                    <a href="#certificates" class="view-certificate">
+                        <span id="viewCertificate">View Certificate</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            `;
 
             certificatesGrid.appendChild(certCard);
         });
@@ -3937,19 +3979,19 @@
             testimonialCard.style.animationDelay = `${index * 0.2}s`;
 
             testimonialCard.innerHTML = `
-                    <div class="testimonial-author">
-                        <h3 class="testimonial-name">${testimonial.name}</h3>
-                        <p class="testimonial-role">${testimonial.role}</p>
+                <div class="testimonial-author">
+                    <h3 class="testimonial-name">${testimonial.name}</h3>
+                    <p class="testimonial-role">${testimonial.role}</p>
+                </div>
+                <div class="testimonial-content">
+                    <div class="testimonial-quote-icon">
+                        <i class="fas fa-quote-left"></i>
                     </div>
-                    <div class="testimonial-content">
-                        <div class="testimonial-quote-icon">
-                            <i class="fas fa-quote-left"></i>
-                        </div>
-                        <p class="testimonial-text">
-                            ${testimonial.quote}
-                        </p>
-                    </div>
-                `;
+                    <p class="testimonial-text">
+                        ${testimonial.quote}
+                    </p>
+                </div>
+            `;
 
             testimonialsContainer.appendChild(testimonialCard);
         });
@@ -3968,14 +4010,14 @@
             achievementCard.style.animationDelay = `${index * 0.1}s`;
 
             achievementCard.innerHTML = `
-                    <div class="achievement-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <h3 class="achievement-title" id="achievement${index+1}Title">${achievement.title}</h3>
-                    <p class="achievement-description" id="achievement${index+1}Desc">
-                        ${achievement.description}
-                    </p>
-                `;
+                <div class="achievement-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="achievement-title" id="achievement${index + 1}Title">${achievement.title}</h3>
+                <p class="achievement-description" id="achievement${index + 1}Desc">
+                    ${achievement.description}
+                </p>
+            `;
 
             achievementsList.appendChild(achievementCard);
         });
@@ -3993,14 +4035,14 @@
             timelineItem.className = 'timeline-item';
 
             timelineItem.innerHTML = `
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">${exp.period}</div>
-                    <div class="timeline-content">
-                        <h4>${exp.title}</h4>
-                        <p class="timeline-company">${exp.company}</p>
-                        <p>${exp.description}</p>
-                    </div>
-                `;
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">${exp.period}</div>
+                <div class="timeline-content">
+                    <h4>${exp.title}</h4>
+                    <p class="timeline-company">${exp.company}</p>
+                    <p>${exp.description}</p>
+                </div>
+            `;
 
             experienceTimeline.appendChild(timelineItem);
         });
@@ -4018,14 +4060,14 @@
             timelineItem.className = 'timeline-item';
 
             timelineItem.innerHTML = `
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">${edu.period}</div>
-                    <div class="timeline-content">
-                        <h4>${edu.title}</h4>
-                        <p class="timeline-company">${edu.institution}</p>
-                        <p>${edu.description}</p>
-                    </div>
-                `;
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">${edu.period}</div>
+                <div class="timeline-content">
+                    <h4>${edu.title}</h4>
+                    <p class="timeline-company">${edu.institution}</p>
+                    <p>${edu.description}</p>
+                </div>
+            `;
 
             educationTimeline.appendChild(timelineItem);
         });
@@ -4034,7 +4076,7 @@
     // Enhanced Smooth Scrolling for Navigation with Better Offset Calculation
     function enhanceSmoothScrolling() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 if (this.getAttribute('href') !== '#') {
                     e.preventDefault();
 
@@ -4123,6 +4165,226 @@
         });
     }
 
+    // Enhanced Contact Form with Fixed Functionality
+    function enhanceContactForm() {
+        // Form elements
+        const modalNameInput = document.getElementById('modalNameInput');
+        const modalEmailInput = document.getElementById('modalEmailInput');
+        const modalSubjectInput = document.getElementById('modalSubjectInput');
+        const modalMessageInput = document.getElementById('modalMessageInput');
+        const sendModalMessageBtn = document.getElementById('sendModalMessageBtn');
+        const form = document.getElementById('contactModalForm');
+        const successMessage = document.querySelector('.modal-success');
+        const successDoneBtn = document.getElementById('successDoneBtn');
+        const contactModal = document.getElementById('contactModal');
+
+        if (!modalNameInput || !modalEmailInput || !modalSubjectInput || !modalMessageInput) return;
+
+        // Form validation
+        function validateInput(input, errorMsg) {
+            const formGroup = input.closest('.form-group');
+            const feedbackElement = formGroup.querySelector('.form-feedback');
+
+            if (!input.value.trim()) {
+                formGroup.classList.add('error');
+                formGroup.classList.remove('success');
+                feedbackElement.className = 'form-feedback error';
+                feedbackElement.innerHTML = '<i class="fas fa-exclamation-circle form-feedback-icon"></i> ' + errorMsg;
+                return false;
+            } else {
+                formGroup.classList.remove('error');
+                formGroup.classList.add('success');
+                feedbackElement.className = 'form-feedback success';
+                feedbackElement.innerHTML = '<i class="fas fa-check-circle form-feedback-icon"></i> Looks good!';
+                return true;
+            }
+        }
+
+        function validateEmail(input) {
+            const formGroup = input.closest('.form-group');
+            const feedbackElement = formGroup.querySelector('.form-feedback');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!input.value.trim() || !emailPattern.test(input.value)) {
+                formGroup.classList.add('error');
+                formGroup.classList.remove('success');
+                feedbackElement.className = 'form-feedback error';
+                feedbackElement.innerHTML = '<i class="fas fa-exclamation-circle form-feedback-icon"></i> Please enter a valid email address';
+                return false;
+            } else {
+                formGroup.classList.remove('error');
+                formGroup.classList.add('success');
+                feedbackElement.className = 'form-feedback success';
+                feedbackElement.innerHTML = '<i class="fas fa-check-circle form-feedback-icon"></i> Looks good!';
+                return true;
+            }
+        }
+
+        // Event listeners for real-time validation
+        if (modalNameInput) {
+            modalNameInput.addEventListener('input', () => {
+                const formGroup = modalNameInput.closest('.form-group');
+                formGroup.classList.remove('error');
+            });
+            modalNameInput.addEventListener('blur', () => validateInput(modalNameInput, 'Please enter your name'));
+        }
+
+        if (modalEmailInput) {
+            modalEmailInput.addEventListener('input', () => {
+                const formGroup = modalEmailInput.closest('.form-group');
+                formGroup.classList.remove('error');
+            });
+            modalEmailInput.addEventListener('blur', () => validateEmail(modalEmailInput));
+        }
+
+        if (modalSubjectInput) {
+            modalSubjectInput.addEventListener('input', () => {
+                const formGroup = modalSubjectInput.closest('.form-group');
+                formGroup.classList.remove('error');
+            });
+            modalSubjectInput.addEventListener('blur', () => validateInput(modalSubjectInput, 'Please enter a subject'));
+        }
+
+        if (modalMessageInput) {
+            modalMessageInput.addEventListener('input', () => {
+                const formGroup = modalMessageInput.closest('.form-group');
+                formGroup.classList.remove('error');
+            });
+            modalMessageInput.addEventListener('blur', () => validateInput(modalMessageInput, 'Please enter your message'));
+        }
+
+        // Form submission with Brevo API integration
+        if (sendModalMessageBtn) {
+            sendModalMessageBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Validate all inputs
+                const isNameValid = validateInput(modalNameInput, 'Please enter your name');
+                const isEmailValid = validateEmail(modalEmailInput);
+                const isSubjectValid = validateInput(modalSubjectInput, 'Please enter a subject');
+                const isMessageValid = validateInput(modalMessageInput, 'Please enter your message');
+
+                if (isNameValid && isEmailValid && isSubjectValid && isMessageValid) {
+                    // Show loading state
+                    sendModalMessageBtn.disabled = true;
+                    sendModalMessageBtn.classList.add('loading');
+
+                    // Format the message with sender info for mailto fallback
+                    const formattedMessage = `Message from: ${modalNameInput.value.trim()} (${modalEmailInput.value.trim()})\n\n${modalMessageInput.value.trim()}`;
+
+                    // Create mailto link with subject and body for fallback
+                    const mailtoLink = `mailto:guziczak@pm.me?subject=${encodeURIComponent(modalSubjectInput.value.trim())}&body=${encodeURIComponent(formattedMessage)}`;
+
+                    // Prepare data for Brevo API
+                    const messageHtml = modalMessageInput.value.trim().replace(/\n/g, '<br>');
+                    const apiData = {
+                        "sender": {
+                            "name": `Propozycja - ${modalNameInput.value.trim()}`,
+                            "email": "d94wcrgcc6@privaterelay.appleid.com"
+                        },
+                        "to": [
+                            {"email": "guziczak@pm.me", "name": "LG ITS"},
+                            {"email": "guziczak@proton.me", "name": "LG ITS"},
+                            {"email": "jguziczak@wp.pl", "name": "LG ITS - backup"}
+                        ],
+                        "subject": modalSubjectInput.value.trim(),
+                        "htmlContent": `
+                        <p><strong>Wiadomość od:</strong> ${modalNameInput.value.trim()} (${modalEmailInput.value.trim()})</p>
+                        <p><strong>Temat:</strong> ${modalSubjectInput.value.trim()}</p>
+                        <hr>
+                        <p>${messageHtml}</p>
+                    `
+                    };
+
+                    // Send using Brevo API
+                    const a = 'xkeysib-d2bb993880b31aec370449c';
+                    const b = '9cc0390614409f8f82ddff56c5aba2b5';
+                    const c = '9cc0390614409f8f82ddff56c5aba2b5';
+                    const g = '4ab940d74';
+                    const z = 'rtC5OCd1C2HJ0dON';
+
+                    fetch('https://api.brevo.com/v3/smtp/email', {
+                        method: 'POST',
+                        headers: {
+                            'accept': 'application/json',
+                            'api-key': a + b + c + g + '-' + z,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(apiData)
+                    })
+                        .then(response => {
+                            // Reset loading state
+                            sendModalMessageBtn.disabled = false;
+                            sendModalMessageBtn.classList.remove('loading');
+
+                            if (response.ok) {
+                                // API call successful
+                                // Show success message
+                                form.style.display = 'none';
+                                successMessage.style.display = 'block';
+
+                                // Still open mail client as a fallback
+                                setTimeout(() => {
+                                    window.location.href = mailtoLink;
+                                }, 1000);
+                            } else {
+                                // API call failed
+                                console.error('Brevo API error:', response.status);
+
+                                // Open mail client as primary method
+                                window.location.href = mailtoLink;
+
+                                // Show custom fallback message
+                                const feedbackElement = document.createElement('div');
+                                feedbackElement.className = 'form-feedback error';
+                                feedbackElement.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please complete sending your message via your email client.';
+                                form.appendChild(feedbackElement);
+                            }
+                        })
+                        .catch(error => {
+                            // Reset loading state
+                            sendModalMessageBtn.disabled = false;
+                            sendModalMessageBtn.classList.remove('loading');
+                            console.error('Error sending message via API:', error);
+
+                            // Open mail client as fallback
+                            window.location.href = mailtoLink;
+
+                            // Show custom fallback message
+                            const feedbackElement = document.createElement('div');
+                            feedbackElement.className = 'form-feedback error';
+                            feedbackElement.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please complete sending your message via your email client.';
+                            form.appendChild(feedbackElement);
+                        });
+                }
+            });
+        }
+
+        // Success done button
+        if (successDoneBtn) {
+            successDoneBtn.addEventListener('click', () => {
+                contactModal.classList.remove('active');
+
+                // Reset form after a delay
+                setTimeout(() => {
+                    form.style.display = 'block';
+                    successMessage.style.display = 'none';
+                    form.reset();
+
+                    // Reset validation states
+                    document.querySelectorAll('.form-group').forEach(group => {
+                        group.classList.remove('success', 'error');
+                        const feedback = group.querySelector('.form-feedback');
+                        if (feedback) {
+                            feedback.innerHTML = '';
+                            feedback.className = 'form-feedback';
+                        }
+                    });
+                }, 500);
+            });
+        }
+    }
+
     // Enhanced Language Switcher with Animation
     function enhanceLanguageSwitcher() {
         // Add transition styles to elements that change with language
@@ -4145,7 +4407,7 @@
         });
 
         // Override the changeLanguage function to include animations
-        window.changeLanguage = function(lang) {
+        window.changeLanguage = function (lang) {
             // Store the previous language
             const previousLang = localStorage.getItem('selectedLanguage') || 'en';
 
@@ -4250,39 +4512,53 @@
         );
 
         const progressPercentage = (scrolled / scrollable) * 100;
-        scrollProgress.style.width = Math.min(100, Math.max(0, progressPercentage)) + '%';
+        const scrollProgress = document.getElementById('scrollProgress');
+        if (scrollProgress) {
+            scrollProgress.style.width = Math.min(100, Math.max(0, progressPercentage)) + '%';
+        }
     }
 
-    // Zoptymalizowana obsługa przewijania z użyciem requestAnimationFrame
-    let ticking = false;
-    window.addEventListener('scroll', function() {
-        if (!ticking) {
-            window.requestAnimationFrame(function() {
-                // Navbar Scroll Effect
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
+    // Theme Toggle Function
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode);
 
-                // Back to Top Button
-                if (window.scrollY > 500) {
-                    backToTopBtn.classList.add('visible');
-                } else {
-                    backToTopBtn.classList.remove('visible');
-                }
-
-                // Update Scroll Progress
-                updateScrollProgress();
-
-                // Update active nav link
-                updateActiveNavLink();
-
-                ticking = false;
-            });
-            ticking = true;
+        const themeIcon = document.getElementById('themeIcon');
+        if (themeIcon) {
+            if (isDarkMode) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
         }
-    });
+    }
+
+    // Mobile Menu Toggle
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobileNavMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const menuIcon = document.getElementById('menuIcon');
+
+        if (mobileMenu) mobileMenu.classList.toggle('active');
+        if (mobileMenuOverlay) mobileMenuOverlay.classList.toggle('active');
+
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            if (menuIcon) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            }
+        } else {
+            document.body.style.overflow = ''; // Restore scrolling
+            if (menuIcon) {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        }
+    }
 
     // Ulepszone filtrowanie projektów
     function initProjectFilter() {
@@ -4497,259 +4773,6 @@
         });
     }
 
-    // Ulepszona walidacja formularza
-    function enhanceContactForm() {
-        // Elementy formularza
-        const modalNameInput = document.getElementById('modalNameInput');
-        const modalEmailInput = document.getElementById('modalEmailInput');
-        const modalSubjectInput = document.getElementById('modalSubjectInput');
-        const modalMessageInput = document.getElementById('modalMessageInput');
-        const sendModalMessageBtn = document.getElementById('sendModalMessageBtn');
-        const form = document.getElementById('contactModalForm');
-        const successMessage = document.querySelector('.modal-success');
-        const successDoneBtn = document.getElementById('successDoneBtn');
-
-        if (!modalNameInput || !modalEmailInput || !modalSubjectInput || !modalMessageInput) return;
-
-        // Zmienne do śledzenia timeoutów walidacji
-        let validationTimeouts = {};
-
-        // Funkcja walidacji z opóźnieniem
-        function validateInput(input, errorMsg, immediate = false) {
-            const formGroup = input.closest('.form-group');
-            const feedbackElement = formGroup.querySelector('.form-feedback');
-
-            // Wyczyść istniejący timeout
-            if (validationTimeouts[input.id]) {
-                clearTimeout(validationTimeouts[input.id]);
-            }
-
-            // Ustaw timeout walidacji (natychmiastowy, jeśli wymagany)
-            validationTimeouts[input.id] = setTimeout(() => {
-                if (!input.value.trim()) {
-                    formGroup.classList.add('error');
-                    formGroup.classList.remove('success');
-                    feedbackElement.className = 'form-feedback error';
-                    feedbackElement.innerHTML = '<i class="fas fa-exclamation-circle form-feedback-icon"></i> ' + errorMsg;
-                    return false;
-                } else {
-                    formGroup.classList.remove('error');
-                    formGroup.classList.add('success');
-                    feedbackElement.className = 'form-feedback success';
-                    feedbackElement.innerHTML = '<i class="fas fa-check-circle form-feedback-icon"></i> Wygląda dobrze!';
-                    return true;
-                }
-            }, immediate ? 0 : 600); // Opóźnienie walidacji dla lepszego UX
-        }
-
-        // Funkcja walidacji emaila
-        function validateEmail(input, immediate = false) {
-            const formGroup = input.closest('.form-group');
-            const feedbackElement = formGroup.querySelector('.form-feedback');
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            // Wyczyść istniejący timeout
-            if (validationTimeouts[input.id]) {
-                clearTimeout(validationTimeouts[input.id]);
-            }
-
-            // Ustaw timeout walidacji
-            validationTimeouts[input.id] = setTimeout(() => {
-                if (!input.value.trim() || !emailPattern.test(input.value)) {
-                    formGroup.classList.add('error');
-                    formGroup.classList.remove('success');
-                    feedbackElement.className = 'form-feedback error';
-                    feedbackElement.innerHTML = '<i class="fas fa-exclamation-circle form-feedback-icon"></i> Wprowadź poprawny adres email';
-                    return false;
-                } else {
-                    formGroup.classList.remove('error');
-                    formGroup.classList.add('success');
-                    feedbackElement.className = 'form-feedback success';
-                    feedbackElement.innerHTML = '<i class="fas fa-check-circle form-feedback-icon"></i> Wygląda dobrze!';
-                    return true;
-                }
-            }, immediate ? 0 : 600);
-        }
-
-        // Zdarzenia dla walidacji w czasie rzeczywistym
-        if (modalNameInput) {
-            modalNameInput.addEventListener('input', () => {
-                // Usuń klasę błędu podczas pisania
-                const formGroup = modalNameInput.closest('.form-group');
-                formGroup.classList.remove('error');
-            });
-
-            modalNameInput.addEventListener('blur', () => validateInput(modalNameInput, 'Wprowadź swoje imię', true));
-        }
-
-        if (modalEmailInput) {
-            modalEmailInput.addEventListener('input', () => {
-                // Usuń klasę błędu podczas pisania
-                const formGroup = modalEmailInput.closest('.form-group');
-                formGroup.classList.remove('error');
-            });
-
-            modalEmailInput.addEventListener('blur', () => validateEmail(modalEmailInput, true));
-        }
-
-        if (modalSubjectInput) {
-            modalSubjectInput.addEventListener('input', () => {
-                // Usuń klasę błędu podczas pisania
-                const formGroup = modalSubjectInput.closest('.form-group');
-                formGroup.classList.remove('error');
-            });
-
-            modalSubjectInput.addEventListener('blur', () => validateInput(modalSubjectInput, 'Wprowadź temat wiadomości', true));
-        }
-
-        if (modalMessageInput) {
-            modalMessageInput.addEventListener('input', () => {
-                // Usuń klasę błędu podczas pisania
-                const formGroup = modalMessageInput.closest('.form-group');
-                formGroup.classList.remove('error');
-            });
-
-            modalMessageInput.addEventListener('blur', () => validateInput(modalMessageInput, 'Wprowadź swoją wiadomość', true));
-        }
-
-        // Obsługa wysyłania formularza
-        if (sendModalMessageBtn) {
-            sendModalMessageBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-
-                // Zwaliduj wszystkie pola
-                const isNameValid = validateInput(modalNameInput, 'Wprowadź swoje imię', true);
-                const isEmailValid = validateEmail(modalEmailInput, true);
-                const isSubjectValid = validateInput(modalSubjectInput, 'Wprowadź temat wiadomości', true);
-                const isMessageValid = validateInput(modalMessageInput, 'Wprowadź swoją wiadomość', true);
-
-                // Opóźnienie, aby dać czas na zakończenie animacji walidacji
-                setTimeout(() => {
-                    if (isNameValid && isEmailValid && isSubjectValid && isMessageValid) {
-                        // Pokaż stan ładowania
-                        sendModalMessageBtn.disabled = true;
-                        sendModalMessageBtn.classList.add('loading');
-
-                        // Symuluj proces wysyłania
-                        setTimeout(() => {
-                            // Formatuj wiadomość z informacjami o nadawcy
-                            const formattedMessage = `Wiadomość od: ${modalNameInput.value.trim()} (${modalEmailInput.value.trim()})\n\n${modalMessageInput.value.trim()}`;
-
-                            // Utwórz link mailto z tematem i treścią
-                            const mailtoLink = `mailto:guziczak@pm.me?subject=${encodeURIComponent(modalSubjectInput.value.trim())}&body=${encodeURIComponent(formattedMessage)}`;
-
-                            // Resetuj stan ładowania
-                            sendModalMessageBtn.disabled = false;
-                            sendModalMessageBtn.classList.remove('loading');
-
-                            // Otwórz klienta poczty
-                            window.location.href = mailtoLink;
-
-                            // Pokaż komunikat powodzenia
-                            if (form && successMessage) {
-                                form.style.display = 'none';
-                                successMessage.style.display = 'block';
-                            }
-                        }, 1500);
-                    }
-                }, 300);
-            });
-        }
-
-        // Przycisk "Gotowe" po sukcesie
-        if (successDoneBtn) {
-            successDoneBtn.addEventListener('click', () => {
-                const contactModal = document.getElementById('contactModal');
-                if (contactModal) {
-                    contactModal.classList.remove('active');
-                }
-
-                // Resetuj formularz po opóźnieniu
-                setTimeout(() => {
-                    if (form && successMessage) {
-                        form.style.display = 'block';
-                        successMessage.style.display = 'none';
-                    }
-
-                    if (form) form.reset();
-
-                    // Resetuj stany walidacji
-                    document.querySelectorAll('.form-group').forEach(group => {
-                        group.classList.remove('success', 'error');
-                        const feedback = group.querySelector('.form-feedback');
-                        if (feedback) {
-                            feedback.innerHTML = '';
-                            feedback.className = 'form-feedback';
-                        }
-                    });
-                }, 500);
-            });
-        }
-
-        // Dodaj autofokus na pierwszym polu po otwarciu modalu
-        const openModalButtons = [
-            document.getElementById('openContactModalBtn'),
-            document.getElementById('openContactModalBtn2')
-        ];
-
-        openModalButtons.forEach(button => {
-            if (button) {
-                button.addEventListener('click', () => {
-                    setTimeout(() => {
-                        if (modalNameInput) modalNameInput.focus();
-                    }, 300);
-                });
-            }
-        });
-    }
-
-    // DOM Elements
-    const preloader = document.getElementById('preloader');
-    const scrollProgress = document.getElementById('scrollProgress');
-    const navbar = document.getElementById('navbar');
-    const navLinks = document.getElementById('navLinks');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const menuIcon = document.getElementById('menuIcon');
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const backToTopBtn = document.getElementById('backToTopBtn');
-    const animatedElements = document.querySelectorAll('.animate');
-    const currentLangFlag = document.getElementById('currentLangFlag');
-    const certificateCards = document.querySelectorAll('.certificate-card');
-    const certificateFilterButtons = document.querySelectorAll('.certificates-filter .filter-btn');
-    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-    const projectCards = document.querySelectorAll('.project-card');
-    const projectFilterButtons = document.querySelectorAll('.projects-filter .filter-btn');
-    const aboutTabs = document.querySelectorAll('.about-tab');
-    const aboutTabContents = document.querySelectorAll('.about-tab-content');
-
-    // Modal Elements
-    const contactModal = document.getElementById('contactModal');
-    const openContactModalBtn = document.getElementById('openContactModalBtn');
-    const openContactModalBtn2 = document.getElementById('openContactModalBtn2');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const modalContent = document.querySelector('.modal-content.draggable');
-    const modalHeader = document.getElementById('modalHeader');
-    const sendModalMessageBtn = document.getElementById('sendModalMessageBtn');
-
-    // Initialize About Tabs
-    function initAboutTabs() {
-        aboutTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs and contents
-                aboutTabs.forEach(t => t.classList.remove('active'));
-                aboutTabContents.forEach(content => content.classList.remove('active'));
-
-                // Add active class to clicked tab
-                tab.classList.add('active');
-
-                // Show associated content
-                const tabContentId = tab.getAttribute('data-tab') + '-content';
-                document.getElementById(tabContentId).classList.add('active');
-            });
-        });
-    }
-
     // Enhanced skill cards
     function enhanceSkillCards() {
         // Array of skills with their levels (out of 100)
@@ -4825,7 +4848,7 @@
                             observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.2 });
+                }, {threshold: 0.2});
 
                 observer.observe(progressContainer);
             }
@@ -4835,6 +4858,8 @@
     // Add Hero Particles
     function addHeroParticles() {
         const hero = document.querySelector('.hero');
+        if (!hero) return;
+
         const particleContainer = document.createElement('div');
         particleContainer.className = 'hero-particles';
 
@@ -4868,47 +4893,6 @@
         }
 
         hero.insertBefore(particleContainer, hero.firstChild);
-    }
-
-    // Theme Toggle
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        const isDarkMode = document.body.classList.contains('dark-mode');
-
-        localStorage.setItem('darkMode', isDarkMode);
-
-        if (isDarkMode) {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        } else {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-        }
-    }
-
-    // Initialize Theme
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    if (savedDarkMode) {
-        document.body.classList.add('dark-mode');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-    }
-
-    // Mobile Menu Toggle
-    function toggleMobileMenu() {
-        const mobileMenu = document.getElementById('mobileNavMenu');
-        mobileMenu.classList.toggle('active');
-        mobileMenuOverlay.classList.toggle('active');
-
-        if (mobileMenu.classList.contains('active')) {
-            menuIcon.classList.remove('fa-bars');
-            menuIcon.classList.add('fa-times');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        } else {
-            menuIcon.classList.remove('fa-times');
-            menuIcon.classList.add('fa-bars');
-            document.body.style.overflow = ''; // Restore scrolling
-        }
     }
 
     // Initialize Radar Chart for Skills
@@ -4973,7 +4957,7 @@
                     },
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 return context.formattedValue + '%';
                             }
                         }
@@ -5015,7 +4999,10 @@
             });
 
             // Update colors when toggling theme
-            themeToggle.addEventListener('click', updateChartColors);
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', updateChartColors);
+            }
 
             // Set initial colors
             updateChartColors();
@@ -5041,10 +5028,13 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.2 });
+            }, {threshold: 0.2});
 
             // Observe chart container
-            observer.observe(document.querySelector('.skills-radar-container'));
+            const container = document.querySelector('.skills-radar-container');
+            if (container) {
+                observer.observe(container);
+            }
         }
     }
 
@@ -5194,19 +5184,12 @@
             });
 
             // Update language flag
-            currentLangFlag.src = lang === 'en' ? 'uk.svg' : 'pl.svg';
+            const currentLangFlag = document.getElementById('currentLangFlag');
+            if (currentLangFlag) {
+                currentLangFlag.src = lang === 'en' ? 'uk.svg' : 'pl.svg';
+            }
         }, 300);
     }
-
-    // Language Switcher
-    function changeLanguage(lang) {
-        localStorage.setItem('selectedLanguage', lang);
-        applyLanguage(lang);
-    }
-
-    // Check if language preference is saved
-    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-    applyLanguage(savedLanguage);
 
     // Implement lazy loading for images
     function implementLazyLoading() {
@@ -5240,113 +5223,88 @@
         }
     }
 
+    // Zoptymalizowana obsługa przewijania z użyciem requestAnimationFrame
+    let ticking = false;
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            window.requestAnimationFrame(function () {
+                const navbar = document.getElementById('navbar');
+                const backToTopBtn = document.getElementById('backToTopBtn');
+
+                // Navbar Scroll Effect
+                if (navbar && window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else if (navbar) {
+                    navbar.classList.remove('scrolled');
+                }
+
+                // Back to Top Button
+                if (backToTopBtn && window.scrollY > 500) {
+                    backToTopBtn.classList.add('visible');
+                } else if (backToTopBtn) {
+                    backToTopBtn.classList.remove('visible');
+                }
+
+                // Update Scroll Progress
+                updateScrollProgress();
+
+                // Update active nav link
+                updateActiveNavLink();
+
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
     // Skrypt integrujący wszystkie ulepszenia
-    document.addEventListener('DOMContentLoaded', function() {
-        // Inicjalizuj preloader
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get DOM elements
         const preloader = document.getElementById('preloader');
+        const scrollProgress = document.getElementById('scrollProgress');
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.getElementById('navLinks');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const menuIcon = document.getElementById('menuIcon');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        const mobileNavMenu = document.getElementById('mobileNavMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+
+        // Initialize Theme - moved here from the global scope
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (savedDarkMode && themeIcon) {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+
+        // Hide preloader
         if (preloader) {
             setTimeout(() => {
                 preloader.classList.add('hidden');
             }, 1000);
         }
 
-        // Dodaj ulepszone funkcje wskaźnika przewijania
-        function updateScrollProgress() {
-            // Obsługa różnych przeglądarek (Safari, Chrome, Firefox)
-            const scrollable = Math.max(
-                document.documentElement.scrollHeight,
-                document.body.scrollHeight
-            ) - window.innerHeight;
-
-            const scrolled = Math.max(
-                document.documentElement.scrollTop,
-                document.body.scrollTop
-            );
-
-            const progressPercentage = (scrolled / scrollable) * 100;
-            const scrollProgress = document.getElementById('scrollProgress');
-            if (scrollProgress) {
-                scrollProgress.style.width = Math.min(100, Math.max(0, progressPercentage)) + '%';
-            }
-        }
-
-        // Zastąp domyślną obsługę przewijania
-        let ticking = false;
-        window.addEventListener('scroll', function() {
-            if (!ticking) {
-                window.requestAnimationFrame(function() {
-                    const navbar = document.getElementById('navbar');
-                    const backToTopBtn = document.getElementById('backToTopBtn');
-
-                    // Efekt przewijania nawigacji
-                    if (navbar && window.scrollY > 50) {
-                        navbar.classList.add('scrolled');
-                    } else if (navbar) {
-                        navbar.classList.remove('scrolled');
-                    }
-
-                    // Przycisk "Powrót do góry"
-                    if (backToTopBtn && window.scrollY > 500) {
-                        backToTopBtn.classList.add('visible');
-                    } else if (backToTopBtn) {
-                        backToTopBtn.classList.remove('visible');
-                    }
-
-                    // Aktualizacja wskaźnika przewijania
-                    updateScrollProgress();
-
-                    // Aktualizacja aktywnego linku nawigacyjnego
-                    updateActiveNavLink();
-
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-
-        // Inicjalizuj funkcje obsługujące zdarzenia
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileNavMenu = document.getElementById('mobileNavMenu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-        const mobileMenuClose = document.getElementById('mobileMenuClose');
-        const themeToggle = document.getElementById('themeToggle');
-        const backToTopBtn = document.getElementById('backToTopBtn');
-
         // Mobile Menu Toggle
-        if (mobileMenuBtn && mobileNavMenu && mobileMenuOverlay) {
-            function toggleMobileMenu() {
-                mobileNavMenu.classList.toggle('active');
-                mobileMenuOverlay.classList.toggle('active');
-
-                if (mobileNavMenu.classList.contains('active')) {
-                    document.body.style.overflow = 'hidden'; // Zapobiega przewijaniu
-                    const menuIcon = document.getElementById('menuIcon');
-                    if (menuIcon) {
-                        menuIcon.classList.remove('fa-bars');
-                        menuIcon.classList.add('fa-times');
-                    }
-                } else {
-                    document.body.style.overflow = ''; // Przywróć przewijanie
-                    const menuIcon = document.getElementById('menuIcon');
-                    if (menuIcon) {
-                        menuIcon.classList.remove('fa-times');
-                        menuIcon.classList.add('fa-bars');
-                    }
-                }
-            }
-
+        if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-            mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
-
-            if (mobileMenuClose) {
-                mobileMenuClose.addEventListener('click', toggleMobileMenu);
-            }
-
-            // Zamknij menu po kliknięciu w link
-            document.querySelectorAll('.mobile-nav-link').forEach(link => {
-                link.addEventListener('click', toggleMobileMenu);
-            });
         }
+
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+        }
+
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Close menu when clicking on mobile nav links
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', toggleMobileMenu);
+        });
 
         // Theme Toggle
         if (themeToggle) {
@@ -5355,7 +5313,7 @@
 
         // Back to Top Button
         if (backToTopBtn) {
-            backToTopBtn.addEventListener('click', function() {
+            backToTopBtn.addEventListener('click', function () {
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
@@ -5378,7 +5336,7 @@
             let initialLeft, initialTop;
             const VIEWPORT_PADDING = 20;
 
-            modalHeader.addEventListener('mousedown', function(e) {
+            modalHeader.addEventListener('mousedown', function (e) {
                 if (e.button !== 0) return; // Only left mouse button
 
                 isDragging = true;
@@ -5400,7 +5358,7 @@
                 e.preventDefault();
             });
 
-            document.addEventListener('mousemove', function(e) {
+            document.addEventListener('mousemove', function (e) {
                 if (!isDragging) return;
 
                 // Calculate new position
@@ -5428,7 +5386,7 @@
                 modalContent.style.transform = 'none'; // Remove transform to prevent conflicts
             });
 
-            document.addEventListener('mouseup', function() {
+            document.addEventListener('mouseup', function () {
                 if (!isDragging) return;
 
                 isDragging = false;
