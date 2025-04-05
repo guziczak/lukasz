@@ -1741,6 +1741,59 @@
             word-break: break-all;
         }
 
+        /* Certificate Showcase Button */
+        .view-all-certificates {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .certificate-showcase-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+            box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .certificate-showcase-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+            transform: translate(-100%, -100%);
+            border-radius: 50%;
+            transition: all 0.8s ease;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .certificate-showcase-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .certificate-showcase-btn:hover::before {
+            transform: translate(0%, 0%);
+            opacity: 1;
+        }
+
+        .certificate-showcase-btn i {
+            margin-right: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .certificate-showcase-btn span {
+            position: relative;
+            z-index: 2;
+        }
+
         /* Testimonials Section - UPDATED TO REMOVE AVATARS AND RATINGS */
         .testimonials-container {
             display: grid;
@@ -3078,7 +3131,8 @@
         #gamesTitle, #gamesDescription, #certificatesTitle, #testimonialsTitle,
         #achievementsTitle, #contactTitle, #contactInfoTitle, #contactLocation,
         #openModalText, #contactCardTitle, #contactCardText, #openModalText2,
-        #modalTitle, #sendModalMessage, #mobileCvText, #copyright, #footerCV {
+        #modalTitle, #sendModalMessage, #mobileCvText, #copyright, #footerCV,
+        #viewAllCertificates {
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
     </style>
@@ -3365,6 +3419,14 @@
 
             <div class="certificates-grid">
                 <!-- Certificates will be loaded from CSV -->
+            </div>
+
+            <!-- Added View All Certificates Button -->
+            <div class="view-all-certificates animate">
+                <a href="certificates.html" class="btn btn-primary certificate-showcase-btn">
+                    <i class="fas fa-award"></i>
+                    <span id="viewAllCertificates">View All Certificates</span>
+                </a>
             </div>
         </div>
     </section>
@@ -4073,7 +4135,8 @@
             'certificatesTitle', 'testimonialsTitle', 'achievementsTitle',
             'contactTitle', 'contactInfoTitle', 'contactLocation', 'openModalText',
             'contactCardTitle', 'contactCardText', 'openModalText2', 'modalTitle',
-            'sendModalMessage', 'mobileCvText', 'copyright', 'footerCV'
+            'sendModalMessage', 'mobileCvText', 'copyright', 'footerCV',
+            'viewAllCertificates'
         ];
 
         // Project and achievement descriptions
@@ -5020,6 +5083,7 @@
                 'gamesDescription': 'Check out the games I\'ve developed using JavaScript and HTML5 Canvas. Feel free to play them online or explore the source code on GitHub.',
                 'certificatesTitle': 'Certificates',
                 'viewCertificate': 'View Certificate',
+                'viewAllCertificates': 'View All Certificates',
                 'testimonialsTitle': 'Recommendations',
                 'achievementsTitle': 'Achievements',
                 'achievement1Title': 'Implementation of User Preset System',
@@ -5075,6 +5139,7 @@
                 'gamesDescription': 'Sprawdź gry, które stworzyłem przy użyciu JavaScript i HTML5 Canvas. Możesz je zagrać online lub przejrzeć kod źródłowy na GitHubie.',
                 'certificatesTitle': 'Certyfikaty',
                 'viewCertificate': 'Zobacz Certyfikat',
+                'viewAllCertificates': 'Zobacz Wszystkie Certyfikaty',
                 'testimonialsTitle': 'Rekomendacje',
                 'achievementsTitle': 'Osiągnięcia',
                 'achievement1Title': 'Implementacja Systemu Presetów Użytkownika',
@@ -5412,40 +5477,44 @@
             }
         }
 
-        // Enhanced smooth scrolling
+        // Initialize contact form enhancements
+        enhanceContactForm();
+
+        // Initialize smooth scrolling
         enhanceSmoothScrolling();
 
-        // Enhanced about tabs with animation
+        // Initialize about tabs
         enhanceAboutTabs();
 
-        // Enhanced language switcher with animation
+        // Initialize language switcher
         enhanceLanguageSwitcher();
+
+        // Initialize particles effect
+        addHeroParticles();
+
+        // Initialize chart
+        initializeRadarChart();
 
         // Initialize all data from CSV files
         initializeFromCSV();
 
-        // Initialize filters
-        initProjectFilter();
-        initCertificateFilter();
-
-        // Enhanced skill cards
-        enhanceSkillCards();
-
-        // Initialize UI components
+        // Initialize scroll animations
         enhanceScrollAnimations();
-        handleRefreshAnimations();
-        enhanceContactForm();
-        implementLazyLoading();
-
-        // Initialize radar chart
-        initializeRadarChart();
-
-        // Add hero particles effect
-        addHeroParticles();
 
         // Initial update of components
         updateScrollProgress();
         updateActiveNavLink();
+        handleRefreshAnimations();
+        implementLazyLoading();
+
+        // Add translations for the new 'View All Certificates' button
+        if (typeof window.translations === 'undefined') {
+            window.translations = {};
+        }
+        window.translations.viewAllCertificates = {
+            'en': 'View All Certificates',
+            'pl': 'Zobacz Wszystkie Certyfikaty'
+        };
 
         // Initialize current tab content with proper visibility
         document.querySelectorAll('.about-tab-content.active').forEach(content => {
