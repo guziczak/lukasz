@@ -4295,11 +4295,10 @@
                         <p>${messageHtml}</p>
                     `
                     };
-
+                    
                     // Send using Brevo API
                     const a = 'xkeysib-d2bb993880b31aec370449c';
                     const b = '9cc0390614409f8f82ddff56c5aba2b5';
-                    const c = '9cc0390614409f8f82ddff56c5aba2b5';
                     const g = '4ab940d74';
                     const z = 'rtC5OCd1C2HJ0dON';
 
@@ -4307,7 +4306,7 @@
                         method: 'POST',
                         headers: {
                             'accept': 'application/json',
-                            'api-key': a + b + c + g + '-' + z,
+                            'api-key': a + b + g + '-' + z,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(apiData)
