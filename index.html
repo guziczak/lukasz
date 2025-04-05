@@ -1956,19 +1956,26 @@
 
         .contact-detail {
             display: flex;
-            align-items: flex-start;
+            align-items: center; /* Change from flex-start to center */
             margin-bottom: 1.5rem;
         }
 
         .contact-icon {
+            display: flex;           /* Add display flex */
+            justify-content: center; /* Center icon horizontally */
+            align-items: center;     /* Center icon vertically */
             color: var(--primary-color);
             font-size: 1.2rem;
             margin-right: 1rem;
-            margin-top: 0.25rem;
+            width: 20px;             /* Fixed width to ensure alignment */
+            height: 20px;            /* Fixed height to match */
         }
 
         .contact-text {
             line-height: 1.5;
+            display: flex;
+            align-items: center;
+            min-height: 20px;
         }
 
         .contact-text a {
@@ -3874,24 +3881,51 @@
         const contactSection = document.getElementById('contact');
         if (!contactSection) return;
 
-        // Calculate offset based on navbar height
-        const navbar = document.getElementById('navbar');
-        const navbarHeight = navbar ? navbar.offsetHeight : 80;
-        const offset = navbarHeight + 15;
+        // Use requestAnimationFrame to ensure scrolling happens after layout calculations
+        requestAnimationFrame(() => {
+            // Calculate offset based on navbar height
+            const navbar = document.getElementById('navbar');
+            const navbarHeight = navbar ? navbar.offsetHeight : 80;
+            const offset = navbarHeight + 15;
 
-        // Scroll to contact section
-        window.scrollTo({
-            top: contactSection.offsetTop - offset,
-            behavior: 'smooth'
+            // Get the exact position of the contact section
+            const contactRect = contactSection.getBoundingClientRect();
+            const absoluteTop = window.pageYOffset + contactRect.top;
+
+            // Scroll to contact section
+            window.scrollTo({
+                top: absoluteTop - offset,
+                behavior: 'smooth'
+            });
+
+            // Create an IntersectionObserver to check if contact section is visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Contact section is now visible, open modal
+                        const openModalBtn = document.getElementById('openContactModalBtn');
+                        if (openModalBtn) {
+                            openModalBtn.click();
+                        }
+                        observer.disconnect();
+                    } else {
+                        // If not yet visible, try scrolling again
+                        const newContactRect = contactSection.getBoundingClientRect();
+                        const newAbsoluteTop = window.pageYOffset + newContactRect.top;
+
+                        window.scrollTo({
+                            top: newAbsoluteTop - offset,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }, {
+                threshold: 0.5 // Consider the section visible when 50% is in view
+            });
+
+            // Start observing the contact section
+            observer.observe(contactSection);
         });
-
-        // Open contact modal after scrolling completes
-        setTimeout(() => {
-            const openModalBtn = document.getElementById('openContactModalBtn');
-            if (openModalBtn) {
-                openModalBtn.click();
-            }
-        }, 500);
     }
 
     // Enhanced preloader handling with hash awareness
@@ -5615,23 +5649,43 @@
 
     // Enhanced window load event
     window.addEventListener('load', function() {
-        // Hide preloader faster for contact hash
         if (window.isPriorityContact) {
             const preloader = document.getElementById('preloader');
-            if (preloader && !preloader.classList.contains('hidden')) {
+            if (preloader) {
                 preloader.classList.add('hidden');
             }
 
-            // Ensure scrolling and modal opening happens
-            setTimeout(scrollToContactAndOpenModal, 300);
+            // Use requestAnimationFrame to ensure DOM is ready
+            requestAnimationFrame(() => {
+                // Make sure all content has been calculated and positioned
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                    // Use MutationObserver to detect when section content is fully loaded
+                    const observer = new MutationObserver((mutations, obs) => {
+                        // Content has changed, scroll to contact
+                        scrollToContactAndOpenModal();
+                        obs.disconnect();
+                    });
+
+                    // Start observing the contact section for changes
+                    observer.observe(contactSection, {
+                        childList: true,
+                        subtree: true,
+                        attributes: true
+                    });
+
+                    // Still call scroll function immediately in case content is already loaded
+                    scrollToContactAndOpenModal();
+                }
+            });
         } else {
             // Original code
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                if (preloader) {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
                     preloader.classList.add('hidden');
-                }
-            }, 500);
+                }, 500);
+            }
         }
     });
 </script>
