@@ -426,13 +426,12 @@
         'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10',
         'c11', 'c12', 'c13', 'c14', 'c15', 'c16', 'c17', 'c18', 'c19', 'c20',
         'c21', 'c22', 'c23', 'c24', 'c25', 'c26', 'c27', 'c28', 'c29', 'c30',
-        'c31', 'c32', 'c33'
-    ];
+    ]
 
     const tmpPath = 'resources/certs/tmp/';
     const certsPath = 'resources/certs/';
 
-    const rowFlags = [true, false, false, false, false, false, false, false, false];
+    const rowFlags = [true, false, false, false, false, false, false, false];
 
     const container = document.getElementById('certificates-container');
     const loadingIndicator = document.getElementById('loadingIndicator');
@@ -445,7 +444,7 @@
         ['#1E90FF', '#20B2AA', '#00CED1', '#87CEEB']  // Ocean
     ];
 
-    const selectedPaletteIndex = 3;
+    const selectedPaletteIndex = 4;
     const currentPalette = colorPalettes[selectedPaletteIndex];
 
     function randomColor() {
