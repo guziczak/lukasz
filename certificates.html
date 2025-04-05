@@ -7,76 +7,55 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
-        :root {
-            --primary-color: #0070f3;
-            --primary-dark: #0050a0;
-            --secondary-color: #34d399;
-            --tertiary-color: #8b5cf6;
-            --light-bg: #f9fafb;
-            --dark-bg: #111827;
-            --light-card: #ffffff;
-            --dark-card: #1f2937;
-            --light-text: #1f2937;
-            --dark-text: #f3f4f6;
-            --gray-text: #6b7280;
-            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --dark-card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-            --border-radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --heading-font: 'Poppins', 'Segoe UI', sans-serif;
-            --body-font: 'Inter', 'Roboto', 'Arial', sans-serif;
-            --transition-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
         body {
-            font-family: var(--body-font);
+            font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--light-bg);
-            color: var(--light-text);
+            background-color: #f9fafb;
+            color: #1f2937;
             overflow: hidden;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body.dark-mode {
-            background-color: var(--dark-bg);
-            color: var(--dark-text);
+            background-color: #111827;
+            color: #f3f4f6;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: var(--light-card);
-            box-shadow: var(--card-shadow);
+            background-color: #ffffff;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             text-align: center;
             position: relative;
             height: 100vh;
             overflow: hidden;
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-sizing: border-box;
         }
 
         body.dark-mode .container {
-            background-color: var(--dark-card);
-            box-shadow: var(--dark-card-shadow);
+            background-color: #1f2937;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
         }
 
         header {
             text-align: center;
             padding: 20px 0;
             margin-bottom: 10px;
-            background-color: var(--primary-color);
+            background-color: #0070f3;
             color: white;
-            border-radius: var(--border-radius);
+            border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             z-index: 10;
         }
 
         body.dark-mode header {
-            background-color: var(--primary-dark);
+            background-color: #0050a0;
             box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
         }
 
@@ -84,7 +63,7 @@
             margin: 0;
             font-size: 2.5em;
             font-weight: bold;
-            font-family: var(--heading-font);
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
         }
 
         .certificates-container {
@@ -100,19 +79,19 @@
         .certificate-row {
             display: flex;
             justify-content: space-between;
-            gap: 15px;
+            gap: 8px; /* Reduced from 15px */
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 8px; /* Reduced from 15px */
             box-sizing: border-box;
-            padding: 0 10px;
+            padding: 0 5px; /* Reduced from 10px */
         }
 
         .certificate {
             flex: 1;
             height: auto;
             border: 1px solid #ddd;
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,7 +101,7 @@
             background-position: center;
             background-repeat: no-repeat;
             min-width: 0;
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
             transform: translateY(20px);
             position: relative;
@@ -131,7 +110,7 @@
 
         body.dark-mode .certificate {
             border-color: #444;
-            box-shadow: var(--dark-card-shadow);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
         }
 
         .certificate.animate {
@@ -167,7 +146,7 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
-            border-radius: var(--border-radius);
+            border-radius: 12px;
         }
 
         .certificate:hover::after {
@@ -189,7 +168,7 @@
             top: 20px;
             left: 20px;
             z-index: 1010;
-            background-color: var(--primary-color);
+            background-color: #0070f3;
             color: #fff;
             border: none;
             padding: 0;
@@ -201,7 +180,7 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             height: 40px;
             width: 40px;
             min-width: 40px;
@@ -209,17 +188,17 @@
         }
 
         .theme-switcher:hover {
-            background-color: var(--primary-dark);
+            background-color: #0050a0;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         body.dark-mode .theme-switcher {
-            background-color: var(--primary-dark);
+            background-color: #0050a0;
         }
 
         body.dark-mode .theme-switcher:hover {
-            background-color: var(--primary-color);
+            background-color: #0070f3;
         }
 
         .language-switcher {
@@ -236,7 +215,7 @@
             height: 30px;
             cursor: pointer;
             opacity: 0.5;
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -333,7 +312,7 @@
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
             padding: 20px;
-            border-radius: var(--border-radius);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -343,7 +322,7 @@
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top: 4px solid var(--primary-color);
+            border-top: 4px solid #0070f3;
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
@@ -375,19 +354,25 @@
         @media (max-width: 768px) {
             .certificate.vertical,
             .certificate.horizontal {
-                max-width: 48%; /* 2 obrazki w rzędzie na mniejszych ekranach */
+                max-width: 32%; /* Always 3 certificates per row */
             }
         }
 
         @media (max-width: 480px) {
             .certificate.vertical,
             .certificate.horizontal {
-                max-width: 100%; /* 1 obrazek w rzędzie na bardzo małych ekranach */
+                max-width: 32%; /* Always 3 certificates per row */
             }
 
+            /* Reduce certificate height on very small screens to fit better */
+            .certificate {
+                aspect-ratio: 1 / 1; /* Make certificates more square-like on small screens */
+            }
+
+            /* Keep the row as flex row (not column) */
             .certificate-row {
-                flex-direction: column;
-                gap: 10px;
+                flex-direction: row;
+                gap: 5px; /* Even smaller gap on mobile */
             }
         }
     </style>
@@ -666,13 +651,17 @@
                 const firstRow = container.firstElementChild;
                 if (!firstRow) return;
 
-                const rowHeight = firstRow.offsetHeight + 15; // Dodaj trochę więcej miejsca
+                // Używamy dokładnej wysokości wiersza - to jest kluczowa zmiana
+                const rowHeight = firstRow.offsetHeight + 5; // Zmniejszone z 15 na 5
 
                 if (topPosition <= -rowHeight) {
-                    // Przenieś pierwszy rząd na koniec
+                    // Najpierw dostosuj pozycję, aby uniknąć skoku
+                    topPosition += rowHeight;
+
+                    // Następnie przenieś pierwszy rząd na koniec
                     container.appendChild(firstRow);
 
-                    // Upewnij się, że wszystkie certyfikaty w przeniesionym rzędzie są prawidłowo załadowane
+                    // Ponownie zastosuj kolekcję obrazów do przeniesionych certyfikatów
                     const certs = firstRow.querySelectorAll('.certificate');
                     certs.forEach(certElement => {
                         const certId = certElement.getAttribute('data-cert-id');
@@ -690,9 +679,6 @@
                             }
                         }
                     });
-
-                    // Dostosuj pozycję, aby uniknąć skoku
-                    topPosition += rowHeight;
                 }
 
                 // Zastosuj transformację dla płynnej animacji
