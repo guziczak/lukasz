@@ -735,8 +735,8 @@
                     }, 0);
                 }
 
-                // Use translate3d for hardware acceleration
-                container.style.transform = `translate3d(0, ${topPosition}px, 0)`;
+                // Use translateY as requested instead of translate3d
+                container.style.transform = `translateY(${topPosition}px)`;
             }
 
             // Continue animation
