@@ -20,6 +20,15 @@ class PdfToPngConverter
     private static readonly string GS_LIB_DIR = Path.Combine(GS_DIR, "lib");
     private static readonly string GS_EXE_PATH = Path.Combine(GS_BIN_DIR, "gswin64c.exe");
     
+    // Typowe ścieżki instalacji systemowej Ghostscript
+    private static readonly string[] SYSTEM_GS_PATHS = {
+        @"C:\Program Files\gs\gs*\bin\gswin64c.exe",
+        @"C:\Program Files (x86)\gs\gs*\bin\gswin64c.exe",
+        @"C:\Program Files\gs*\bin\gswin64c.exe",
+        @"C:\Program Files (x86)\gs*\bin\gswin64c.exe",
+        @"C:\gs\gs*\bin\gswin64c.exe"
+    };
+    
     // Główna metoda programu
     static void Main(string[] args)
     {
@@ -77,7 +86,7 @@ class PdfToPngConverter
         {
             Console.WriteLine("Konfiguracja Ghostscript...");
             
-            // Sprawdź, czy mamy już skonfigurowanego Ghostscript
+            // Najpierw sprawdź, czy mamy już skonfigurowanego Ghostscript w katalogu aplikacji
             if (File.Exists(GS_EXE_PATH))
             {
                 Console.WriteLine("Znaleziono wbudowany Ghostscript.");
@@ -86,6 +95,19 @@ class PdfToPngConverter
                 SetGhostscriptEnvironmentVariables();
                 return;
             }
+            
+            // Następnie sprawdź, czy Ghostscript jest już zainstalowany w systemie
+            string systemGsPath = FindSystemGhostscript();
+            if (systemGsPath != null)
+            {
+                Console.WriteLine($"Znaleziono istniejącą instalację Ghostscript: {systemGsPath}");
+                
+                // Ustaw zmienną dla Magick.NET, aby używała systemowego Ghostscript
+                Environment.SetEnvironmentVariable("MAGICK_GHOSTSCRIPT_PATH", systemGsPath);
+                return;
+            }
+            
+            Console.WriteLine("Brak zainstalowanego Ghostscript. Instalowanie...");
             
             // Utwórz katalogi dla Ghostscript
             Directory.CreateDirectory(GS_BIN_DIR);
@@ -105,6 +127,106 @@ class PdfToPngConverter
             Console.WriteLine($"Ostrzeżenie: Problem z konfiguracją Ghostscript: {ex.Message}");
             Console.WriteLine("Program będzie kontynuował, ale konwersja może nie działać poprawnie.");
         }
+    }
+    
+    /// <summary>
+    /// Szuka istniejącej instalacji Ghostscript w systemie
+    /// </summary>
+    /// <returns>Ścieżka do gswin64c.exe lub pustą jeśli nie znaleziono</returns>
+    private static string FindSystemGhostscript()
+    {
+        // Sprawdź, czy ghostscript istnieje już w PATH
+        try
+        {
+            using (var process = new Process())
+            {
+                process.StartInfo.FileName = "gswin64c";
+                process.StartInfo.Arguments = "--version";
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.CreateNoWindow = true;
+                
+                process.Start();
+                string version = process.StandardOutput.ReadToEnd().Trim();
+                process.WaitForExit(3000);
+                
+                if (process.ExitCode == 0)
+                {
+                    // Znajdź pełną ścieżkę
+                    var wherePath = GetFullPathToCommand("gswin64c");
+                    if (wherePath != null)
+                    {
+                        Console.WriteLine($"Ghostscript znaleziony w PATH: {wherePath} (wersja {version})");
+                        return wherePath;
+                    }
+                    
+                    Console.WriteLine($"Ghostscript dostępny w PATH, ale nie można ustalić pełnej ścieżki. Wersja {version}");
+                    return "gswin64c";
+                }
+            }
+        }
+        catch
+        {
+            // Ghostscript nie jest dostępny w PATH, kontynuuj sprawdzanie innych lokalizacji
+        }
+        
+        // Sprawdź typowe ścieżki instalacji
+        foreach (var gsPattern in SYSTEM_GS_PATHS)
+        {
+            try {
+                string dirPath = Path.GetDirectoryName(gsPattern);
+                if (Directory.Exists(dirPath)) {
+                    var matchingFiles = Directory.GetFiles(dirPath, Path.GetFileName(gsPattern), SearchOption.AllDirectories);
+                    if (matchingFiles.Length > 0)
+                    {
+                        // Znaleziono Ghostscript, użyj najnowszej wersji (zakładając, że mają sortowanie zgodnie z wersją)
+                        Array.Sort(matchingFiles);
+                        return matchingFiles[matchingFiles.Length - 1];
+                    }
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Ostrzeżenie przy wyszukiwaniu Ghostscript: {ex.Message}");
+            }
+        }
+        
+        // Nie znaleziono
+        return null;
+    }
+    
+    /// <summary>
+    /// Zwraca pełną ścieżkę do komendy użycie where/which
+    /// </summary>
+    private static string GetFullPathToCommand(string command)
+    {
+        try
+        {
+            using (var process = new Process())
+            {
+                // Windows użyje komendy "where"
+                bool isWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
+                process.StartInfo.FileName = isWindows ? "where" : "which";
+                process.StartInfo.Arguments = command;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.CreateNoWindow = true;
+                
+                process.Start();
+                string output = process.StandardOutput.ReadLine(); // Weź pierwszą linię
+                process.WaitForExit(3000);
+                
+                if (process.ExitCode == 0 && !string.IsNullOrEmpty(output))
+                {
+                    return output.Trim();
+                }
+            }
+        }
+        catch
+        {
+            // Zignoruj błędy
+        }
+        
+        return null;
     }
     
     /// <summary>
@@ -513,9 +635,12 @@ exit /b 0";
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 
-                // Ustawienia konwersji
+                // Ustawienia konwersji z białym tłem
                 var readSettings = new MagickReadSettings();
                 readSettings.Density = new Density(RENDER_DPI);
+                
+                // Ustaw białe tło dla PDF - używamy ciągu tekstowego do obsługi różnych wersji ImageMagick
+                readSettings.SetDefine("pdf:use-cropbox", "true");
                 
                 using (var images = new MagickImageCollection())
                 {
@@ -536,8 +661,15 @@ exit /b 0";
                                 
                             string outputPath = Path.Combine(outputFolder, outputFileName);
                             
-                            // Zapisz jako PNG
-                            pageImage.Write(outputPath);
+                            // Zapisz jako PNG bez przezroczystości
+                            using (var whiteBackground = new MagickImage(MagickColors.White, pageImage.Width, pageImage.Height))
+                            {
+                                // Nałóż obraz na białe tło
+                                whiteBackground.Composite(pageImage, CompositeOperator.Over);
+                                
+                                // Zapisz jako PNG
+                                whiteBackground.Write(outputPath);
+                            }
                             
                             // Informacje o pliku
                             long fileSize = new FileInfo(outputPath).Length;
