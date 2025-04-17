@@ -466,9 +466,9 @@
 
 <script>
     // KONFIGURACJA
-    const enableAutoRedirect = false;  // Change to true to enable auto-redirect
+    const enableAutoRedirect = true;  // Change to true to enable auto-redirect
     const forceIOSError = false;      // Change to true to simulate iOS error on any device
-    const printerAnimationDelay = 800; // Czas w ms po jakim drukarka zacznie "drukować"
+    const printerAnimationDelay = 1000; // Czas w ms po jakim drukarka zacznie "drukować"
     const pdfDownloadUrl = 'cv_en.pdf'; // URL do pliku PDF do pobrania
 
     // Stan aplikacji
@@ -539,7 +539,7 @@
         const paperElement = document.getElementById('paperElement');
 
         // Zaktualizuj wiadomość tekstową
-        messageEl.textContent = 'Drukowanie nie jest dostępne dla iOS. Pobierz PDF:';
+        messageEl.textContent = 'Drukowanie jeszcze nie jest dostępne dla iOS. Pobierz PDF:';
 
         // Aktualizuj przycisk
         buttonText.textContent = 'Pobierz CV (PDF)';
