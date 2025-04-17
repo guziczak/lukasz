@@ -2105,10 +2105,10 @@
             align-self: center;
         }
 
-        /* Enhanced Form Group */
+        /* Update form spacing for more compact layout */
         .form-group {
             position: relative;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem; /* Reduced from 2rem for more compact layout */
         }
 
         .form-control {
@@ -2118,21 +2118,38 @@
             border-radius: 0.5rem;
             font-family: inherit;
             font-size: 1rem;
-            background-color: var(--light-bg);
-            color: var(--light-text);
-            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
         }
 
         body.dark-mode .form-control {
-            background-color: var(--dark-bg);
+            background-color: var(--bg-dark);
             border-color: #374151;
-            color: var(--dark-text);
+            color: var(--text-dark);
         }
 
         .form-control:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-feedback {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            gap: 0.3rem;
+            height: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-feedback.error,
+        .form-feedback.success {
+            opacity: 1;
         }
 
         .form-label {
@@ -2186,14 +2203,6 @@
             color: var(--secondary-color);
         }
 
-        .form-feedback {
-            display: flex;
-            align-items: center;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            gap: 0.3rem;
-        }
-
         .form-feedback-icon {
             font-size: 1rem;
         }
@@ -2229,7 +2238,7 @@
             display: inline-block;
         }
 
-        /* Enhanced Modal - NEW CODE */
+        /* ===== Modal ===== */
         .modal {
             position: fixed;
             top: 0;
@@ -2237,14 +2246,14 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transition: var(--transition);
-            backdrop-filter: blur(4px);
+            transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1), visibility 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .modal.active {
@@ -2253,19 +2262,19 @@
         }
 
         .modal-content {
-            background-color: var(--light-card);
-            border-radius: var(--border-radius);
+            background-color: var(--card-light);
+            border-radius: var(--radius);
             width: 100%;
             max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             transform: translateY(-50px);
-            transition: var(--transition);
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         body.dark-mode .modal-content {
-            background-color: var(--dark-card);
+            background-color: var(--card-dark);
         }
 
         .modal.active .modal-content {
@@ -2306,12 +2315,12 @@
 
         .modal-header {
             cursor: move;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             padding: 1rem 1.5rem;
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            border-radius: var(--radius) var(--radius) 0 0;
             margin-bottom: 0;
-            user-select: none; /* Prevent text selection */
+            user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -2319,7 +2328,7 @@
             justify-content: space-between;
             align-items: center;
             position: relative;
-            padding-left: 2.5rem; /* More space for drag indicator */
+            padding-left: 2.5rem;
         }
 
         .modal-header::before {
@@ -2334,7 +2343,7 @@
         }
 
         .modal-title {
-            font-family: var(--heading-font);
+            font-family: var(--font-heading);
             font-size: 1.5rem;
             font-weight: 600;
             margin: 0;
@@ -2355,6 +2364,10 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
+        .modal-close:active {
+            transform: scale(0.95) rotate(90deg);
+        }
+
         .modal-body {
             padding: 1.5rem;
             overflow-y: auto;
@@ -2364,24 +2377,47 @@
             display: none;
             text-align: center;
             padding: 2rem;
+            animation: successAppear 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        @keyframes successAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-success-icon {
             font-size: 4rem;
-            color: var(--secondary-color);
+            color: var(--secondary);
             margin-bottom: 1rem;
+            animation: iconPulse 1.5s cubic-bezier(0.19, 1, 0.22, 1) infinite;
+        }
+
+        @keyframes iconPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .modal-success-title {
-            font-family: var(--heading-font);
+            font-family: var(--font-heading);
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
 
         .modal-success-message {
-            color: var(--gray-text);
+            color: var(--text-light-secondary);
             margin-bottom: 1.5rem;
+        }
+
+        body.dark-mode .modal-success-message {
+            color: var(--text-dark-secondary);
         }
 
         /* Footer */
@@ -5297,7 +5333,7 @@
         }
     }
 
-    // NEW: Modal Dragging Setup Function
+    // Setup Modal Functionality with improved draggable behavior
     function setupModalFunctionality() {
         const modalContent = document.querySelector('.modal-content.draggable');
         const modalHeader = document.getElementById('modalHeader');
