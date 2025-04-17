@@ -32,6 +32,21 @@
             --heading-font: 'Poppins', 'Segoe UI', sans-serif;
             --body-font: 'Inter', 'Roboto', 'Arial', sans-serif;
             --transition-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            /* Variables for new skills grid */
+            --card-light: #ffffff;
+            --card-dark: #1f2937;
+            --primary: #0070f3;
+            --secondary: #34d399;
+            --radius: 12px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-dark: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --font-heading: 'Poppins', 'Segoe UI', sans-serif;
+            --text-light: #1f2937;
+            --text-dark: #f3f4f6;
+            --text-light-secondary: #6b7280;
+            --text-dark-secondary: #9ca3af;
         }
 
         * {
@@ -1167,30 +1182,33 @@
             position: relative;
         }
 
-        .skills-list {
+        /* Skills grid layout - NEW CODE */
+        .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .skill-card {
-            background-color: var(--light-card);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--card-shadow);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background-color: var(--card-light);
+            border-radius: var(--radius);
+            padding: 1rem; /* Reduced padding */
+            box-shadow: var(--shadow);
+            transition: var(--transition-bounce);
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         body.dark-mode .skill-card {
-            background-color: var(--dark-card);
-            box-shadow: var(--dark-card-shadow);
+            background-color: var(--card-dark);
+            box-shadow: var(--shadow-dark);
         }
 
         .skill-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
         }
 
         .skill-card::before {
@@ -1200,76 +1218,68 @@
             left: 0;
             width: 5px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
         }
 
-        .skill-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 112, 243, 0.05) 0%, rgba(52, 211, 153, 0.05) 100%);
-            transform: rotate(45deg);
-            z-index: 0;
-            transition: all 0.5s ease;
-        }
-
-        .skill-card:hover::after {
-            top: -20%;
-            right: -20%;
-        }
-
-        .skill-card-content {
-            position: relative;
-            z-index: 1;
+        .skill-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem; /* Reduced margin */
         }
 
         .skill-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+            font-size: 1.5rem; /* Reduced size */
+            color: var(--primary);
+            margin-right: 0.75rem; /* Reduced margin */
+            width: 30px; /* Fixed width */
+            text-align: center;
+            flex-shrink: 0;
         }
 
         .skill-title {
-            font-family: var(--heading-font);
-            font-size: 1.3rem;
+            font-family: var(--font-heading);
+            font-size: 1.1rem; /* Slightly smaller title */
             font-weight: 600;
-            margin-bottom: 1rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        body.dark-mode .skill-title {
+            color: var(--text-dark);
         }
 
         .skill-items {
             list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
         .skill-item {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: flex-start;
-            flex-direction: column;
+            position: relative;
+            padding: 0.3rem 0 0.3rem 1rem; /* Reduced vertical padding */
+            margin-bottom: 0.5rem; /* Reduced margin */
+            line-height: 1.3; /* Tighter line height */
         }
 
         .skill-item::before {
             content: '•';
-            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            color: var(--primary);
             font-weight: bold;
-            margin-right: 0.5rem;
         }
 
-        /* Skill progress bars */
+        /* Improved skill levels */
         .skill-level {
-            margin-top: 0.5rem;
+            margin-top: 0.25rem; /* Further reduced margin */
             width: 100%;
         }
 
         .skill-progress-container {
-            height: 8px;
-            background-color: var(--light-bg);
-            border-radius: 4px;
+            height: 5px; /* Smaller height */
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
             overflow: hidden;
-            margin-top: 0.3rem;
-            width: 100%;
         }
 
         body.dark-mode .skill-progress-container {
@@ -1278,17 +1288,21 @@
 
         .skill-progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
             transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             width: 0;
         }
 
         .skill-level-text {
-            font-size: 0.8rem;
-            color: var(--gray-text);
+            font-size: 0.7rem; /* Smaller text */
+            color: var(--text-light-secondary);
             text-align: right;
-            margin-top: 0.3rem;
+            margin-top: 0.1rem; /* Smaller margin */
+        }
+
+        body.dark-mode .skill-level-text {
+            color: var(--text-dark-secondary);
         }
 
         /* Projects Section */
@@ -1961,14 +1975,14 @@
         }
 
         .contact-icon {
-            display: flex;           /* Add display flex */
+            display: flex; /* Add display flex */
             justify-content: center; /* Center icon horizontally */
-            align-items: center;     /* Center icon vertically */
+            align-items: center; /* Center icon vertically */
             color: var(--primary-color);
             font-size: 1.2rem;
             margin-right: 1rem;
-            width: 20px;             /* Fixed width to ensure alignment */
-            height: 20px;            /* Fixed height to match */
+            width: 20px; /* Fixed width to ensure alignment */
+            height: 20px; /* Fixed height to match */
         }
 
         .contact-text {
@@ -2215,7 +2229,7 @@
             display: inline-block;
         }
 
-        /* Enhanced Modal */
+        /* Enhanced Modal - NEW CODE */
         .modal {
             position: fixed;
             top: 0;
@@ -2230,6 +2244,7 @@
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
+            backdrop-filter: blur(4px);
         }
 
         .modal.active {
@@ -2268,13 +2283,25 @@
             max-height: 90vh;
             display: flex;
             flex-direction: column;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             overflow: hidden;
+            animation: modalAppear 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -55%) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
 
         body.dark-mode .modal-content.draggable {
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--shadow-dark);
         }
 
         .modal-header {
@@ -2291,6 +2318,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            padding-left: 2.5rem; /* More space for drag indicator */
+        }
+
+        .modal-header::before {
+            content: '☰';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            opacity: 0.7;
+            color: white;
         }
 
         .modal-title {
@@ -3406,7 +3446,8 @@
                 </div>
             </div>
 
-            <div class="skills-list">
+            <!-- NEW SKILLS GRID -->
+            <div class="skills-grid">
                 <!-- Skills will be loaded from CSV -->
             </div>
         </div>
@@ -3747,7 +3788,7 @@
 <!-- Scripts -->
 <script>
     // Immediately check for #contact hash on page load
-    (function() {
+    (function () {
         // Check if URL has #contact and set priority flag
         if (window.location.hash === '#contact') {
             window.isPriorityContact = true;
@@ -3948,7 +3989,7 @@
         }, hideTime);
     }
 
-    // Generate Skills HTML
+    // UPDATED: Generate Skills HTML for new grid layout
     function generateSkillsHTML(skills) {
         // Group skills by category
         const skillsByCategory = {};
@@ -3959,13 +4000,7 @@
             skillsByCategory[skill.category].push(skill);
         });
 
-        // Generate HTML for each skill category
-        const skillsContainer = document.querySelector('.skills-list');
-        if (!skillsContainer) return;
-
-        skillsContainer.innerHTML = '';
-
-        // Mapping of categories to icons
+        // Map of categories to icons
         const categoryIcons = {
             'Programming Languages': 'fas fa-code',
             'Frameworks & Libraries': 'fas fa-laptop-code',
@@ -3975,9 +4010,13 @@
             'AI & Tools': 'fas fa-robot'
         };
 
+        // Generate HTML for skills using the new grid layout
+        const skillsContainer = document.querySelector('.skills-grid');
+        if (!skillsContainer) return;
+
+        skillsContainer.innerHTML = '';
         let delay = 0;
 
-        // Create HTML for each category
         Object.keys(skillsByCategory).forEach(category => {
             const skillsInCategory = skillsByCategory[category];
 
@@ -3987,17 +4026,24 @@
             delay += 0.1;
 
             skillCard.innerHTML = `
-                <div class="skill-card-content">
+                <div class="skill-card-header">
                     <div class="skill-icon">
                         <i class="${categoryIcons[category] || 'fas fa-code'}"></i>
                     </div>
                     <h3 class="skill-title">${category}</h3>
-                    <ul class="skill-items">
-                        ${skillsInCategory.map(skill => `
-                            <li class="skill-item" data-level="${skill.level}">${skill.name}</li>
-                        `).join('')}
-                    </ul>
                 </div>
+                <ul class="skill-items">
+                    ${skillsInCategory.map(skill => `
+                        <li class="skill-item" data-level="${skill.level}">${skill.name}
+                            <div class="skill-level">
+                                <div class="skill-progress-container">
+                                    <div class="skill-progress-bar" style="width: 0%"></div>
+                                </div>
+                                <div class="skill-level-text">${skill.level}%</div>
+                            </div>
+                        </li>
+                    `).join('')}
+                </ul>
             `;
 
             skillsContainer.appendChild(skillCard);
@@ -4629,29 +4675,19 @@
     // Reinitialize UI components after loading CSV data
     function reinitializeUIComponents() {
         // Reinitialize skill progress bars
-        if (typeof enhanceSkillCards === 'function') {
-            enhanceSkillCards();
-        }
+        initSkillBars();
 
         // Reinitialize project filters
-        if (typeof initProjectFilter === 'function') {
-            initProjectFilter();
-        }
+        initProjectFilter();
 
         // Reinitialize certificate filters
-        if (typeof initCertificateFilter === 'function') {
-            initCertificateFilter();
-        }
+        initCertificateFilter();
 
         // Implement lazy loading for newly loaded images
-        if (typeof implementLazyLoading === 'function') {
-            implementLazyLoading();
-        }
+        implementLazyLoading();
 
         // Enhance scroll animations
-        if (typeof enhanceScrollAnimations === 'function') {
-            enhanceScrollAnimations();
-        }
+        enhanceScrollAnimations();
     }
 
     // Bardziej precyzyjna funkcja wskaźnika przewijania z obsługą wielu przeglądarek
@@ -4881,17 +4917,21 @@
         skillProgressBars.forEach(bar => {
             const parentItem = bar.closest('.skill-item');
             if (parentItem) {
-                const rect = bar.getBoundingClientRect();
-                // Jeśli pasek jest widoczny w oknie przeglądarki
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    // Pobierz poziom umiejętności z atrybutu data-level lub z rodzica
-                    const levelValue = parentItem.getAttribute('data-level') || parentItem.textContent.match(/\d+/);
+                const levelValue = parentItem.getAttribute('data-level');
+                if (levelValue) {
+                    // Use IntersectionObserver to animate when visible
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    bar.style.width = `${levelValue}%`;
+                                }, 200);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, {threshold: 0.2});
 
-                    if (levelValue) {
-                        setTimeout(() => {
-                            bar.style.width = `${levelValue}%`;
-                        }, 200);
-                    }
+                    observer.observe(bar.closest('.skill-progress-container'));
                 }
             }
         });
@@ -4927,128 +4967,6 @@
                 item.classList.add('active');
             }
         });
-    }
-
-    // Enhanced skill cards
-    function enhanceSkillCards() {
-        // Array of skills with their levels (out of 100)
-        const skillLevels = {
-            'Java': 95,
-            'Python': 90,
-            'JavaScript / TypeScript': 92,
-            'SQL': 88,
-            'HTML/CSS': 95,
-            'Spring Framework': 90,
-            'React.js': 88,
-            'Node.js': 85,
-            'Django': 80,
-            'Express.js': 87,
-            'AWS': 82,
-            'Azure': 78,
-            'Docker': 85,
-            'Kubernetes': 80,
-            'CI/CD (Jenkins, GitHub Actions)': 85,
-            'PostgreSQL': 90,
-            'MongoDB': 85,
-            'MySQL/MariaDB': 92,
-            'Redis': 80,
-            'Elasticsearch': 75,
-            'Microservices': 88,
-            'REST APIs': 95,
-            'GraphQL': 80,
-            'Agile/Scrum': 90,
-            'Test-Driven Development': 85,
-            'ChatGPT': 90,
-            'DeepSeek': 85,
-            'Copilot': 88,
-            'Data Analysis': 82,
-            'Machine Learning Basics': 75
-        };
-
-        // Get all skill items
-        const skillItems = document.querySelectorAll('.skill-item');
-
-        skillItems.forEach(item => {
-            const skillName = item.textContent.trim();
-            if (skillLevels[skillName]) {
-                const level = skillLevels[skillName];
-
-                // Create skill level elements
-                const skillLevel = document.createElement('div');
-                skillLevel.className = 'skill-level';
-
-                const progressContainer = document.createElement('div');
-                progressContainer.className = 'skill-progress-container';
-
-                const progressBar = document.createElement('div');
-                progressBar.className = 'skill-progress-bar';
-                progressBar.style.width = '0%'; // Start at 0 for animation
-
-                const levelText = document.createElement('div');
-                levelText.className = 'skill-level-text';
-                levelText.textContent = `${level}%`;
-
-                // Append elements
-                progressContainer.appendChild(progressBar);
-                skillLevel.appendChild(progressContainer);
-                skillLevel.appendChild(levelText);
-                item.appendChild(skillLevel);
-
-                // Set up animation on scroll
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            setTimeout(() => {
-                                progressBar.style.width = `${level}%`;
-                            }, 200);
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, {threshold: 0.2});
-
-                observer.observe(progressContainer);
-            }
-        });
-    }
-
-    // Add Hero Particles
-    function addHeroParticles() {
-        const hero = document.querySelector('.hero');
-        if (!hero) return;
-
-        const particleContainer = document.createElement('div');
-        particleContainer.className = 'hero-particles';
-
-        // Create particles
-        for (let i = 0; i < 15; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-
-            // Random position
-            const top = Math.random() * 100;
-            const left = Math.random() * 100;
-
-            // Random size (5-15px)
-            const size = Math.random() * 10 + 5;
-
-            // Random opacity (0.1-0.3)
-            const opacity = Math.random() * 0.2 + 0.1;
-
-            // Random animation delay
-            const delay = Math.random() * 5;
-
-            // Apply styles
-            particle.style.top = `${top}%`;
-            particle.style.left = `${left}%`;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            particle.style.opacity = opacity;
-            particle.style.animationDelay = `${delay}s`;
-
-            particleContainer.appendChild(particle);
-        }
-
-        hero.insertBefore(particleContainer, hero.firstChild);
     }
 
     // Initialize Radar Chart for Skills
@@ -5379,6 +5297,122 @@
         }
     }
 
+    // NEW: Modal Dragging Setup Function
+    function setupModalFunctionality() {
+        const modalContent = document.querySelector('.modal-content.draggable');
+        const modalHeader = document.getElementById('modalHeader');
+        const contactModal = document.getElementById('contactModal');
+        const openContactModalBtn = document.getElementById('openContactModalBtn');
+        const openContactModalBtn2 = document.getElementById('openContactModalBtn2');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        if (!modalContent || !modalHeader || !contactModal) return;
+
+        // Make modal draggable
+        let isDragging = false;
+        let startX, startY;
+        let initialLeft, initialTop;
+        const VIEWPORT_PADDING = 20;
+
+        modalHeader.addEventListener('mousedown', function (e) {
+            if (e.button !== 0) return; // Only left mouse button
+
+            isDragging = true;
+
+            // Get current modal position
+            const rect = modalContent.getBoundingClientRect();
+            initialLeft = rect.left;
+            initialTop = rect.top;
+
+            // Get mouse position
+            startX = e.clientX;
+            startY = e.clientY;
+
+            // Change cursor
+            modalHeader.style.cursor = 'grabbing';
+            document.body.style.userSelect = 'none'; // Prevent text selection
+
+            // Prevent default behavior
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', function (e) {
+            if (!isDragging) return;
+
+            // Calculate new position
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+
+            const newLeft = initialLeft + deltaX;
+            const newTop = initialTop + deltaY;
+
+            // Get modal dimensions
+            const modalWidth = modalContent.offsetWidth;
+            const modalHeight = modalContent.offsetHeight;
+
+            // Constrain to viewport bounds
+            const maxLeft = window.innerWidth - modalWidth - VIEWPORT_PADDING;
+            const maxTop = window.innerHeight - modalHeight - VIEWPORT_PADDING;
+
+            // Apply constraints
+            const constrainedLeft = Math.max(VIEWPORT_PADDING, Math.min(newLeft, maxLeft));
+            const constrainedTop = Math.max(VIEWPORT_PADDING, Math.min(newTop, maxTop));
+
+            // Set new position
+            modalContent.style.left = `${constrainedLeft}px`;
+            modalContent.style.top = `${constrainedTop}px`;
+            modalContent.style.transform = 'none'; // Remove transform to prevent conflicts
+        });
+
+        document.addEventListener('mouseup', function () {
+            if (!isDragging) return;
+
+            isDragging = false;
+            modalHeader.style.cursor = 'move';
+            document.body.style.userSelect = ''; // Restore text selection
+        });
+
+        // Modal open/close handling
+        if (openContactModalBtn && openContactModalBtn2 && closeModalBtn) {
+            function openModal() {
+                contactModal.classList.add('active');
+
+                // Center modal
+                modalContent.style.top = '50%';
+                modalContent.style.left = '50%';
+                modalContent.style.transform = 'translate(-50%, -50%)';
+
+                // Focus first input after opening
+                setTimeout(() => {
+                    const firstInput = document.getElementById('modalNameInput');
+                    if (firstInput) firstInput.focus();
+                }, 300);
+            }
+
+            function closeModal() {
+                contactModal.classList.remove('active');
+            }
+
+            openContactModalBtn.addEventListener('click', openModal);
+            openContactModalBtn2.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Close modal when clicking outside
+            contactModal.addEventListener('click', (e) => {
+                if (e.target === contactModal) {
+                    closeModal();
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && contactModal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        }
+    }
+
     // Zoptymalizowana obsługa przewijania z użyciem requestAnimationFrame
     let ticking = false;
     window.addEventListener('scroll', function () {
@@ -5413,7 +5447,7 @@
         }
     });
 
-    // Skrypt integrujący wszystkie ulepszenia
+    // Main document load event with all initializations
     document.addEventListener('DOMContentLoaded', function () {
         // Get DOM elements
         const preloader = document.getElementById('preloader');
@@ -5429,7 +5463,7 @@
         const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
         const mobileMenuClose = document.getElementById('mobileMenuClose');
 
-        // Initialize Theme - moved here from the global scope
+        // Initialize Theme
         const savedDarkMode = localStorage.getItem('darkMode') === 'true';
         if (savedDarkMode && themeIcon) {
             document.body.classList.add('dark-mode');
@@ -5482,119 +5516,8 @@
             });
         }
 
-        // Modal handling
-        const modalContent = document.querySelector('.modal-content.draggable');
-        const modalHeader = document.getElementById('modalHeader');
-        const contactModal = document.getElementById('contactModal');
-        const openContactModalBtn = document.getElementById('openContactModalBtn');
-        const openContactModalBtn2 = document.getElementById('openContactModalBtn2');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-
-        if (modalContent && modalHeader && contactModal) {
-            // Make modal draggable
-            let isDragging = false;
-            let startX, startY;
-            let initialLeft, initialTop;
-            const VIEWPORT_PADDING = 20;
-
-            modalHeader.addEventListener('mousedown', function (e) {
-                if (e.button !== 0) return; // Only left mouse button
-
-                isDragging = true;
-
-                // Get current modal position
-                const rect = modalContent.getBoundingClientRect();
-                initialLeft = rect.left;
-                initialTop = rect.top;
-
-                // Get mouse position
-                startX = e.clientX;
-                startY = e.clientY;
-
-                // Change cursor
-                modalHeader.style.cursor = 'grabbing';
-                document.body.style.userSelect = 'none'; // Prevent text selection
-
-                // Prevent default behavior
-                e.preventDefault();
-            });
-
-            document.addEventListener('mousemove', function (e) {
-                if (!isDragging) return;
-
-                // Calculate new position
-                const deltaX = e.clientX - startX;
-                const deltaY = e.clientY - startY;
-
-                const newLeft = initialLeft + deltaX;
-                const newTop = initialTop + deltaY;
-
-                // Get modal dimensions
-                const modalWidth = modalContent.offsetWidth;
-                const modalHeight = modalContent.offsetHeight;
-
-                // Constrain to viewport bounds
-                const maxLeft = window.innerWidth - modalWidth - VIEWPORT_PADDING;
-                const maxTop = window.innerHeight - modalHeight - VIEWPORT_PADDING;
-
-                // Apply constraints
-                const constrainedLeft = Math.max(VIEWPORT_PADDING, Math.min(newLeft, maxLeft));
-                const constrainedTop = Math.max(VIEWPORT_PADDING, Math.min(newTop, maxTop));
-
-                // Set new position
-                modalContent.style.left = `${constrainedLeft}px`;
-                modalContent.style.top = `${constrainedTop}px`;
-                modalContent.style.transform = 'none'; // Remove transform to prevent conflicts
-            });
-
-            document.addEventListener('mouseup', function () {
-                if (!isDragging) return;
-
-                isDragging = false;
-                modalHeader.style.cursor = 'move';
-                document.body.style.userSelect = ''; // Restore text selection
-            });
-
-            // Modal open/close handling
-            if (openContactModalBtn && openContactModalBtn2 && closeModalBtn) {
-                function openModal() {
-                    contactModal.classList.add('active');
-
-                    // Center modal
-                    modalContent.style.top = '50%';
-                    modalContent.style.left = '50%';
-                    modalContent.style.transform = 'translate(-50%, -50%)';
-
-                    // Focus first input after opening
-                    setTimeout(() => {
-                        const firstInput = document.getElementById('modalNameInput');
-                        if (firstInput) firstInput.focus();
-                    }, 300);
-                }
-
-                function closeModal() {
-                    contactModal.classList.remove('active');
-                }
-
-                openContactModalBtn.addEventListener('click', openModal);
-                openContactModalBtn2.addEventListener('click', openModal);
-                closeModalBtn.addEventListener('click', closeModal);
-
-                // Close modal when clicking outside
-                contactModal.addEventListener('click', (e) => {
-                    if (e.target === contactModal) {
-                        closeModal();
-                    }
-                });
-
-                // Close modal with Escape key
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && contactModal.classList.contains('active')) {
-                        closeModal();
-                    }
-                });
-            }
-        }
+        // Initialize modal functionality
+        setupModalFunctionality();
 
         // Initialize contact form enhancements
         enhanceContactForm();
@@ -5608,7 +5531,7 @@
         // Initialize language switcher
         enhanceLanguageSwitcher();
 
-        // Initialize particles effect
+        // Initialize hero particles - ADDED
         addHeroParticles();
 
         // Initialize chart
@@ -5648,7 +5571,7 @@
     });
 
     // Enhanced window load event
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         if (window.isPriorityContact) {
             const preloader = document.getElementById('preloader');
             if (preloader) {
@@ -5688,6 +5611,42 @@
             }
         }
     });
+
+    // ADDED: Function for adding hero particles
+    function addHeroParticles() {
+        const heroSection = document.querySelector('.hero');
+        if (!heroSection) return;
+
+        // Create particles container
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'hero-particles';
+        heroSection.appendChild(particlesContainer);
+
+        // Create particles
+        const numberOfParticles = 15;
+        for (let i = 0; i < numberOfParticles; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+
+            // Randomize size
+            const size = Math.floor(Math.random() * 20) + 10;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+
+            // Randomize position
+            const posX = Math.floor(Math.random() * 100);
+            const posY = Math.floor(Math.random() * 100);
+            particle.style.top = `${posY}%`;
+            particle.style.left = `${posX}%`;
+
+            // Randomize animation-delay
+            const delay = Math.random() * 5;
+            particle.style.animationDelay = `${delay}s`;
+
+            // Add to container
+            particlesContainer.appendChild(particle);
+        }
+    }
 </script>
 </body>
 </html>
