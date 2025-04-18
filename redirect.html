@@ -29,6 +29,10 @@
             --tertiary-color: #8b5cf6;
             --printer-color: #2a2e37;
             --printer-light: #3a3f4a;
+            /* A4 ratio variables */
+            --a4-ratio: 1.414; /* Standard A4 ratio (height/width) */
+            --paper-width: 90px; /* Base width */
+            --paper-height: calc(var(--paper-width) * var(--a4-ratio)); /* Height calculated based on A4 ratio */
         }
 
         * {
@@ -63,13 +67,13 @@
             min-height: 350px;
             transition: background-color 0.3s, border-color 0.3s;
             position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
 
         body.dark-mode .container {
             background-color: var(--dark-card);
             border-color: var(--dark-border);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
         .printer-area {
@@ -86,7 +90,7 @@
             height: 80px;
             position: relative;
             margin: 0 auto;
-            z-index: 30;
+            z-index: 50; /* Increased z-index to ensure it's above paper */
             overflow: visible;
             transition: transform 0.3s ease;
         }
@@ -100,7 +104,7 @@
             height: 100%;
             background-color: var(--printer-color);
             border-radius: 12px 12px 4px 4px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             overflow: hidden;
             transition: all 0.3s ease;
         }
@@ -114,7 +118,7 @@
             height: 22px;
             background-color: var(--printer-light);
             border-radius: 12px 12px 0 0;
-            border-bottom: 1px solid rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
 
@@ -126,7 +130,7 @@
             left: 10px;
             right: 10px;
             height: 4px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.07), transparent);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.07), transparent);
             border-radius: 50% 50% 0 0 / 20px;
         }
 
@@ -136,7 +140,7 @@
             top: 7px;
             left: 12px;
             font-size: 7px;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             font-weight: bold;
@@ -164,11 +168,12 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: rgba(255,255,255,0.15);
-            transition: all 0.4s ease;
+            background-color: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
             opacity: 0.3;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 40;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.3) inset;
         }
 
         /* Success LED (green) */
@@ -190,29 +195,42 @@
         .printer-success.active {
             opacity: 1;
             box-shadow: 0 0 8px var(--success-color), 0 0 12px var(--success-color);
-            animation: modernPulse 1.5s infinite alternate;
+            animation: led-pulse 1.5s infinite alternate;
         }
 
         .printer-error.active {
             opacity: 1;
             box-shadow: 0 0 8px var(--error-color), 0 0 12px var(--error-color);
-            animation: modernPulse 0.7s infinite alternate;
+            animation: led-pulse 0.7s infinite alternate;
         }
 
         .printer-data.active {
             opacity: 1;
             box-shadow: 0 0 8px var(--primary-color), 0 0 12px var(--primary-color);
-            animation: softBlink 2s infinite;
+            animation: led-blink 2s infinite;
         }
 
-        @keyframes modernPulse {
-            0% { transform: scale(1); box-shadow: 0 0 2px currentColor; }
-            100% { transform: scale(1.2); box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
+        @keyframes led-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.1);
+                opacity: 1;
+                box-shadow: 0 0 10px currentColor, 0 0 15px currentColor;
+            }
         }
 
-        @keyframes softBlink {
-            0%, 100% { opacity: 0.7; box-shadow: 0 0 3px currentColor; }
-            50% { opacity: 1; box-shadow: 0 0 8px currentColor; }
+        @keyframes led-blink {
+            0%, 100% {
+                opacity: 0.7;
+                box-shadow: 0 0 5px currentColor;
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 10px currentColor;
+            }
         }
 
         /* Printer body */
@@ -234,7 +252,7 @@
             transform: translateX(-50%);
             width: 90px;
             height: 8px;
-            background-color: rgba(0,0,0,0.3);
+            background-color: rgba(0, 0, 0, 0.3);
             border-radius: 4px 4px 0 0;
             overflow: hidden;
         }
@@ -246,10 +264,10 @@
             left: 0;
             width: 100%;
             height: 12px;
-            background-color: rgba(0,0,0,0.2);
+            background-color: rgba(0, 0, 0, 0.2);
             border-radius: 0 0 4px 4px;
             overflow: hidden;
-            z-index: 31;
+            z-index: 51; /* Increased to be above paper */
         }
 
         /* Paper exit slot */
@@ -259,8 +277,8 @@
             left: 30px;
             width: 90px;
             height: 3px;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 32;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 52; /* Increased to be above paper */
             border-radius: 1px;
         }
 
@@ -276,18 +294,24 @@
             z-index: 25;
         }
 
-        /* Paper container for the animation */
+        /* Fixed: Improved styles for paper container to ensure proper clipping */
         .paper-container {
             position: absolute;
             top: 90px;
-            left: 30px;
-            width: 90px;
+            /* Increased width and height to prevent clipping during rotation */
+            width: calc(var(--paper-width) * 1.4);
             height: 160px;
+            /* We use clip-path to ensure proper clipping at printer level */
             overflow: hidden;
-            z-index: 5;
+            z-index: 1; /* Lower z-index initially */
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
+            /* Center paper in container */
+            display: flex;
+            justify-content: center;
+            /* Position container to ensure centering */
+            left: calc(50% - (var(--paper-width) * 1.4) / 2);
         }
 
         .paper-container.active {
@@ -295,20 +319,30 @@
             pointer-events: auto;
         }
 
+        /* Fixed: Consistent positioning for paper-link */
         .paper-link {
             display: none;
-            width: 90px;
-            height: 120px;
+            width: var(--paper-width);
+            height: var(--paper-height);
             position: absolute;
-            top: -140px;
-            left: 0;
+            top: -140px; /* Start position outside of view */
+            /* Center in container */
+            left: calc(50% - var(--paper-width) / 2);
             text-decoration: none;
             cursor: pointer;
             perspective: 1000px;
-            z-index: 5;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10; /* Lower default z-index */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s ease;
+            /* Important: Clip the paper at printer level during printing */
+            clip-path: polygon(
+                    0% 100%,
+                    0% 0%,
+                    100% 0%,
+                    100% 100%
+            );
         }
 
+        /* Fixed: Paper element with consistent transform origin */
         .paper {
             width: 100%;
             height: 100%;
@@ -317,92 +351,189 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transform-origin: center bottom;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-            box-shadow 0.4s ease, background-color 0.3s;
+            /* Consistent transform origin for all animations */
+            transform-origin: center center !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             will-change: transform, box-shadow;
             z-index: 5;
+            overflow: hidden;
         }
 
         body.dark-mode .paper {
             border-color: #555;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .paper img {
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 98%;
+            max-height: 98%;
             object-fit: contain;
             display: block;
+            margin: auto;
         }
 
+        /* Enhanced hover effect with smooth transition */
+        .paper-link.printed .paper {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+            box-shadow 0.4s ease-in-out;
+        }
+
+        /* FIXED: Modified hover effect for smoother transition */
         .paper-link.printed:hover .paper {
-            transform: scale(1.08) !important;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-            z-index: 6;
+            transform: scale(1.25) rotate(0deg) !important;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+            box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         body.dark-mode .paper-link.printed:hover .paper {
-            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
         }
 
-        @keyframes paperPulse {
-            0% { transform: scale(0.95); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-            50% { transform: scale(1.02); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
-            100% { transform: scale(0.95); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        /* Paper return animation */
+        .paper.returning {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+            box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* FIXED: Modified pulse animation to ensure perfect vertical alignment at peak */
+        @keyframes paper-pulse {
+            0% {
+                transform: scale(0.95) rotate(var(--random-rotate));
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                /* Paper perfectly vertical at peak (exactly 0deg rotation) */
+                transform: scale(1.07) rotate(0deg);
+                box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+            }
+            100% {
+                transform: scale(0.95) rotate(var(--random-rotate));
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
         }
 
         .paper.pulse {
-            animation: paperPulse 0.8s ease-in-out forwards;
-            transform: scale(0.95);
+            animation: paper-pulse 0.8s ease-in-out forwards;
         }
 
-        .paper-link.printed .paper {
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-            box-shadow 0.4s ease-in-out !important;
+        /* FIXED: Modified paper animations for smoother transitions */
+        /* Animation for printed paper */
+        @keyframes printing-animation {
+            0% {
+                top: -140px;
+                opacity: 0;
+            }
+            /* Start hidden */
+            5% {
+                opacity: 1;
+            }
+            /* Quick appearance */
+            20% {
+                top: -80px;
+            }
+            40% {
+                top: -60px;
+            }
+            60% {
+                top: -40px;
+            }
+            80% {
+                top: -20px;
+            }
+            100% {
+                top: 0;
+            }
         }
 
-        @keyframes modernPrinting {
-            0% { top: -120px; }
-            20% { top: -80px; }
-            40% { top: -60px; }
-            60% { top: -40px; }
-            80% { top: -20px; }
-            100% { top: 0; }
+        /* Animation for failed printing */
+        @keyframes printing-failed {
+            0% {
+                top: -120px;
+            }
+            25% {
+                top: -60px;
+            }
+            35% {
+                top: -60px;
+                transform: translateX(0) rotate(0deg);
+                filter: brightness(1);
+            }
+            40% {
+                top: -60px;
+                transform: translateX(-5px) rotate(-1deg);
+                filter: brightness(0.97);
+            }
+            45% {
+                top: -60px;
+                transform: translateX(5px) rotate(1deg);
+                filter: brightness(0.95);
+            }
+            50% {
+                top: -60px;
+                transform: translateX(-5px) rotate(-1deg);
+                filter: brightness(0.93);
+            }
+            55% {
+                top: -60px;
+                transform: translateX(5px) rotate(1deg);
+                filter: brightness(0.91);
+            }
+            60% {
+                top: -60px;
+                transform: translateX(-3px) rotate(-0.5deg);
+                filter: brightness(0.9);
+            }
+            65% {
+                top: -60px;
+                transform: translateX(3px) rotate(0.5deg);
+                filter: brightness(0.89);
+            }
+            70% {
+                top: -60px;
+                transform: translateX(0) rotate(0deg);
+                filter: brightness(0.9);
+            }
+            85% {
+                top: -90px;
+                filter: brightness(0.95);
+            }
+            100% {
+                top: -120px;
+                filter: brightness(1);
+            }
         }
 
-        @keyframes modernFailed {
-            0% { top: -120px; }
-            25% { top: -60px; }
-            35% { top: -60px; transform: translateX(0) rotate(0deg); filter: brightness(1); }
-            40% { top: -60px; transform: translateX(-5px) rotate(-1deg); filter: brightness(0.97); }
-            45% { top: -60px; transform: translateX(5px) rotate(1deg); filter: brightness(0.95); }
-            50% { top: -60px; transform: translateX(-5px) rotate(-1deg); filter: brightness(0.93); }
-            55% { top: -60px; transform: translateX(5px) rotate(1deg); filter: brightness(0.91); }
-            60% { top: -60px; transform: translateX(-3px) rotate(-0.5deg); filter: brightness(0.9); }
-            65% { top: -60px; transform: translateX(3px) rotate(0.5deg); filter: brightness(0.89); }
-            70% { top: -60px; transform: translateX(0) rotate(0deg); filter: brightness(0.9); }
-            85% { top: -90px; filter: brightness(0.95); }
-            100% { top: -120px; filter: brightness(1); }
+        /* FIXED: Ensure consistent transformation during falling animation */
+        @keyframes paper-falling {
+            0% {
+                top: 0;
+                transform: rotateX(0) scale(1) rotate(0deg);
+            }
+            60% {
+                top: 25px;
+                transform: rotateX(8deg) scale(0.97) rotate(calc(var(--random-rotate) * 0.7));
+            }
+            80% {
+                top: 25px;
+                transform: rotateX(0) scale(0.95) rotate(var(--random-rotate));
+            }
+            100% {
+                top: 25px;
+                transform: rotateX(0) scale(0.95) rotate(var(--random-rotate));
+            }
         }
 
-        @keyframes modernFalling {
-            0% { top: 0; transform: rotateX(0) scale(1) rotate(0deg); }
-            60% { top: 25px; transform: rotateX(8deg) scale(0.97) rotate(var(--random-rotate)); }
-            80% { top: 25px; transform: rotateX(0) scale(0.95) rotate(var(--random-rotate)); }
-            100% { top: 25px; transform: rotateX(0) scale(0.95) rotate(var(--random-rotate)); }
-        }
-
-        /* Modern, smoother animations */
+        /* Apply animations to the paper-link element */
         .paper-link.printing {
-            animation: modernPrinting 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: printing-animation 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             z-index: 5;
         }
 
         .paper-link.printing-failed {
             display: block;
-            animation: modernFailed 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: printing-failed 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             z-index: 5;
         }
 
@@ -427,16 +558,22 @@
 
         .show-error-icon .print-error-icon {
             display: block;
-            animation: fadeInError 0.5s ease forwards 0.5s;
+            animation: fade-in-error 0.5s ease forwards 0.5s;
         }
 
-        @keyframes fadeInError {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        @keyframes fade-in-error {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
 
         .paper-link.falling {
-            animation: modernFalling 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation: paper-falling 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             z-index: 15 !important;
         }
 
@@ -445,15 +582,23 @@
         }
 
         /* Printer reaction animations */
-        @keyframes printerReaction {
-            0% { transform: translateY(0); }
-            25% { transform: translateY(-2px); }
-            75% { transform: translateY(1px); }
-            100% { transform: translateY(0); }
+        @keyframes printer-reaction {
+            0% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-2px);
+            }
+            75% {
+                transform: translateY(1px);
+            }
+            100% {
+                transform: translateY(0);
+            }
         }
 
         .printer.printing {
-            animation: printerReaction 0.5s ease-in-out;
+            animation: printer-reaction 0.5s ease-in-out;
         }
 
         .redirect-message {
@@ -487,10 +632,10 @@
             box-shadow: 0 4px 10px rgba(52, 211, 153, 0.3);
             position: relative;
             overflow: hidden;
-            animation: float-btn 3s ease-in-out infinite;
+            animation: float-button 3s ease-in-out infinite;
         }
 
-        @keyframes float-btn {
+        @keyframes float-button {
             0%, 100% {
                 transform: translateY(0);
             }
@@ -510,10 +655,10 @@
             left: 0;
             z-index: -1;
             opacity: 0.5;
-            animation: pulse 2s infinite;
+            animation: button-pulse 2s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes button-pulse {
             0% {
                 transform: scale(1);
                 opacity: 0.5;
@@ -572,14 +717,16 @@
         .spinner {
             width: 16px;
             height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             border-top-color: white;
-            animation: modernSpin 0.8s linear infinite;
+            animation: spin-animation 0.8s linear infinite;
         }
 
-        @keyframes modernSpin {
-            to { transform: rotate(360deg); }
+        @keyframes spin-animation {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Updated back button */
@@ -648,9 +795,9 @@
                 <div class="printer-top">
                     <div class="printer-brand"></div>
                     <div class="printer-control-panel">
-                        <div class="printer-data" id="dataLight"></div>
-                        <div class="printer-success" id="successLight"></div>
-                        <div class="printer-error" id="errorLight"></div>
+                        <div class="printer-led printer-data" id="dataLight"></div>
+                        <div class="printer-led printer-success" id="successLight"></div>
+                        <div class="printer-led printer-error" id="errorLight"></div>
                     </div>
                 </div>
                 <div class="printer-body">
@@ -689,23 +836,26 @@
     // CONFIGURATION
     const enableAutoRedirect = true;  // Enable automatic handling based on device
     const isRedirectOnDesktop = false; // If true, redirects desktop to cv-print.html instead of printing
-    const forceIOSError = false;        // Simulate iOS error on any device
+    const forceIOSError = false;      // Simulate iOS error on any device
     const printerAnimationDelay = 500; // Delay before printer animation starts (ms)
     const pdfDownloadUrl = 'cv_en.pdf'; // PDF file URL
     const isRedirectDelayed = true;    // If true, actions are delayed
     const redirectDelayMs = 4000;      // Delay before actions occur (ms)
     const disableIOSSpecialHandling = false; // Treat iOS like other devices
     const disableAndroidSpecialHandling = false; // Treat Android like other devices
+    // Reduced delay before pulsing animation (1500 ms instead of 3000)
+    const pulseDelay = 500;
 
     // State
     let isIOS = false;
     let isAndroid = false;
     let redirectHandled = false;
     let isDarkMode = false; // Default theme setting
+    let originalRotation = '0deg'; // Store original rotation for hover effects
 
     // Safe localStorage functions with fallbacks
     const safeStorage = {
-        getItem: function(key, defaultValue) {
+        getItem: function (key, defaultValue) {
             try {
                 const value = localStorage.getItem(key);
                 return value !== null ? value : defaultValue;
@@ -714,7 +864,7 @@
                 return defaultValue;
             }
         },
-        setItem: function(key, value) {
+        setItem: function (key, value) {
             try {
                 localStorage.setItem(key, value);
                 return true;
@@ -741,7 +891,7 @@
             iframe.style.display = 'none';
             iframe.src = pdfDownloadUrl;
 
-            iframe.onload = function() {
+            iframe.onload = function () {
                 try {
                     iframe.contentWindow.print();
                 } catch (e) {
@@ -810,6 +960,11 @@
         const printerElement = document.getElementById('printerElement');
 
         if (dataLight) {
+            // Ensure other lights are off
+            document.getElementById('successLight').classList.remove('active');
+            document.getElementById('errorLight').classList.remove('active');
+
+            // Turn on data light
             dataLight.classList.add('active');
         }
 
@@ -829,12 +984,18 @@
 
         // Deactivate the data light
         const dataLight = document.getElementById('dataLight');
+        const successLight = document.getElementById('successLight');
+        const errorLight = document.getElementById('errorLight');
+
         if (dataLight) {
             dataLight.classList.remove('active');
         }
 
-        // Activate the error light
-        const errorLight = document.getElementById('errorLight');
+        if (successLight) {
+            successLight.classList.remove('active');
+        }
+
+        // Activate the error light with blinking effect
         if (errorLight) {
             errorLight.classList.add('active');
         }
@@ -905,12 +1066,18 @@
     function showPrintSuccess() {
         // Deactivate the data light
         const dataLight = document.getElementById('dataLight');
+        const errorLight = document.getElementById('errorLight');
+        const successLight = document.getElementById('successLight');
+
         if (dataLight) {
             dataLight.classList.remove('active');
         }
 
+        if (errorLight) {
+            errorLight.classList.remove('active');
+        }
+
         // Activate the success light
-        const successLight = document.getElementById('successLight');
         if (successLight) {
             successLight.classList.add('active');
         }
@@ -977,61 +1144,214 @@
         }
     }
 
-    // Animate printing with falling effect and success indicator
+    // FIXED: Setup paper hover effects with consistent transforms
+    function setupPaperHoverEffects() {
+        const paperLink = document.getElementById('paperLink');
+        const paperElement = document.getElementById('paperElement');
+
+        if (!paperLink || !paperElement) return;
+
+        // Add mouseenter event - smoothly straighten and enlarge the paper
+        paperLink.addEventListener('mouseenter', function () {
+            if (!paperLink.classList.contains('printed')) return;
+
+            // Apply smooth transition for the hover effect
+            paperElement.style.transition = 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1)';
+            // Consistent transform origin
+            paperElement.style.transformOrigin = 'center center';
+        });
+
+        // Add mouseleave event - smoothly return to original tilted state
+        paperLink.addEventListener('mouseleave', function () {
+            if (!paperLink.classList.contains('printed')) return;
+
+            // Get the original rotation from saved variable rather than CSS
+            const rotateValue = paperElement.dataset.finalRotation ?
+                `${paperElement.dataset.finalRotation}deg` : originalRotation;
+
+            // Add returning class for smooth return transition
+            paperElement.classList.add('returning');
+
+            // Apply smoother transition properties
+            paperElement.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            // Keep consistent transform origin
+            paperElement.style.transformOrigin = 'center center';
+
+            // Apply the original transform
+            paperElement.style.transform = `scale(0.95) rotate(${rotateValue})`;
+            paperElement.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+
+            // Remove the class after animation completes
+            setTimeout(() => {
+                paperElement.classList.remove('returning');
+            }, 400);
+        });
+    }
+
+    // FIXED: Function to ensure proper aspect ratio and fit of the image
+    function ensureProperAspectRatio() {
+        const paperImage = document.getElementById('paperImage');
+        if (!paperImage) return;
+
+        // Check when the image loads
+        paperImage.onload = function () {
+            // Calculate the aspect ratio of the image
+            const imgRatio = this.naturalHeight / this.naturalWidth;
+            // Get the A4 ratio
+            const a4Ratio = parseFloat(getComputedStyle(document.documentElement)
+                .getPropertyValue('--a4-ratio').trim());
+
+            // If image is taller than container with A4 ratio
+            if (imgRatio > a4Ratio) {
+                this.style.height = '98%'; // Slightly smaller to ensure no clipping
+                this.style.width = 'auto';
+                this.style.maxHeight = '98%';
+            } else {
+                this.style.width = '98%'; // Slightly smaller to ensure no clipping
+                this.style.height = 'auto';
+                this.style.maxWidth = '98%';
+            }
+
+            // Ensure the image is centered
+            this.style.margin = 'auto';
+        };
+    }
+
+    // FIXED: Animate printing with improved clipping mechanism to prevent paper showing behind printer
     function animatePrinting() {
         const paperLink = document.getElementById('paperLink');
         const paperElement = document.getElementById('paperElement');
         const paperContainer = document.querySelector('.paper-container');
         const paperImage = document.getElementById('paperImage');
+        const printerOutputBottom = document.querySelector('.printer-output').getBoundingClientRect().bottom;
+        const printerAreaTop = document.querySelector('.printer-area').getBoundingClientRect().top;
 
         if (!paperLink || !paperElement || !paperContainer || !paperImage) return;
+
+        // Setup hover effects before animation starts
+        setupPaperHoverEffects();
+
+        // Ensure proper aspect ratio
+        ensureProperAspectRatio();
 
         // Show data processing light
         showDataProcessing();
 
-        // Hide paper initially
+        // FIXED: Completely hide paper initially and set lower z-index
         paperLink.style.display = 'none';
         paperContainer.style.opacity = '0';
-        paperContainer.style.overflow = 'hidden';
-        paperLink.style.top = '-200px';
+        paperLink.style.top = '-200px'; // Increased value to ensure hiding
+        paperLink.style.zIndex = '1'; // Low z-index before printing
 
-        // Generate random rotation angle
-        const randomRotate = (Math.random() * 6 - 3).toFixed(2);
+        // CRITICAL FIX: Create a clip-path that only shows paper below the printer
+        const updateClipPath = () => {
+            const printerRect = document.querySelector('.printer-output').getBoundingClientRect();
+            const containerRect = paperContainer.getBoundingClientRect();
+
+            // Calculate the position where paper should start being visible (just below printer slot)
+            const clipStart = Math.max(0, (printerRect.bottom - containerRect.top));
+
+            // Set clip path to only show paper below the printer slot
+            paperLink.style.clipPath = `polygon(0% ${clipStart}px, 0% 100%, 100% 100%, 100% ${clipStart}px)`;
+        };
+
+        // Generate random rotation angle (reduced range to avoid clipping)
+        const randomRotate = (Math.random() * 10 - 5).toFixed(2); // ±5 degrees instead of ±8
         document.documentElement.style.setProperty('--random-rotate', `${randomRotate}deg`);
+        originalRotation = `${randomRotate}deg`; // Save for reuse
+
+        // Set uniform transform origin
+        paperElement.style.transformOrigin = 'center center';
 
         // Start printing animation after delay
         setTimeout(() => {
+            // FIXED: Paper still hidden, but ready for animation
             paperLink.style.top = '-140px';
 
+            // Update clip path for initial position
+            updateClipPath();
+
             setTimeout(() => {
+                // FIXED: Set visibility and z-index just before animation
                 paperLink.style.display = 'block';
                 paperContainer.classList.add('active');
                 paperContainer.style.opacity = '1';
+
+                // Update clip path before animation starts
+                updateClipPath();
 
                 setTimeout(() => {
                     if (isIOS && !disableIOSSpecialHandling) {
                         paperLink.classList.add('printing-failed');
                         showIOSPrintFailure();
                     } else {
+                        // FIXED: Set z-index during printing
+                        paperLink.style.zIndex = '5';
                         paperLink.classList.add('printing');
 
+                        // Continuously update clip path during printing animation
+                        let printingInterval = setInterval(updateClipPath, 50);
+
                         setTimeout(() => {
+                            clearInterval(printingInterval);
                             paperLink.classList.remove('printing');
                             paperLink.classList.add('falling');
+
+                            // Remove clip path after printing is complete
+                            paperLink.style.clipPath = 'none';
                             paperContainer.style.zIndex = "15";
 
-                            // Activate success light when paper falls
+                            // Activate success indicator when paper falls
                             showPrintSuccess();
 
+                            // FIXED: Save exact transformation state before pulsing
+                            const exactRotateValue = parseFloat(randomRotate);
+                            const beforePulseTransform = `scale(0.95) rotate(${exactRotateValue}deg)`;
+
+                            // Ensure proper transformation after falling
                             setTimeout(() => {
+                                paperElement.style.transform = beforePulseTransform;
+                            }, 500);
+
+                            // Reduced delay before pulse animation
+                            setTimeout(() => {
+                                // FIXED: Clear any inline styles before applying the pulse animation
+                                // to ensure CSS animation takes full priority
+                                paperElement.style.transition = 'none';
+
+                                // Force a reflow to ensure the transition is cleared
+                                void paperElement.offsetWidth;
+
+                                // Remove any inline transform that might compete with the animation
+                                paperElement.style.transform = '';
+
+                                // Add pulse class with animation with high specificity
                                 paperElement.classList.add('pulse');
 
+                                // Also force the animation to run completely on its own
+                                paperElement.style.animationFillMode = 'forwards';
+
+                                // Apply original rotation after pulse animation completes
                                 setTimeout(() => {
                                     paperLink.classList.add('printed');
-                                    paperElement.style.transform = `rotate(${randomRotate}deg) scale(0.95)`;
+
+                                    // Remove pulse class to prevent animation interference
+                                    paperElement.classList.remove('pulse');
+
+                                    // Reset animation fill mode
+                                    paperElement.style.animationFillMode = '';
+
+                                    // Force another reflow
+                                    void paperElement.offsetWidth;
+
+                                    // Apply exactly the same transformation as before pulsing
+                                    paperElement.style.transform = beforePulseTransform;
+
+                                    // Save final state explicitly
+                                    paperElement.dataset.finalRotation = exactRotateValue;
                                 }, 800);
-                            }, 500);
-                        }, 2200); // Match the duration of the modernPrinting animation
+                            }, pulseDelay); // Reduced delay for pulsing
+                        }, 2200); // Match to printing animation duration
                     }
                 }, 50);
             }, 200);
@@ -1043,7 +1363,7 @@
         const paperImage = document.getElementById('paperImage');
         if (!paperImage) return;
 
-        paperImage.onerror = function() {
+        paperImage.onerror = function () {
             this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="90" height="120" viewBox="0 0 90 120"><rect width="100%" height="100%" fill="white"/><text x="50%" y="50%" font-family="Arial" font-size="14" fill="gray" text-anchor="middle">CV</text></svg>';
         };
     }
@@ -1103,6 +1423,9 @@
 
         // Set up image error handling
         handleImageError();
+
+        // Ensure proper proportions
+        ensureProperAspectRatio();
 
         // Start the printer animation sequence
         handleAutoRedirect();
