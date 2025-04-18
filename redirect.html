@@ -413,6 +413,32 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Back button styles */
+        .back-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
         /* For reduced motion preference */
         @media (prefers-reduced-motion: reduce) {
             .paper-link.printing, .paper-link.falling, .paper.pulse, .spinner,
@@ -464,24 +490,56 @@
     </button>
 </div>
 
+<!-- Back button -->
+<button onclick="goBackToCvPage()" class="back-btn" id="backButton">
+    <i class="fas fa-arrow-left"></i>
+</button>
+
 <script>
     // KONFIGURACJA
     const enableAutoRedirect = true;  // Change to true to enable auto-redirect
     const forceIOSError = false;      // Change to true to simulate iOS error on any device
     const printerAnimationDelay = 500; // Czas w ms po jakim drukarka zacznie "drukować"
     const pdfDownloadUrl = 'cv_en.pdf'; // URL do pliku PDF do pobrania
+    const isRedirectDelayed = true;   // Jeśli false, przekierowanie nastąpi natychmiast
     const redirectDelayMs = 2000;     // Czas w ms po jakim nastąpi przekierowanie
     const disableIOSSpecialHandling = false; // Jeśli true, iPhony będą traktowane tak samo jak pozostałe urządzenia
-    const isRedirectDelayed = true;   // Jeśli false, przekierowanie nastąpi natychmiast
+    const disableAndroidSpecialHandling = false; // Jeśli true, Androidy będą traktowane tak samo jak pozostałe urządzenia
 
     // Stan aplikacji
     let isIOS = false;
+    let isAndroid = false;
     let redirectHandled = false;
+
+    // Funkcja cofająca do strony cv.html
+    function goBackToCvPage() {
+        window.location.href = 'cv.html';
+    }
+
+    // Funkcja drukująca PDF bezpośrednio
+    function printPdf() {
+        const pdfUrl = 'cv_en.pdf';
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = pdfUrl;
+
+        iframe.onload = function() {
+            try {
+                iframe.contentWindow.print();
+            } catch (e) {
+                console.error("Print error:", e);
+                // Fallback to opening the PDF if direct printing fails
+                window.open(pdfUrl, '_blank');
+            }
+        };
+
+        document.body.appendChild(iframe);
+    }
 
     // Funkcja otwierająca przeglądarkę zewnętrzną
     function openExternalBrowser() {
         const userAgent = navigator.userAgent.toLowerCase();
-        const isAndroid = userAgent.includes('android');
+        isAndroid = userAgent.includes('android');
         isIOS = forceIOSError || /iphone|ipad|ipod/.test(userAgent);
 
         // Link docelowy
@@ -489,13 +547,14 @@
 
         try {
             if (isIOS && !disableIOSSpecialHandling) {
-                // Special handling for iOS - show printing failure (tylko jeśli specjalne traktowanie jest włączone)
+                // Special handling for iOS - show printing failure
                 showIOSPrintFailure();
-            } else if (isAndroid) {
+            } else if (isAndroid && !disableAndroidSpecialHandling) {
                 const intentUrl = `intent://guziczak.github.io/lukasz/cv-print.html#Intent;scheme=https;package=com.android.chrome;end`;
                 window.location.href = intentUrl;
             } else {
-                window.location.href = targetUrl;
+                // Directly print the PDF instead of redirecting
+                printPdf();
             }
         } catch (e) {
             console.error("Redirect error:", e);
@@ -506,22 +565,22 @@
     // Funkcja obsługująca kliknięcie na kartkę
     function handlePaperClick() {
         if (isIOS && !disableIOSSpecialHandling) {
-            // Dla iOS przekieruj do pobrania PDF (tylko jeśli specjalne traktowanie jest włączone)
+            // Dla iOS przekieruj do pobrania PDF
             window.location.href = pdfDownloadUrl;
         } else {
-            // Dla pozostałych urządzeń przekieruj do strony drukowania
-            openExternalBrowser();
+            // Dla pozostałych urządzeń drukuj PDF bezpośrednio
+            printPdf();
         }
     }
 
     // Funkcja obsługująca kliknięcie przycisku
     function handleButtonClick() {
         if (isIOS && !disableIOSSpecialHandling) {
-            // Dla iOS przekieruj do pobrania PDF (tylko jeśli specjalne traktowanie jest włączone)
+            // Dla iOS przekieruj do pobrania PDF
             window.location.href = pdfDownloadUrl;
         } else {
-            // Dla pozostałych urządzeń przekieruj do strony drukowania
-            openExternalBrowser();
+            // Dla pozostałych urządzeń drukuj PDF bezpośrednio
+            printPdf();
         }
     }
 
@@ -544,9 +603,14 @@
         // Zaktualizuj wiadomość tekstową
         messageEl.textContent = 'Drukowanie jeszcze nie jest dostępne dla iOS. Pobierz PDF:';
 
-        // Aktualizuj przycisk
+        // Aktualizuj przycisk - teraz powinien działać jak guzik pobierania w cv.html
         buttonText.textContent = 'Pobierz CV (PDF)';
         printButton.classList.add('error-btn');
+
+        // Ustaw przycisk na pobieranie PDFa
+        printButton.onclick = function() {
+            window.location.href = pdfDownloadUrl;
+        };
 
         // Pokaż ikonę błędu w papierze
         paperElement.parentElement.classList.add('show-error-icon');
@@ -704,45 +768,57 @@
     }
 
     // Funkcja obsługująca automatyczne przekierowanie
-    // Funkcja obsługująca automatyczne przekierowanie
     function handleAutoRedirect() {
         if (enableAutoRedirect) {
             // Sprawdź użytkownika
             const userAgent = navigator.userAgent.toLowerCase();
             isIOS = forceIOSError || /iphone|ipad|ipod/.test(userAgent);
+            isAndroid = userAgent.includes('android');
 
             // Jeśli mamy wyłączone specjalne traktowanie iOS, traktujemy iOS jak zwykłe urządzenie
-            const shouldHandleAsNormal = disableIOSSpecialHandling || !isIOS;
+            const shouldHandleAsNormal = (disableIOSSpecialHandling || !isIOS) && (disableAndroidSpecialHandling || !isAndroid);
 
             if (shouldHandleAsNormal) {
-                // Dla zwykłych urządzeń lub gdy wyłączono specjalne traktowanie iOS
+                // Dla zwykłych urządzeń lub gdy wyłączono specjalne traktowanie
 
                 // Najpierw uruchamiamy animację drukowania
                 animatePrinting();
 
                 if (!isRedirectDelayed) {
-                    // Natychmiastowe przekierowanie bez opóźnienia
-                    console.log("Wykonuję natychmiastowe przekierowanie");
-                    openExternalBrowser();
+                    // Natychmiastowe drukowanie bez opóźnienia
+                    console.log("Wykonuję natychmiastowe drukowanie");
+                    printPdf();
                 } else {
-                    // Opóźnione przekierowanie o określony czas
-                    console.log(`Przekierowanie nastąpi za ${redirectDelayMs}ms`);
+                    // Opóźnione drukowanie o określony czas
+                    console.log(`Drukowanie nastąpi za ${redirectDelayMs}ms`);
                     setTimeout(() => {
-                        console.log("Wykonuję opóźnione przekierowanie");
-                        openExternalBrowser();
+                        console.log("Wykonuję opóźnione drukowanie");
+                        printPdf();
                     }, redirectDelayMs);
                 }
-            } else {
+            } else if (isIOS && !disableIOSSpecialHandling) {
                 // Dla iOS z włączonym specjalnym traktowaniem
                 setTimeout(() => {
                     animatePrinting(); // Uruchom animację, która pokaże błąd dla iOS
                 }, 300);
+            } else {
+                // Dla Androida z włączonym specjalnym traktowaniem
+                animatePrinting();
+
+                if (!isRedirectDelayed) {
+                    openExternalBrowser();
+                } else {
+                    setTimeout(() => {
+                        openExternalBrowser();
+                    }, redirectDelayMs);
+                }
             }
         } else {
             // Jeśli autoRedirect wyłączony, pokaż standardowy UI
             console.log("Auto-przekierowanie wyłączone, pokazuję ręczny UI");
             const userAgent = navigator.userAgent.toLowerCase();
             isIOS = forceIOSError || /iphone|ipad|ipod/.test(userAgent);
+            isAndroid = userAgent.includes('android');
 
             showManualRedirectUI();
             animatePrinting();
@@ -763,6 +839,7 @@
         console.log("isRedirectDelayed:", isRedirectDelayed);
         console.log("redirectDelayMs:", redirectDelayMs);
         console.log("disableIOSSpecialHandling:", disableIOSSpecialHandling);
+        console.log("disableAndroidSpecialHandling:", disableAndroidSpecialHandling);
 
         // Obsługa automatycznego przekierowania na podstawie flagi
         handleAutoRedirect();
