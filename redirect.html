@@ -565,19 +565,29 @@
     // Funkcja obsługująca kliknięcie na kartkę
     function handlePaperClick() {
         if (isIOS && !disableIOSSpecialHandling) {
-            // Dla iOS przekieruj do pobrania PDF
-            window.location.href = pdfDownloadUrl;
+            // Dla iOS, zmień link na bezpośrednie pobieranie
+            const paperLink = document.getElementById('paperLink');
+            paperLink.href = pdfDownloadUrl;
+            paperLink.download = pdfDownloadUrl.includes('_en') ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
+            // Pozwól domyślnemu zachowaniu linku zadziałać
+            return true;
         } else {
             // Dla pozostałych urządzeń drukuj PDF bezpośrednio
             printPdf();
+            return false;
         }
     }
 
     // Funkcja obsługująca kliknięcie przycisku
     function handleButtonClick() {
         if (isIOS && !disableIOSSpecialHandling) {
-            // Dla iOS przekieruj do pobrania PDF
-            window.location.href = pdfDownloadUrl;
+            // Stwórz tymczasowy link pobierania
+            const downloadLink = document.createElement('a');
+            downloadLink.href = pdfDownloadUrl;
+            downloadLink.download = pdfDownloadUrl.includes('_en') ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         } else {
             // Dla pozostałych urządzeń drukuj PDF bezpośrednio
             printPdf();
@@ -603,14 +613,32 @@
         // Zaktualizuj wiadomość tekstową
         messageEl.textContent = 'Drukowanie jeszcze nie jest dostępne dla iOS. Pobierz PDF:';
 
-        // Aktualizuj przycisk - teraz powinien działać jak guzik pobierania w cv.html
-        buttonText.textContent = 'Pobierz CV (PDF)';
-        printButton.classList.add('error-btn');
+        // Aktualizuj link papieru na bezpośrednie pobieranie
+        paperLink.href = pdfDownloadUrl;
+        paperLink.download = pdfDownloadUrl.includes('_en') ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
+        paperLink.onclick = null; // Usuń stary handler onclick
 
-        // Ustaw przycisk na pobieranie PDFa
-        printButton.onclick = function() {
-            window.location.href = pdfDownloadUrl;
-        };
+        // Get button properties before replacement
+        const parentElement = printButton.parentElement;
+        const buttonHTML = printButton.innerHTML;
+        const buttonClass = printButton.className;
+
+        // Remove the button
+        parentElement.removeChild(printButton);
+
+        // Create a download link that looks like the button
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pdfDownloadUrl;
+        downloadLink.download = pdfDownloadUrl.includes('_en') ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
+        downloadLink.className = buttonClass + ' error-btn'; // Add the error class
+        downloadLink.innerHTML = buttonHTML;
+        downloadLink.id = 'printButton';
+
+        // Add the link to the parent
+        parentElement.appendChild(downloadLink);
+
+        // Update the button text (now inside the link)
+        document.getElementById('buttonText').textContent = 'Pobierz CV (PDF)';
 
         // Pokaż ikonę błędu w papierze
         paperElement.parentElement.classList.add('show-error-icon');
