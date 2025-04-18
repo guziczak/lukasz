@@ -17,16 +17,18 @@
             --dark-text: #f3f4f6;
             --light-border: #e5e7eb;
             --dark-border: #374151;
-            --printer-color: #444444;
-            --printer-dark-color: #555555;
-            --printer-light: #555555;
-            --printer-dark-light: #666666;
             --paper-color: #ffffff;
             --paper-border: #e0e0e0;
             --paper-error: #fff5f5;
             --error-color: #e53e3e;
             --error-hover: #c53030;
+            --success-color: #34d399;
+            --success-hover: #10b981;
             --random-rotate: 0deg; /* Default value, will be updated via JS */
+            --secondary-color: #34d399;
+            --tertiary-color: #8b5cf6;
+            --printer-color: #2a2e37;
+            --printer-light: #3a3f4a;
         }
 
         * {
@@ -55,124 +57,237 @@
             text-align: center;
             background-color: var(--light-card);
             padding: 30px;
-            border-radius: 8px;
+            border-radius: 16px;
             border: 1px solid var(--light-border);
             width: 320px;
             min-height: 350px;
             transition: background-color 0.3s, border-color 0.3s;
             position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
 
         body.dark-mode .container {
             background-color: var(--dark-card);
             border-color: var(--dark-border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .printer-area {
             position: relative;
-            width: 120px;
+            width: 150px;
             height: 230px;
             margin: 0 auto 30px;
             overflow: visible;
         }
 
+        /* Modern flat printer */
         .printer {
-            width: 120px;
+            width: 150px;
             height: 80px;
-            background-color: var(--printer-color);
-            border-radius: 8px 8px 3px 3px;
             position: relative;
             margin: 0 auto;
-            border-bottom: 3px solid rgba(0,0,0,0.2);
-            box-shadow: 0 2px 0 rgba(0,0,0,0.1);
             z-index: 30;
+            overflow: visible;
+            transition: transform 0.3s ease;
         }
 
-        .printer:after {
-            content: '';
+        /* Printer shell/housing */
+        .printer-shell {
             position: absolute;
-            bottom: -5px;
-            left: 15px;
-            width: 90px;
-            height: 10px;
-            background-color: var(--printer-color);
-            z-index: 29;
-        }
-
-        body.dark-mode .printer {
-            background-color: var(--printer-dark-color);
-        }
-
-        body.dark-mode .printer:after {
-            background-color: var(--printer-dark-color);
-        }
-
-        .printer:before {
-            content: '';
-            position: absolute;
-            top: 12px;
-            left: 10px;
-            width: 100px;
-            height: 15px;
-            background-color: var(--printer-light);
-            border-radius: 4px;
-        }
-
-        body.dark-mode .printer:before {
-            background-color: var(--printer-dark-light);
-        }
-
-        .printer-button {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #2ca3fa;
-            top: 40px;
-            right: 25px;
-        }
-
-        .printer-button:after {
-            content: '';
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #34d399;
             top: 0;
-            right: -18px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--printer-color);
+            border-radius: 12px 12px 4px 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
 
-        .printer-tray {
+        /* Printer top section */
+        .printer-top {
             position: absolute;
-            width: 80px;
-            height: 4px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 22px;
             background-color: var(--printer-light);
-            bottom: -7px;
-            left: 20px;
-            border-radius: 0 0 2px 2px;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            overflow: hidden;
         }
 
-        .printer-slot {
+        /* Top surface slight highlight */
+        .printer-top::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10px;
+            right: 10px;
+            height: 4px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.07), transparent);
+            border-radius: 50% 50% 0 0 / 20px;
+        }
+
+        /* Brand logo on printer */
+        .printer-brand {
+            position: absolute;
+            top: 7px;
+            left: 12px;
+            font-size: 7px;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: bold;
+        }
+
+        .printer-brand::before {
+            content: 'FlatPrint';
+        }
+
+        /* Control panel with modern indicators */
+        .printer-control-panel {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            height: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 33;
+        }
+
+        /* Status LEDs - Modern style */
+        .printer-led {
+            position: relative;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.15);
+            transition: all 0.4s ease;
+            opacity: 0.3;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 40;
+        }
+
+        /* Success LED (green) */
+        .printer-success {
+            background-color: var(--success-color);
+        }
+
+        /* Error LED (red) */
+        .printer-error {
+            background-color: var(--error-color);
+        }
+
+        /* Data LED (blue) */
+        .printer-data {
+            background-color: var(--primary-color);
+        }
+
+        /* Active states for LEDs with modern glow effects */
+        .printer-success.active {
+            opacity: 1;
+            box-shadow: 0 0 8px var(--success-color), 0 0 12px var(--success-color);
+            animation: modernPulse 1.5s infinite alternate;
+        }
+
+        .printer-error.active {
+            opacity: 1;
+            box-shadow: 0 0 8px var(--error-color), 0 0 12px var(--error-color);
+            animation: modernPulse 0.7s infinite alternate;
+        }
+
+        .printer-data.active {
+            opacity: 1;
+            box-shadow: 0 0 8px var(--primary-color), 0 0 12px var(--primary-color);
+            animation: softBlink 2s infinite;
+        }
+
+        @keyframes modernPulse {
+            0% { transform: scale(1); box-shadow: 0 0 2px currentColor; }
+            100% { transform: scale(1.2); box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
+        }
+
+        @keyframes softBlink {
+            0%, 100% { opacity: 0.7; box-shadow: 0 0 3px currentColor; }
+            50% { opacity: 1; box-shadow: 0 0 8px currentColor; }
+        }
+
+        /* Printer body */
+        .printer-body {
+            position: absolute;
+            top: 22px;
+            left: 0;
+            width: 100%;
+            height: 58px;
+            background-color: var(--printer-color);
+            overflow: hidden;
+        }
+
+        /* Printer paper input (top) with subtle inset */
+        .printer-paper-input {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 8px;
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 4px 4px 0 0;
+            overflow: hidden;
+        }
+
+        /* Paper output area with flat style */
+        .printer-output {
             position: absolute;
             bottom: 0;
-            left: 15px;
-            width: 90px;
-            height: 3px;
-            background-color: rgba(0, 0, 0, 0.3);
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 0 0 4px 4px;
+            overflow: hidden;
             z-index: 31;
         }
 
+        /* Paper exit slot */
+        .printer-slot {
+            position: absolute;
+            bottom: 3px;
+            left: 30px;
+            width: 90px;
+            height: 3px;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 32;
+            border-radius: 1px;
+        }
+
+        /* Paper tray/guide */
+        .printer-tray {
+            position: absolute;
+            width: 90px;
+            height: 3px;
+            background-color: var(--printer-light);
+            bottom: -3px;
+            left: 30px;
+            border-radius: 0 0 3px 3px;
+            z-index: 25;
+        }
+
+        /* Paper container for the animation */
         .paper-container {
             position: absolute;
-            top: 80px;
-            left: 15px;
+            top: 90px;
+            left: 30px;
             width: 90px;
             height: 160px;
             overflow: hidden;
             z-index: 5;
             opacity: 0;
             pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
         .paper-container.active {
@@ -191,6 +306,7 @@
             cursor: pointer;
             perspective: 1000px;
             z-index: 5;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .paper {
@@ -223,22 +339,22 @@
 
         .paper-link.printed:hover .paper {
             transform: scale(1.08) !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
             z-index: 6;
         }
 
         body.dark-mode .paper-link.printed:hover .paper {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
         }
 
-        @keyframes singlePulse {
+        @keyframes paperPulse {
             0% { transform: scale(0.95); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-            50% { transform: scale(1.02); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+            50% { transform: scale(1.02); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
             100% { transform: scale(0.95); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         }
 
         .paper.pulse {
-            animation: singlePulse 0.8s ease-in-out forwards;
+            animation: paperPulse 0.8s ease-in-out forwards;
             transform: scale(0.95);
         }
 
@@ -247,60 +363,53 @@
             box-shadow 0.4s ease-in-out !important;
         }
 
-        @keyframes printing {
+        @keyframes modernPrinting {
             0% { top: -120px; }
-            8% { top: -105px; }
-            16% { top: -100px; }
-            24% { top: -85px; }
-            32% { top: -80px; }
-            40% { top: -65px; }
-            48% { top: -60px; }
-            56% { top: -45px; }
-            64% { top: -40px; }
-            72% { top: -30px; }
-            80% { top: -25px; }
-            88% { top: -12px; }
-            94% { top: -6px; }
+            20% { top: -80px; }
+            40% { top: -60px; }
+            60% { top: -40px; }
+            80% { top: -20px; }
             100% { top: 0; }
         }
 
-        @keyframes printingFailed {
+        @keyframes modernFailed {
             0% { top: -120px; }
-            15% { top: -85px; }
-            30% { top: -50px; }
-            35% { top: -50px; transform: translateX(0) rotate(0deg); }
-            40% { top: -50px; transform: translateX(-5px) rotate(-1deg); }
-            45% { top: -50px; transform: translateX(5px) rotate(1deg); }
-            50% { top: -50px; transform: translateX(-5px) rotate(-1deg); }
-            55% { top: -50px; transform: translateX(5px) rotate(1deg); }
-            60% { top: -50px; transform: translateX(-3px) rotate(-0.5deg); }
-            65% { top: -50px; transform: translateX(3px) rotate(0.5deg); }
-            70% { top: -50px; transform: translateX(0) rotate(0deg); }
-            85% { top: -85px; }
-            100% { top: -120px; }
+            25% { top: -60px; }
+            35% { top: -60px; transform: translateX(0) rotate(0deg); filter: brightness(1); }
+            40% { top: -60px; transform: translateX(-5px) rotate(-1deg); filter: brightness(0.97); }
+            45% { top: -60px; transform: translateX(5px) rotate(1deg); filter: brightness(0.95); }
+            50% { top: -60px; transform: translateX(-5px) rotate(-1deg); filter: brightness(0.93); }
+            55% { top: -60px; transform: translateX(5px) rotate(1deg); filter: brightness(0.91); }
+            60% { top: -60px; transform: translateX(-3px) rotate(-0.5deg); filter: brightness(0.9); }
+            65% { top: -60px; transform: translateX(3px) rotate(0.5deg); filter: brightness(0.89); }
+            70% { top: -60px; transform: translateX(0) rotate(0deg); filter: brightness(0.9); }
+            85% { top: -90px; filter: brightness(0.95); }
+            100% { top: -120px; filter: brightness(1); }
         }
 
-        @keyframes falling {
+        @keyframes modernFalling {
             0% { top: 0; transform: rotateX(0) scale(1) rotate(0deg); }
             60% { top: 25px; transform: rotateX(8deg) scale(0.97) rotate(var(--random-rotate)); }
             80% { top: 25px; transform: rotateX(0) scale(0.95) rotate(var(--random-rotate)); }
             100% { top: 25px; transform: rotateX(0) scale(0.95) rotate(var(--random-rotate)); }
         }
 
+        /* Modern, smoother animations */
         .paper-link.printing {
-            animation: printing 2.5s ease-in-out forwards;
+            animation: modernPrinting 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             z-index: 5;
         }
 
         .paper-link.printing-failed {
             display: block;
-            animation: printingFailed 4s ease-in-out forwards;
+            animation: modernFailed 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             z-index: 5;
         }
 
         .paper-link.printing-failed .paper {
             background-color: var(--paper-error);
             border-color: var(--error-color);
+            box-shadow: 0 0 12px rgba(229, 62, 62, 0.2);
         }
 
         .print-error-icon {
@@ -312,14 +421,22 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .show-error-icon .print-error-icon {
             display: block;
+            animation: fadeInError 0.5s ease forwards 0.5s;
+        }
+
+        @keyframes fadeInError {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
 
         .paper-link.falling {
-            animation: falling 0.5s ease-out forwards;
+            animation: modernFalling 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             z-index: 15 !important;
         }
 
@@ -327,16 +444,24 @@
             z-index: 15 !important;
         }
 
-        .paper.pulse {
-            animation: singlePulse 0.8s ease-in-out forwards;
-            transform: scale(0.95);
+        /* Printer reaction animations */
+        @keyframes printerReaction {
+            0% { transform: translateY(0); }
+            25% { transform: translateY(-2px); }
+            75% { transform: translateY(1px); }
+            100% { transform: translateY(0); }
+        }
+
+        .printer.printing {
+            animation: printerReaction 0.5s ease-in-out;
         }
 
         .redirect-message {
             margin-bottom: 20px;
-            font-size: 15px;
+            font-size: 16px;
             color: var(--light-text);
             transition: color 0.3s;
+            font-weight: 500;
         }
 
         body.dark-mode .redirect-message {
@@ -348,45 +473,116 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background-color: var(--primary-color);
+            background-color: var(--secondary-color);
             color: white;
             padding: 12px 20px;
-            border-radius: 6px;
+            border-radius: 50px;
             text-decoration: none;
             font-size: 15px;
             font-weight: 500;
-            transition: background-color 0.2s, transform 0.2s;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             width: 100%;
             border: none;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(52, 211, 153, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: float-btn 3s ease-in-out infinite;
+        }
+
+        @keyframes float-btn {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .print-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-color);
+            border-radius: 50px;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+
+        .print-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.2) 50%,
+                    rgba(255, 255, 255, 0) 100%
+            );
+            transition: all 0.6s;
         }
 
         .print-btn:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
+            background-color: #2bb583;
+            animation: none;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .print-btn:hover::after {
+            animation: none;
         }
 
         .print-btn.error-btn {
             background-color: var(--error-color);
+            box-shadow: 0 4px 10px rgba(229, 62, 62, 0.3);
+        }
+
+        .print-btn.error-btn::after {
+            background: var(--error-color);
         }
 
         .print-btn.error-btn:hover {
             background-color: var(--error-hover);
+            box-shadow: 0 7px 14px rgba(229, 62, 62, 0.3), 0 3px 6px rgba(229, 62, 62, 0.2);
         }
 
         .spinner {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border: 2px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: white;
-            animation: spin 0.8s linear infinite;
+            animation: modernSpin 0.8s linear infinite;
         }
 
-        @keyframes spin {
+        @keyframes modernSpin {
             to { transform: rotate(360deg); }
         }
 
+        /* Updated back button */
         .back-btn {
             position: fixed;
             bottom: 2rem;
@@ -412,9 +608,16 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
+        .icon {
+            width: 24px;
+            height: 24px;
+            filter: invert(1) drop-shadow(0 0 2px #08f);
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .paper-link.printing, .paper-link.falling, .paper.pulse, .spinner,
-            .paper-link.printing-failed {
+            .paper-link.printing-failed, .printer-success.active, .printer-error.active,
+            .printer-data.active, .printer.printing, .print-btn::after {
                 animation: none;
             }
 
@@ -440,11 +643,26 @@
 <body>
 <div class="container">
     <div class="printer-area">
-        <div class="printer">
-            <div class="printer-button"></div>
-            <div class="printer-slot"></div>
+        <div class="printer" id="printerElement">
+            <div class="printer-shell">
+                <div class="printer-top">
+                    <div class="printer-brand"></div>
+                    <div class="printer-control-panel">
+                        <div class="printer-data" id="dataLight"></div>
+                        <div class="printer-success" id="successLight"></div>
+                        <div class="printer-error" id="errorLight"></div>
+                    </div>
+                </div>
+                <div class="printer-body">
+                    <div class="printer-paper-input"></div>
+                </div>
+                <div class="printer-output">
+                    <div class="printer-slot"></div>
+                </div>
+            </div>
             <div class="printer-tray"></div>
         </div>
+
         <div class="paper-container">
             <a href="javascript:void(0);" onclick="handlePaperClick(); return false;" class="paper-link" id="paperLink">
                 <div class="paper" id="paperElement">
@@ -458,24 +676,24 @@
     <p class="redirect-message" id="messageText">Przekierowywanie...</p>
     <button onclick="handleButtonClick()" class="print-btn" id="printButton">
         <span class="spinner" id="spinnerElement"></span>
-        <span id="buttonText">Drukuj CV</span>
+        <span id="buttonText">Otwórz CV do druku</span>
     </button>
 </div>
 
-<!-- Back button -->
+<!-- Back button with SVG from cosmicshooter.html -->
 <button onclick="goBackToCvPage()" class="back-btn" id="backButton">
-    <i class="fas fa-arrow-left"></i>
+    <img src="../resources/icons/return.svg" alt="Return" class="icon">
 </button>
 
 <script>
     // CONFIGURATION
-    const enableAutoRedirect = true;   // Enable automatic handling based on device
+    const enableAutoRedirect = false;  // Enable automatic handling based on device
     const isRedirectOnDesktop = false; // If true, redirects desktop to cv-print.html instead of printing
-    const forceIOSError = false;       // Simulate iOS error on any device
+    const forceIOSError = false;        // Simulate iOS error on any device
     const printerAnimationDelay = 500; // Delay before printer animation starts (ms)
     const pdfDownloadUrl = 'cv_en.pdf'; // PDF file URL
     const isRedirectDelayed = true;    // If true, actions are delayed
-    const redirectDelayMs = 2000;      // Delay before actions occur (ms)
+    const redirectDelayMs = 4000;      // Delay before actions occur (ms)
     const disableIOSSpecialHandling = false; // Treat iOS like other devices
     const disableAndroidSpecialHandling = false; // Treat Android like other devices
 
@@ -483,6 +701,29 @@
     let isIOS = false;
     let isAndroid = false;
     let redirectHandled = false;
+    let isDarkMode = false; // Default theme setting
+
+    // Safe localStorage functions with fallbacks
+    const safeStorage = {
+        getItem: function(key, defaultValue) {
+            try {
+                const value = localStorage.getItem(key);
+                return value !== null ? value : defaultValue;
+            } catch (e) {
+                console.warn("LocalStorage not available:", e);
+                return defaultValue;
+            }
+        },
+        setItem: function(key, value) {
+            try {
+                localStorage.setItem(key, value);
+                return true;
+            } catch (e) {
+                console.warn("LocalStorage not available:", e);
+                return false;
+            }
+        }
+    };
 
     // Navigate back to CV page
     function goBackToCvPage() {
@@ -502,7 +743,6 @@
 
             iframe.onload = function() {
                 try {
-                    // const a = 1/0;
                     iframe.contentWindow.print();
                 } catch (e) {
                     console.error("Print error:", e);
@@ -564,14 +804,46 @@
         }
     }
 
-    // Show iOS print failure UI
+    // Show data light for processing
+    function showDataProcessing() {
+        const dataLight = document.getElementById('dataLight');
+        const printerElement = document.getElementById('printerElement');
+
+        if (dataLight) {
+            dataLight.classList.add('active');
+        }
+
+        // Add printer animation
+        if (printerElement) {
+            printerElement.classList.add('printing');
+            setTimeout(() => {
+                printerElement.classList.remove('printing');
+            }, 500);
+        }
+    }
+
+    // Show iOS print failure UI with red light indicator
     function showIOSPrintFailure() {
         if (redirectHandled) return;
         redirectHandled = true;
 
+        // Deactivate the data light
+        const dataLight = document.getElementById('dataLight');
+        if (dataLight) {
+            dataLight.classList.remove('active');
+        }
+
+        // Activate the error light
+        const errorLight = document.getElementById('errorLight');
+        if (errorLight) {
+            errorLight.classList.add('active');
+        }
+
         // Hide spinner
         const spinnerElement = document.getElementById('spinnerElement');
-        if (spinnerElement) spinnerElement.style.display = 'none';
+        if (spinnerElement) {
+            spinnerElement.style.display = 'none';
+        }
 
         // Update message and button
         const messageEl = document.getElementById('messageText');
@@ -618,6 +890,39 @@
             paperLink.classList.remove('printing');
         }
         paperLink.classList.add('printing-failed');
+
+        // Add printer error animation
+        const printerElement = document.getElementById('printerElement');
+        if (printerElement) {
+            printerElement.classList.add('printing');
+            setTimeout(() => {
+                printerElement.classList.remove('printing');
+            }, 500);
+        }
+    }
+
+    // Show success with green light indicator
+    function showPrintSuccess() {
+        // Deactivate the data light
+        const dataLight = document.getElementById('dataLight');
+        if (dataLight) {
+            dataLight.classList.remove('active');
+        }
+
+        // Activate the success light
+        const successLight = document.getElementById('successLight');
+        if (successLight) {
+            successLight.classList.add('active');
+        }
+
+        // Add printer success animation
+        const printerElement = document.getElementById('printerElement');
+        if (printerElement) {
+            printerElement.classList.add('printing');
+            setTimeout(() => {
+                printerElement.classList.remove('printing');
+            }, 500);
+        }
     }
 
     // Get URL parameter
@@ -628,26 +933,28 @@
         return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
 
-    // Apply dark/light theme
+    // Apply dark/light theme safely
     function applyTheme() {
+        // First check URL parameter
         const urlDarkMode = getUrlParameter('darkMode');
 
         if (urlDarkMode !== null) {
-            if (urlDarkMode === 'true' || urlDarkMode === '1') {
+            isDarkMode = urlDarkMode === 'true' || urlDarkMode === '1';
+
+            if (isDarkMode) {
                 document.body.classList.add('dark-mode');
             } else {
                 document.body.classList.remove('dark-mode');
             }
 
-            try {
-                localStorage.setItem('darkMode', urlDarkMode === 'true' || urlDarkMode === '1' ? 'true' : 'false');
-            } catch (e) {
-                console.error("Cannot save theme preference:", e);
-            }
+            // Try to save preference but don't rely on it
+            safeStorage.setItem('darkMode', isDarkMode ? 'true' : 'false');
         } else {
-            const darkMode = localStorage.getItem('darkMode');
+            // If no URL parameter, try localStorage with fallback
+            const storedDarkMode = safeStorage.getItem('darkMode', 'false');
+            isDarkMode = storedDarkMode === 'true' || storedDarkMode === '1' || storedDarkMode === true;
 
-            if (darkMode === 'true' || darkMode === '1' || darkMode === true) {
+            if (isDarkMode) {
                 document.body.classList.add('dark-mode');
             } else {
                 document.body.classList.remove('dark-mode');
@@ -670,7 +977,7 @@
         }
     }
 
-    // Animate printing with falling effect
+    // Animate printing with falling effect and success indicator
     function animatePrinting() {
         const paperLink = document.getElementById('paperLink');
         const paperElement = document.getElementById('paperElement');
@@ -678,6 +985,9 @@
         const paperImage = document.getElementById('paperImage');
 
         if (!paperLink || !paperElement || !paperContainer || !paperImage) return;
+
+        // Show data processing light
+        showDataProcessing();
 
         // Hide paper initially
         paperLink.style.display = 'none';
@@ -710,6 +1020,9 @@
                             paperLink.classList.add('falling');
                             paperContainer.style.zIndex = "15";
 
+                            // Activate success light when paper falls
+                            showPrintSuccess();
+
                             setTimeout(() => {
                                 paperElement.classList.add('pulse');
 
@@ -718,7 +1031,7 @@
                                     paperElement.style.transform = `rotate(${randomRotate}deg) scale(0.95)`;
                                 }, 800);
                             }, 500);
-                        }, 2500);
+                        }, 2200); // Match the duration of the modernPrinting animation
                     }
                 }, 50);
             }, 200);
@@ -785,8 +1098,13 @@
 
     // Initialize page
     document.addEventListener('DOMContentLoaded', () => {
+        // Initialize theme without relying on localStorage
         applyTheme();
+
+        // Set up image error handling
         handleImageError();
+
+        // Start the printer animation sequence
         handleAutoRedirect();
     });
 </script>
