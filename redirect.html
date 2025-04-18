@@ -51,7 +51,6 @@
             color: var(--dark-text);
         }
 
-        /* Increase container height */
         .container {
             text-align: center;
             background-color: var(--light-card);
@@ -59,7 +58,7 @@
             border-radius: 8px;
             border: 1px solid var(--light-border);
             width: 320px;
-            min-height: 350px; /* Ensure enough space for the paper */
+            min-height: 350px;
             transition: background-color 0.3s, border-color 0.3s;
             position: relative;
         }
@@ -69,16 +68,14 @@
             border-color: var(--dark-border);
         }
 
-        /* Printer area with no overflow */
         .printer-area {
             position: relative;
             width: 120px;
-            height: 230px; /* Increased height to accommodate the full paper */
+            height: 230px;
             margin: 0 auto 30px;
-            overflow: visible; /* Allow paper to be fully visible after printing */
+            overflow: visible;
         }
 
-        /* Printer with added back cover to prevent paper showing through */
         .printer {
             width: 120px;
             height: 80px;
@@ -88,19 +85,18 @@
             margin: 0 auto;
             border-bottom: 3px solid rgba(0,0,0,0.2);
             box-shadow: 0 2px 0 rgba(0,0,0,0.1);
-            z-index: 30; /* Significantly increased z-index to ensure printer is on top */
+            z-index: 30;
         }
 
-        /* Printer back - prevents paper from showing through */
         .printer:after {
             content: '';
             position: absolute;
-            bottom: -5px; /* Extend slightly below printer */
+            bottom: -5px;
             left: 15px;
             width: 90px;
-            height: 10px; /* Taller than needed to ensure coverage */
+            height: 10px;
             background-color: var(--printer-color);
-            z-index: 29; /* Just below printer but above paper */
+            z-index: 29;
         }
 
         body.dark-mode .printer {
@@ -111,7 +107,6 @@
             background-color: var(--printer-dark-color);
         }
 
-        /* Printer top */
         .printer:before {
             content: '';
             position: absolute;
@@ -127,7 +122,6 @@
             background-color: var(--printer-dark-light);
         }
 
-        /* Printer controls */
         .printer-button {
             position: absolute;
             width: 10px;
@@ -149,7 +143,6 @@
             right: -18px;
         }
 
-        /* Paper tray */
         .printer-tray {
             position: absolute;
             width: 80px;
@@ -160,7 +153,6 @@
             border-radius: 0 0 2px 2px;
         }
 
-        /* Printer slot */
         .printer-slot {
             position: absolute;
             bottom: 0;
@@ -168,43 +160,39 @@
             width: 90px;
             height: 3px;
             background-color: rgba(0, 0, 0, 0.3);
-            z-index: 31; /* Slot should be above paper and printer body */
+            z-index: 31;
         }
 
-        /* Paper container completely hidden initially */
         .paper-container {
             position: absolute;
-            top: 80px; /* Position right at printer slot */
+            top: 80px;
             left: 15px;
             width: 90px;
-            height: 160px; /* Increased height to fully show the paper after falling */
-            overflow: hidden; /* Hidden initially to prevent paper showing before printing starts */
-            z-index: 5; /* Below the printer */
-            opacity: 0; /* Start completely transparent */
-            pointer-events: none; /* No interaction until printing begins */
+            height: 160px;
+            overflow: hidden;
+            z-index: 5;
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* Paper container after printing has started */
         .paper-container.active {
             opacity: 1;
             pointer-events: auto;
         }
 
-        /* Paper link styles with initial display none */
         .paper-link {
-            display: none; /* Initially hidden completely */
+            display: none;
             width: 90px;
             height: 120px;
             position: absolute;
-            top: -140px; /* Initially positioned deep inside printer */
+            top: -140px;
             left: 0;
             text-decoration: none;
             cursor: pointer;
             perspective: 1000px;
-            z-index: 5; /* Below the printer */
+            z-index: 5;
         }
 
-        /* Paper itself */
         .paper {
             width: 100%;
             height: 100%;
@@ -213,12 +201,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transform-origin: center bottom; /* For the falling effect */
+            transform-origin: center bottom;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
             box-shadow 0.4s ease, background-color 0.3s;
-            will-change: transform, box-shadow; /* Optimize for animation */
-            z-index: 5; /* Below the printer */
+            will-change: transform, box-shadow;
+            z-index: 5;
         }
 
         body.dark-mode .paper {
@@ -226,7 +214,6 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
-        /* Paper image */
         .paper img {
             max-width: 100%;
             max-height: 100%;
@@ -234,7 +221,6 @@
             display: block;
         }
 
-        /* Paper hover effect - only active after printing finished */
         .paper-link.printed:hover .paper {
             transform: scale(1.08) !important;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -245,7 +231,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
 
-        /* Single pulse animation */
         @keyframes singlePulse {
             0% { transform: scale(0.95); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
             50% { transform: scale(1.02); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
@@ -254,51 +239,47 @@
 
         .paper.pulse {
             animation: singlePulse 0.8s ease-in-out forwards;
-            transform: scale(0.95); /* Slightly smaller final state */
+            transform: scale(0.95);
         }
 
-        /* Custom transition for smoother hover effect */
         .paper-link.printed .paper {
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
             box-shadow 0.4s ease-in-out !important;
         }
 
-        /* Printing animation - smoother paper movement */
         @keyframes printing {
-            0% { top: -120px; } /* Hidden in printer */
-            8% { top: -105px; } /* First increment with smooth movement */
-            16% { top: -100px; } /* Small pause */
-            24% { top: -85px; } /* Continue rolling */
-            32% { top: -80px; } /* Small pause */
-            40% { top: -65px; } /* Continue rolling */
-            48% { top: -60px; } /* Small pause */
-            56% { top: -45px; } /* Continue rolling */
-            64% { top: -40px; } /* Small pause */
-            72% { top: -30px; } /* Continue rolling */
-            80% { top: -25px; } /* Small pause */
-            88% { top: -12px; } /* Continue rolling */
-            94% { top: -6px; }  /* Final slow roll out */
-            100% { top: 0; } /* Fully out */
+            0% { top: -120px; }
+            8% { top: -105px; }
+            16% { top: -100px; }
+            24% { top: -85px; }
+            32% { top: -80px; }
+            40% { top: -65px; }
+            48% { top: -60px; }
+            56% { top: -45px; }
+            64% { top: -40px; }
+            72% { top: -30px; }
+            80% { top: -25px; }
+            88% { top: -12px; }
+            94% { top: -6px; }
+            100% { top: 0; }
         }
 
-        /* iOS Printing Failure Animation */
         @keyframes printingFailed {
-            0% { top: -120px; } /* Hidden in printer */
-            15% { top: -85px; } /* Paper starts to come out */
-            30% { top: -50px; } /* Paper partially out */
-            35% { top: -50px; transform: translateX(0) rotate(0deg); } /* Pause */
-            40% { top: -50px; transform: translateX(-5px) rotate(-1deg); } /* Shake left */
-            45% { top: -50px; transform: translateX(5px) rotate(1deg); } /* Shake right */
-            50% { top: -50px; transform: translateX(-5px) rotate(-1deg); } /* Shake left */
-            55% { top: -50px; transform: translateX(5px) rotate(1deg); } /* Shake right */
-            60% { top: -50px; transform: translateX(-3px) rotate(-0.5deg); } /* Smaller shake */
-            65% { top: -50px; transform: translateX(3px) rotate(0.5deg); } /* Smaller shake */
-            70% { top: -50px; transform: translateX(0) rotate(0deg); } /* Stop shaking */
-            85% { top: -85px; } /* Start retracting */
-            100% { top: -120px; } /* Fully retracted */
+            0% { top: -120px; }
+            15% { top: -85px; }
+            30% { top: -50px; }
+            35% { top: -50px; transform: translateX(0) rotate(0deg); }
+            40% { top: -50px; transform: translateX(-5px) rotate(-1deg); }
+            45% { top: -50px; transform: translateX(5px) rotate(1deg); }
+            50% { top: -50px; transform: translateX(-5px) rotate(-1deg); }
+            55% { top: -50px; transform: translateX(5px) rotate(1deg); }
+            60% { top: -50px; transform: translateX(-3px) rotate(-0.5deg); }
+            65% { top: -50px; transform: translateX(3px) rotate(0.5deg); }
+            70% { top: -50px; transform: translateX(0) rotate(0deg); }
+            85% { top: -85px; }
+            100% { top: -120px; }
         }
 
-        /* Apply rotation directly instead of using CSS custom property */
         @keyframes falling {
             0% { top: 0; transform: rotateX(0) scale(1) rotate(0deg); }
             60% { top: 25px; transform: rotateX(8deg) scale(0.97) rotate(var(--random-rotate)); }
@@ -306,17 +287,15 @@
             100% { top: 25px; transform: rotateX(0) scale(0.95) rotate(var(--random-rotate)); }
         }
 
-        /* Printing animation state */
         .paper-link.printing {
             animation: printing 2.5s ease-in-out forwards;
-            z-index: 5; /* Keep below printer during printing */
+            z-index: 5;
         }
 
-        /* iOS printing failure animation state */
         .paper-link.printing-failed {
             display: block;
             animation: printingFailed 4s ease-in-out forwards;
-            z-index: 5; /* Keep below printer during printing */
+            z-index: 5;
         }
 
         .paper-link.printing-failed .paper {
@@ -324,7 +303,6 @@
             border-color: var(--error-color);
         }
 
-        /* Red alert icon for failed printing */
         .print-error-icon {
             display: none;
             color: var(--error-color);
@@ -340,21 +318,18 @@
             display: block;
         }
 
-        /* Falling animation state */
         .paper-link.falling {
             animation: falling 0.5s ease-out forwards;
-            z-index: 15 !important; /* Higher z-index after falling to be above other elements */
+            z-index: 15 !important;
         }
 
-        /* Printed state */
         .paper-link.printed {
-            z-index: 15 !important; /* Keep above message and button */
+            z-index: 15 !important;
         }
 
-        /* Paper pulse state */
         .paper.pulse {
             animation: singlePulse 0.8s ease-in-out forwards;
-            transform: scale(0.95); /* Slightly smaller final state */
+            transform: scale(0.95);
         }
 
         .redirect-message {
@@ -391,7 +366,6 @@
             transform: translateY(-2px);
         }
 
-        /* Error button style */
         .print-btn.error-btn {
             background-color: var(--error-color);
         }
@@ -413,7 +387,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Back button styles */
         .back-btn {
             position: fixed;
             bottom: 2rem;
@@ -439,7 +412,6 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* For reduced motion preference */
         @media (prefers-reduced-motion: reduce) {
             .paper-link.printing, .paper-link.falling, .paper.pulse, .spinner,
             .paper-link.printing-failed {
@@ -496,92 +468,90 @@
 </button>
 
 <script>
-    // KONFIGURACJA
-    const enableAutoRedirect = true;  // Change to true to enable auto-redirect
-    const forceIOSError = false;      // Change to true to simulate iOS error on any device
-    const printerAnimationDelay = 500; // Czas w ms po jakim drukarka zacznie "drukować"
-    const pdfDownloadUrl = 'cv_en.pdf'; // URL do pliku PDF do pobrania
-    const isRedirectDelayed = true;   // Jeśli false, przekierowanie nastąpi natychmiast
-    const redirectDelayMs = 2000;     // Czas w ms po jakim nastąpi przekierowanie
-    const disableIOSSpecialHandling = false; // Jeśli true, iPhony będą traktowane tak samo jak pozostałe urządzenia
-    const disableAndroidSpecialHandling = false; // Jeśli true, Androidy będą traktowane tak samo jak pozostałe urządzenia
+    // CONFIGURATION
+    const enableAutoRedirect = true;   // Enable automatic handling based on device
+    const isRedirectOnDesktop = false; // If true, redirects desktop to cv-print.html instead of printing
+    const forceIOSError = false;       // Simulate iOS error on any device
+    const printerAnimationDelay = 500; // Delay before printer animation starts (ms)
+    const pdfDownloadUrl = 'cv_en.pdf'; // PDF file URL
+    const isRedirectDelayed = true;    // If true, actions are delayed
+    const redirectDelayMs = 2000;      // Delay before actions occur (ms)
+    const disableIOSSpecialHandling = false; // Treat iOS like other devices
+    const disableAndroidSpecialHandling = false; // Treat Android like other devices
 
-    // Stan aplikacji
+    // State
     let isIOS = false;
     let isAndroid = false;
     let redirectHandled = false;
 
-    // Funkcja cofająca do strony cv.html
+    // Navigate back to CV page
     function goBackToCvPage() {
         window.location.href = 'cv.html';
     }
 
-    // Funkcja drukująca PDF bezpośrednio
+    // Print PDF directly
     function printPdf() {
-        const pdfUrl = 'cv_en.pdf';
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = pdfUrl;
+        if (isRedirectOnDesktop) {
+            // Redirect to cv-print.html instead of printing
+            window.location.href = 'cv-print.html';
+        } else {
+            // Show print dialog
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = pdfDownloadUrl;
 
-        iframe.onload = function() {
-            try {
-                iframe.contentWindow.print();
-            } catch (e) {
-                console.error("Print error:", e);
-                // Fallback to opening the PDF if direct printing fails
-                window.open(pdfUrl, '_blank');
-            }
-        };
+            iframe.onload = function() {
+                try {
+                    // const a = 1/0;
+                    iframe.contentWindow.print();
+                } catch (e) {
+                    console.error("Print error:", e);
+                    window.open(pdfDownloadUrl, '_blank');
+                }
+            };
 
-        document.body.appendChild(iframe);
+            document.body.appendChild(iframe);
+        }
     }
 
-    // Funkcja otwierająca przeglądarkę zewnętrzną
+    // Open external browser
     function openExternalBrowser() {
         const userAgent = navigator.userAgent.toLowerCase();
         isAndroid = userAgent.includes('android');
         isIOS = forceIOSError || /iphone|ipad|ipod/.test(userAgent);
 
-        // Link docelowy
-        const targetUrl = 'https://guziczak.github.io/lukasz/cv-print.html';
-
-        try {
-            if (isIOS && !disableIOSSpecialHandling) {
-                // Special handling for iOS - show printing failure
-                showIOSPrintFailure();
-            } else if (isAndroid && !disableAndroidSpecialHandling) {
-                const intentUrl = `intent://guziczak.github.io/lukasz/cv-print.html#Intent;scheme=https;package=com.android.chrome;end`;
-                window.location.href = intentUrl;
-            } else {
-                // Directly print the PDF instead of redirecting
-                printPdf();
-            }
-        } catch (e) {
-            console.error("Redirect error:", e);
-            showManualRedirectUI();
+        if (isIOS && !disableIOSSpecialHandling) {
+            // Show iOS print failure animation
+            showIOSPrintFailure();
+        } else if (isAndroid && !disableAndroidSpecialHandling) {
+            // Use Android intent URL
+            const intentUrl = `intent://guziczak.github.io/lukasz/cv-print.html#Intent;scheme=https;package=com.android.chrome;end`;
+            window.location.href = intentUrl;
+        } else {
+            // Regular devices use print or redirect
+            printPdf();
         }
     }
 
-    // Funkcja obsługująca kliknięcie na kartkę
+    // Handle paper click
     function handlePaperClick() {
         if (isIOS && !disableIOSSpecialHandling) {
-            // Dla iOS, zmień link na bezpośrednie pobieranie
+            // For iOS, change link to direct download
             const paperLink = document.getElementById('paperLink');
             paperLink.href = pdfDownloadUrl;
             paperLink.download = pdfDownloadUrl.includes('_en') ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
-            // Pozwól domyślnemu zachowaniu linku zadziałać
             return true;
         } else {
-            // Dla pozostałych urządzeń drukuj PDF bezpośrednio
+            // For other devices, print or redirect
             printPdf();
             return false;
         }
     }
 
-    // Funkcja obsługująca kliknięcie przycisku
+    // Handle button click
     function handleButtonClick() {
         if (isIOS && !disableIOSSpecialHandling) {
-            // Stwórz tymczasowy link pobierania
+            // For iOS, create download link
             const downloadLink = document.createElement('a');
             downloadLink.href = pdfDownloadUrl;
             downloadLink.download = pdfDownloadUrl.includes('_en') ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
@@ -589,36 +559,36 @@
             downloadLink.click();
             document.body.removeChild(downloadLink);
         } else {
-            // Dla pozostałych urządzeń drukuj PDF bezpośrednio
+            // For other devices, print or redirect
             printPdf();
         }
     }
 
-    // Funkcja pokazująca błąd drukowania dla iOS
+    // Show iOS print failure UI
     function showIOSPrintFailure() {
-        if (redirectHandled) return; // Prevent multiple executions
+        if (redirectHandled) return;
         redirectHandled = true;
 
-        // Zatrzymaj spinner
+        // Hide spinner
         const spinnerElement = document.getElementById('spinnerElement');
         if (spinnerElement) spinnerElement.style.display = 'none';
 
-        // Aktualizuj wiadomość i przycisk
+        // Update message and button
         const messageEl = document.getElementById('messageText');
         const buttonText = document.getElementById('buttonText');
         const printButton = document.getElementById('printButton');
         const paperLink = document.getElementById('paperLink');
         const paperElement = document.getElementById('paperElement');
 
-        // Zaktualizuj wiadomość tekstową
+        // Update text message
         messageEl.textContent = 'Drukowanie jeszcze nie jest dostępne dla iOS. Pobierz PDF:';
 
-        // Aktualizuj link papieru na bezpośrednie pobieranie
+        // Set paper link to direct download
         paperLink.href = pdfDownloadUrl;
         paperLink.download = pdfDownloadUrl.includes('_en') ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
-        paperLink.onclick = null; // Usuń stary handler onclick
+        paperLink.onclick = null;
 
-        // Get button properties before replacement
+        // Get button properties
         const parentElement = printButton.parentElement;
         const buttonHTML = printButton.innerHTML;
         const buttonClass = printButton.className;
@@ -626,31 +596,31 @@
         // Remove the button
         parentElement.removeChild(printButton);
 
-        // Create a download link that looks like the button
+        // Create download link that looks like the button
         const downloadLink = document.createElement('a');
         downloadLink.href = pdfDownloadUrl;
         downloadLink.download = pdfDownloadUrl.includes('_en') ? 'Lukasz_Guziczak_CV_EN.pdf' : 'Lukasz_Guziczak_CV_PL.pdf';
-        downloadLink.className = buttonClass + ' error-btn'; // Add the error class
+        downloadLink.className = buttonClass + ' error-btn';
         downloadLink.innerHTML = buttonHTML;
         downloadLink.id = 'printButton';
 
-        // Add the link to the parent
+        // Add link to parent
         parentElement.appendChild(downloadLink);
 
-        // Update the button text (now inside the link)
+        // Update button text
         document.getElementById('buttonText').textContent = 'Pobierz CV (PDF)';
 
-        // Pokaż ikonę błędu w papierze
+        // Show error icon
         paperElement.parentElement.classList.add('show-error-icon');
 
-        // Animuj błąd drukowania
+        // Animate printing error
         if (paperLink.classList.contains('printing')) {
             paperLink.classList.remove('printing');
         }
         paperLink.classList.add('printing-failed');
     }
 
-    // Funkcja pobierająca parametr z URL
+    // Get URL parameter
     function getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -658,58 +628,49 @@
         return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
 
-    // Funkcja aplikująca motyw
+    // Apply dark/light theme
     function applyTheme() {
-        // Sprawdź najpierw parametr URL
         const urlDarkMode = getUrlParameter('darkMode');
 
-        // Jeśli parametr URL istnieje, użyj go i spróbuj zapisać w localStorage
         if (urlDarkMode !== null) {
-            // Zastosuj motyw na podstawie parametru URL
             if (urlDarkMode === 'true' || urlDarkMode === '1') {
                 document.body.classList.add('dark-mode');
             } else {
                 document.body.classList.remove('dark-mode');
             }
 
-            // Spróbuj zapisać w localStorage
             try {
                 localStorage.setItem('darkMode', urlDarkMode === 'true' || urlDarkMode === '1' ? 'true' : 'false');
             } catch (e) {
-                console.error("Nie można zapisać preferencji motywu:", e);
+                console.error("Cannot save theme preference:", e);
             }
         } else {
-            // Brak parametru URL, używamy localStorage
             const darkMode = localStorage.getItem('darkMode');
 
-            // Zastosuj klasę dark-mode, jeśli localStorage zawiera 'true' lub '1'
             if (darkMode === 'true' || darkMode === '1' || darkMode === true) {
                 document.body.classList.add('dark-mode');
             } else {
-                // W przeciwnym razie usuń klasę dark-mode (w tym przypadku null, false, '0', itp.)
                 document.body.classList.remove('dark-mode');
             }
         }
     }
 
-    // Funkcja pokazująca UI do ręcznego przekierowania
+    // Show manual redirect UI
     function showManualRedirectUI() {
         document.querySelector('.redirect-message').textContent = 'Kliknij przycisk lub w kartkę:';
 
-        // Ukryj spinner
         const spinnerElement = document.getElementById('spinnerElement');
         if (spinnerElement) {
             spinnerElement.style.display = 'none';
         }
 
-        // Aktualizuj tekst przycisku
         const buttonText = document.getElementById('buttonText');
         if (buttonText) {
             buttonText.innerText = 'Otwórz CV';
         }
     }
 
-    // Funkcja animująca drukowanie z efektem spadającej kartki
+    // Animate printing with falling effect
     function animatePrinting() {
         const paperLink = document.getElementById('paperLink');
         const paperElement = document.getElementById('paperElement');
@@ -718,119 +679,89 @@
 
         if (!paperLink || !paperElement || !paperContainer || !paperImage) return;
 
-        // Kompletnie ukryj papier na początku
+        // Hide paper initially
         paperLink.style.display = 'none';
         paperContainer.style.opacity = '0';
         paperContainer.style.overflow = 'hidden';
+        paperLink.style.top = '-200px';
 
-        // Ustaw początkową pozycję papieru głęboko w drukarce
-        paperLink.style.top = '-200px'; // Głębiej niż poprzednio, aby na pewno nie było widoczne
-
-        // Wygeneruj losowy kąt obrotu dla kartki (między -3 a 3 stopnie)
+        // Generate random rotation angle
         const randomRotate = (Math.random() * 6 - 3).toFixed(2);
-
-        // Ustaw zmienną CSS dla animacji
         document.documentElement.style.setProperty('--random-rotate', `${randomRotate}deg`);
 
-        // Rozpocznij animację "drukowania" po określonym czasie
+        // Start printing animation after delay
         setTimeout(() => {
-            // Inicjalizacja pozycji przed pokazaniem
             paperLink.style.top = '-140px';
 
-            // Najpierw upewnij się, że papier jest niewidoczny
             setTimeout(() => {
-                // Dopiero teraz pokaż papier (na chwilę przed rozpoczęciem animacji)
                 paperLink.style.display = 'block';
                 paperContainer.classList.add('active');
                 paperContainer.style.opacity = '1';
 
-                // Krótkie opóźnienie przed rozpoczęciem animacji
                 setTimeout(() => {
-                    // Jeśli to iOS i specjalne traktowanie jest włączone, to pokaż animację niepowodzenia
                     if (isIOS && !disableIOSSpecialHandling) {
                         paperLink.classList.add('printing-failed');
                         showIOSPrintFailure();
                     } else {
-                        // Rozpocznij animację drukowania
                         paperLink.classList.add('printing');
 
-                        // Po zakończeniu drukowania, dodaj animację spadania
                         setTimeout(() => {
-                            // Usuwamy klasę printing i dodajemy falling dla następnej animacji
                             paperLink.classList.remove('printing');
                             paperLink.classList.add('falling');
-
-                            // Zmień z-index papieru na wyższy, aby był nad innymi elementami
                             paperContainer.style.zIndex = "15";
 
-                            // Po spadnięciu, dodaj pulsowanie (pojedyncze)
                             setTimeout(() => {
-                                // Dodajemy klasę pulse do elementu papier
                                 paperElement.classList.add('pulse');
 
-                                // Dodaj klasę 'printed' żeby aktywować efekt hover
                                 setTimeout(() => {
-                                    // Dodajemy klasę printed, która aktywuje efekt najechania kursorem
                                     paperLink.classList.add('printed');
-
-                                    // Ustaw transformację z zachowaniem kąta obrotu
                                     paperElement.style.transform = `rotate(${randomRotate}deg) scale(0.95)`;
-                                }, 800); // Po zakończeniu pulsowania
+                                }, 800);
                             }, 500);
-                        }, 2500); // 2.5 sekundy trwa drukowanie
+                        }, 2500);
                     }
                 }, 50);
             }, 200);
         }, printerAnimationDelay);
     }
 
-    // Obsługa błędu ładowania obrazu
+    // Handle image load error
     function handleImageError() {
         const paperImage = document.getElementById('paperImage');
         if (!paperImage) return;
 
         paperImage.onerror = function() {
-            // Jeśli nie można załadować obrazu, pokaż prosty placeholder
             this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="90" height="120" viewBox="0 0 90 120"><rect width="100%" height="100%" fill="white"/><text x="50%" y="50%" font-family="Arial" font-size="14" fill="gray" text-anchor="middle">CV</text></svg>';
         };
     }
 
-    // Funkcja obsługująca automatyczne przekierowanie
+    // Handle automatic redirect
     function handleAutoRedirect() {
         if (enableAutoRedirect) {
-            // Sprawdź użytkownika
             const userAgent = navigator.userAgent.toLowerCase();
             isIOS = forceIOSError || /iphone|ipad|ipod/.test(userAgent);
             isAndroid = userAgent.includes('android');
 
-            // Jeśli mamy wyłączone specjalne traktowanie iOS, traktujemy iOS jak zwykłe urządzenie
             const shouldHandleAsNormal = (disableIOSSpecialHandling || !isIOS) && (disableAndroidSpecialHandling || !isAndroid);
 
             if (shouldHandleAsNormal) {
-                // Dla zwykłych urządzeń lub gdy wyłączono specjalne traktowanie
-
-                // Najpierw uruchamiamy animację drukowania
+                // Start printing animation
                 animatePrinting();
 
                 if (!isRedirectDelayed) {
-                    // Natychmiastowe drukowanie bez opóźnienia
-                    console.log("Wykonuję natychmiastowe drukowanie");
                     printPdf();
                 } else {
-                    // Opóźnione drukowanie o określony czas
-                    console.log(`Drukowanie nastąpi za ${redirectDelayMs}ms`);
                     setTimeout(() => {
-                        console.log("Wykonuję opóźnione drukowanie");
                         printPdf();
                     }, redirectDelayMs);
                 }
             } else if (isIOS && !disableIOSSpecialHandling) {
-                // Dla iOS z włączonym specjalnym traktowaniem
+                // For iOS with special handling
                 setTimeout(() => {
-                    animatePrinting(); // Uruchom animację, która pokaże błąd dla iOS
+                    animatePrinting(); // Will show error for iOS
                 }, 300);
             } else {
-                // Dla Androida z włączonym specjalnym traktowaniem
+                // For Android with special handling
                 animatePrinting();
 
                 if (!isRedirectDelayed) {
@@ -842,8 +773,7 @@
                 }
             }
         } else {
-            // Jeśli autoRedirect wyłączony, pokaż standardowy UI
-            console.log("Auto-przekierowanie wyłączone, pokazuję ręczny UI");
+            // If auto-redirect disabled, show manual UI
             const userAgent = navigator.userAgent.toLowerCase();
             isIOS = forceIOSError || /iphone|ipad|ipod/.test(userAgent);
             isAndroid = userAgent.includes('android');
@@ -853,23 +783,10 @@
         }
     }
 
-    // Inicjalizacja strony
+    // Initialize page
     document.addEventListener('DOMContentLoaded', () => {
-        // Zastosuj motyw
         applyTheme();
-
-        // Obsługa błędu ładowania obrazu
         handleImageError();
-
-        // Dodałem logi do debugowania
-        console.log("Inicjalizacja strony");
-        console.log("enableAutoRedirect:", enableAutoRedirect);
-        console.log("isRedirectDelayed:", isRedirectDelayed);
-        console.log("redirectDelayMs:", redirectDelayMs);
-        console.log("disableIOSSpecialHandling:", disableIOSSpecialHandling);
-        console.log("disableAndroidSpecialHandling:", disableAndroidSpecialHandling);
-
-        // Obsługa automatycznego przekierowania na podstawie flagi
         handleAutoRedirect();
     });
 </script>
